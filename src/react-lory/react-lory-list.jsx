@@ -9,9 +9,7 @@ export default function ReactLoryList ({className, classNameItem, items}) {
         <ReactLoryItem
           className={classNameItem}
           item={item}
-          key={index} />
-      ))}
-    </ul>
+          key={index} />))}</ul>
   )
 }
 

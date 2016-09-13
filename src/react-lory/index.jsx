@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { lory } from 'lory.js'
+import imagesLoaded from 'imagesloaded'
+
+import ReactLoryList from './react-lory-list'
 
 export default class ReactLory extends Component {
 
@@ -16,7 +19,13 @@ export default class ReactLory extends Component {
       classNameNextCtrl: this.getClassName('next')
     }
 
-    lory(this.sliderNode, {...this.props, ...classes})
+    imagesLoaded(this.sliderNode, () => {
+      this.sliderNode.addEventListener('after.lory.init', () => {
+        this.sliderNode.classList.add(this.getClassName('-ready'))
+      })
+
+      lory(this.sliderNode, {...this.props, ...classes})
+    })
   }
 
   getClassName (element) {
@@ -34,59 +43,14 @@ export default class ReactLory extends Component {
     return (
       <div ref={this.getSliderNode} className={classNameBase}>
         <div className={this.getClassName('frame')}>
-          <ul className={this.getClassName('slides')}>
-            {listItems.map((item, index) => (
-              <li className={this.getClassName('item')} key={index}>
-                {item}
-              </li>
-            ))}
-          </ul>
+          <ReactLoryList
+            className={this.getClassName('slides')}
+            classNameItem={this.getClassName('item')}
+            items={listItems} />
         </div>
       </div>
     )
   }
-  /*
-  return (
-    <div className='sui-Multimedia'>
-      {imagesList.map((image, index) => {
-        const multimediaImage = <SuiMultimediaImage {...image} />
-
-        const multimediaLazyLoad = (
-          <SuiMultimediaLazyLoad>
-            {multimediaImage}
-          </SuiMultimediaLazyLoad>
-        )
-
-        const imageItem = lazyLoad ? multimediaLazyLoad : multimediaImage
-        const imageBasicProps = {
-          key: index,
-          title: image.alt || '',
-          className: 'sui-Multimedia-link'
-        }
-
-        const imageWrapper = image.link ? (
-          <a
-            {...imageBasicProps}
-            href={image.link}
-          >
-            {imageItem}
-          </a>
-        ) : image.routerLink ? (
-          <Link
-            {...imageBasicProps}
-            to={image.routerLink}
-          >
-            {imageItem}
-          </Link>
-          ) : (
-          <div key={index}>
-            {imageItem}
-          </div>
-          )
-        return imageWrapper
-      })}
-    </div>
-  ) */
 }
 
 ReactLory.propTypes = {

@@ -1,0 +1,35 @@
+.react-lory {
+  position: relative;
+  margin: 0 auto;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  user-select: none;
+
+  &-frame {
+    position: relative;
+    margin: 0 auto;
+    font-size: 0;
+    line-height: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &-slides {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  &-item {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+  }
+
+  img {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+}
