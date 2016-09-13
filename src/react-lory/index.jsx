@@ -70,11 +70,7 @@ ReactLory.propTypes = {
   snapBackSpeed: PropTypes.number,
   ease: PropTypes.string,
   className: PropTypes.string,
-  classNameBase: PropTypes.string,
-  classNameFrame: PropTypes.string,
-  classNameSlideContainer: PropTypes.string,
-  classNamePrevCtrl: PropTypes.string,
-  classNameNextCtrl: PropTypes.string
+  classNameBase: PropTypes.string
 }
 
 ReactLory.defaultProps = {
@@ -86,7 +82,5 @@ ReactLory.defaultProps = {
   rewindSpeed: 600,
   snapBackSpeed: 200,
   ease: 'ease',
-  classNameBase: 'react-lory',
-  classNamePrevCtrl: 'react-lory-prev',
-  classNameNextCtrl: 'react-lory-next'
+  classNameBase: 'react-lory'
 }
