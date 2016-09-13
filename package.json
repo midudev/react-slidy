@@ -12,7 +12,7 @@
     "predist": "npm run clean:dist -s",
     "dist": "npm run dist:scripts && npm run dist:styles",
     "dist:scripts": "babel src --out-dir dist",
-    "dist:styles": "node-sass src/index.scss dist/_sui-multimedia.scss --importer ./scripts/importer.js",
+    "dist:styles": "node-sass src/index.scss dist/_react-lory.scss",
     "prepublish": "npm run dist",
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm run test -- -w test src --watch-extensions jsx",
@@ -32,8 +32,7 @@
     "url": "git@github.com:miduga/react-lory.git"
   },
   "pre-commit": [
-    "lint",
-    "test"
+    "lint"
   ],
   "peerDependencies": {
     "react": "0.14"

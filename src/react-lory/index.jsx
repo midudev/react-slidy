@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { lory } from 'lory.js'
 
+import ReactLoryList from './react-lory-list'
+
 export default class ReactLory extends Component {
 
   constructor (...args) {
@@ -34,13 +36,10 @@ export default class ReactLory extends Component {
     return (
       <div ref={this.getSliderNode} className={classNameBase}>
         <div className={this.getClassName('frame')}>
-          <ul className={this.getClassName('slides')}>
-            {listItems.map((item, index) => (
-              <li className={this.getClassName('item')} key={index}>
-                {item}
-              </li>
-            ))}
-          </ul>
+          <ReactLoryList
+            className={this.getClassName('slides')}
+            classNameItem={this.getClassName('item')}
+            items={listItems} />
         </div>
       </div>
     )
