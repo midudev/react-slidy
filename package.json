@@ -1,0 +1,69 @@
+{
+  "name": "react-lory",
+  "version": "0.0.1",
+  "main": "dist/",
+  "keywords": [
+    "slider",
+    "react",
+    "lory"
+  ],
+  "scripts": {
+    "clean:dist": "rm -Rf ./dist/*",
+    "predist": "npm run clean:dist -s",
+    "dist": "npm run dist:scripts && npm run dist:styles",
+    "dist:scripts": "babel src --out-dir dist",
+    "dist:styles": "node-sass src/index.scss dist/_sui-multimedia.scss --importer ./scripts/importer.js",
+    "prepublish": "npm run dist",
+    "test": "mocha --compilers js:babel-core/register --recursive",
+    "test:watch": "npm run test -- -w test src --watch-extensions jsx",
+    "dev": "npm run dev:open && npm run dev:serve",
+    "dev:serve": "webpack-dev-server --devtool eval --progress --colors --content-base docs/",
+    "dev:open": "opener http://localhost:8080",
+    "predoc": "webpack --config webpack.doc.config.js",
+    "doc": "npm run doc:build",
+    "doc:build": "gh-pages -d docs",
+    "lint": "npm run lint:js && npm run lint:sass",
+    "lint:sass": "node_modules/.bin/sass-lint src/**/*.scss -c -v",
+    "lint:js": "node_modules/.bin/eslint --ext .js,.jsx src/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:miduga/react-lory.git"
+  },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
+  "peerDependencies": {
+    "react": "0.14"
+  },
+  "devDependencies": {
+    "@schibstedspain/frontend-pre-commit-rules": "7.0",
+    "@schibstedspain/sui-multimedia": "^0.2.8",
+    "babel": "6.1.18",
+    "babel-cli": "6.2.0",
+    "babel-core": "6.2.1",
+    "babel-loader": "6.2.0",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-preset-es2015": "6.1.18",
+    "babel-preset-react": "6.1.18",
+    "css-loader": "0.23.0",
+    "gh-pages": "0.5.0",
+    "node-sass": "3.4.2",
+    "opener": "1.4.1",
+    "react": "0.14.0",
+    "react-dom": "0.14.0",
+    "react-hot-loader": "1.3.0",
+    "sass-loader": "3.1.2",
+    "style-loader": "0.13.0",
+    "webpack": "1.12.9",
+    "webpack-dev-server": "1.14.0"
+  },
+  "dependencies": {
+    "@schibstedspain/sui-spinner": "1.0",
+    "lory.js": "^2.2.0",
+    "react-lazy-load": "3.0.10",
+    "react-router": "1.0.0-rc3"
+  }
+}
