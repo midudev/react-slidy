@@ -37,6 +37,11 @@ const config = {
 
 ReactDom.render(
   <div>
+    <h3>Only one image</h3>
+    <ReactLory {...config}>
+      <SuiMultimedia lazyLoad={false} images={images[0]} />
+    </ReactLory>
+
     <h3>With other components</h3>
     <ReactLory {...config}>
       <SuiMultimedia lazyLoad={false} images={images[0]} />

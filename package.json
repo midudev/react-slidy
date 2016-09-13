@@ -20,8 +20,6 @@
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:eslint": "eslint --ext=.js --ext=.jsx ./src/ ./test/ ./docs/",
     "lint:sass": "node_modules/.bin/sass-lint src/**/*.scss -c -v",
-    "test": "mocha --compilers js:babel-register --recursive --require babel-polyfill",
-    "test:watch": "npm run test -- -w test src --watch-extensions jsx",
     "start": "npm run start:open && npm run start:server",
     "start:server": "webpack-dev-server",
     "start:open": "opener http://localhost:8080",
@@ -71,7 +69,7 @@
     "webpack-merge": "0.8.3"
   },
   "dependencies": {
-    "imagesloaded": "^4.1.1",
-    "lory.js": "^2.2.0"
+    "imagesloaded": "4.1.1",
+    "lory.js": "2.2.0"
   }
 }
