@@ -35,7 +35,7 @@ var base = {
   ]
 };
 
-if(TARGET === 'start:server' || !TARGET) {
+if (TARGET === 'start:server' || !TARGET) {
   module.exports = merge(base, {
     entry: [
       'webpack-dev-server/client?http://0.0.0.0:8080',
@@ -63,7 +63,7 @@ if(TARGET === 'start:server' || !TARGET) {
 }
 
 
-if(TARGET === 'dist') {
+if (TARGET === 'dist') {
   module.exports = merge(base, {
     entry: {
       app: path.resolve(__dirname, 'docs/index.jsx'),

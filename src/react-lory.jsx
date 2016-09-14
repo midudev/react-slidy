@@ -9,23 +9,30 @@ export default class ReactLory extends Component {
   constructor (...args) {
     super(...args)
     this.getSliderNode = this.getSliderNode.bind(this)
+    this.handleAfterSlide = this.handleAfterSlide.bind(this)
+    this.handleInit = this.handleInit.bind(this)
   }
 
   componentDidMount () {
-    const classes = {
-      classNameFrame: this.getClassName('frame'),
-      classNameSlideContainer: this.getClassName('slides'),
-      classNamePrevCtrl: this.getClassName('prev'),
-      classNameNextCtrl: this.getClassName('next')
-    }
-
+    // wait to load the images in order to start some stuff only when needed
     imagesLoaded(this.sliderNode, () => {
-      this.sliderNode.addEventListener('after.lory.init', () => {
-        this.sliderNode.classList.add(this.getClassName('-ready'))
-      })
+      const classes = {
+        classNameFrame: this.getClassName('frame'),
+        classNameSlideContainer: this.getClassName('slides'),
+        classNamePrevCtrl: this.getClassName('prev'),
+        classNameNextCtrl: this.getClassName('next')
+      }
+
+      this.sliderNode.addEventListener('after.lory.init', this.handleInit)
+      this.sliderNode.addEventListener('after.lory.slide', this.handleAfterSlide)
 
       lory(this.sliderNode, {...this.props, ...classes})
     })
+  }
+
+  componentWillUnmount () {
+    this.sliderNode.removeEventListener('after.lory.init', this.handleInit)
+    this.sliderNode.removeEventListener('after.lory.slide', this.handleAfterSlide)
   }
 
   getClassName (element) {
@@ -34,6 +41,14 @@ export default class ReactLory extends Component {
 
   getSliderNode (node) {
     this.sliderNode = node
+  }
+
+  handleAfterSlide (currentSlide) {
+    this.props.doAfterSlide(currentSlide)
+  }
+
+  handleInit () {
+    this.sliderNode.classList.add(this.getClassName('-ready'))
   }
 
   render () {
@@ -58,29 +73,31 @@ ReactLory.propTypes = {
     PropTypes.array,
     PropTypes.object
   ]).isRequired,
-  slidesToScroll: PropTypes.number,
+  className: PropTypes.string,
+  classNameBase: PropTypes.string,
+  doAfterSlide: PropTypes.func,
+  ease: PropTypes.string,
   enableMouseEvents: PropTypes.bool,
   infinite: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.number
   ]),
   rewind: PropTypes.bool,
-  slideSpeed: PropTypes.number,
   rewindSpeed: PropTypes.number,
-  snapBackSpeed: PropTypes.number,
-  ease: PropTypes.string,
-  className: PropTypes.string,
-  classNameBase: PropTypes.string
+  slideSpeed: PropTypes.number,
+  slidesToScroll: PropTypes.number,
+  snapBackSpeed: PropTypes.number
 }
 
 ReactLory.defaultProps = {
-  slidesToScroll: 1,
+  classNameBase: 'react-lory',
+  doAfterSlide: () => {},
+  ease: 'ease',
   enableMouseEvents: true,
   infinite: 1,
   rewind: false,
-  slideSpeed: 300,
   rewindSpeed: 600,
-  snapBackSpeed: 200,
-  ease: 'ease',
-  classNameBase: 'react-lory'
+  slideSpeed: 300,
+  slidesToScroll: 1,
+  snapBackSpeed: 200
 }
