@@ -4,13 +4,21 @@ import imagesLoaded from 'imagesloaded'
 
 import ReactLoryList from './react-lory-list'
 
+const EVENTS = {
+  INIT: 'after.lory.init',
+  AFTER_DESTROY: 'after.lory.destroy',
+  AFTER_SLIDE: 'after.lory.slide'
+}
+
 export default class ReactLory extends Component {
 
   constructor (...args) {
     super(...args)
     this.getSliderNode = this.getSliderNode.bind(this)
     this.handleAfterSlide = this.handleAfterSlide.bind(this)
+    this.handleDestroy = this.handleDestroy.bind(this)
     this.handleInit = this.handleInit.bind(this)
+    this.loryInstance = null
   }
 
   componentDidMount () {
@@ -23,16 +31,18 @@ export default class ReactLory extends Component {
         classNameNextCtrl: this.getClassName('next')
       }
 
-      this.sliderNode.addEventListener('after.lory.init', this.handleInit)
-      this.sliderNode.addEventListener('after.lory.slide', this.handleAfterSlide)
-
-      lory(this.sliderNode, {...this.props, ...classes})
+      this.sliderNode.addEventListener(EVENTS.INIT, this.handleInit)
+      this.sliderNode.addEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
+      this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
+      this.loryInstance = lory(this.sliderNode, {...this.props, ...classes})
     })
   }
 
   componentWillUnmount () {
-    this.sliderNode.removeEventListener('after.lory.init', this.handleInit)
-    this.sliderNode.removeEventListener('after.lory.slide', this.handleAfterSlide)
+    this.sliderNode.removeEventListener(EVENTS.INIT, this.handleInit)
+    this.sliderNode.removeEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
+    this.loryInstance.destroy()
+    this.sliderNode.removeEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
   }
 
   getClassName (element) {
@@ -43,8 +53,14 @@ export default class ReactLory extends Component {
     this.sliderNode = node
   }
 
-  handleAfterSlide (currentSlide) {
-    this.props.doAfterSlide(currentSlide)
+  handleAfterSlide (event) {
+    const {detail} = event
+    const currentSlide = detail && detail.currentSlide ? detail.currentSlide : 0
+    this.props.doAfterSlide({currentSlide, event})
+  }
+
+  handleDestroy (event) {
+    this.props.doAfterDestroy({event})
   }
 
   handleInit () {
@@ -75,6 +91,7 @@ ReactLory.propTypes = {
   ]).isRequired,
   className: PropTypes.string,
   classNameBase: PropTypes.string,
+  doAfterDestroy: PropTypes.func,
   doAfterSlide: PropTypes.func,
   ease: PropTypes.string,
   enableMouseEvents: PropTypes.bool,
@@ -91,6 +108,7 @@ ReactLory.propTypes = {
 
 ReactLory.defaultProps = {
   classNameBase: 'react-lory',
+  doAfterDestroy: () => {},
   doAfterSlide: () => {},
   ease: 'ease',
   enableMouseEvents: true,
