@@ -20,7 +20,7 @@ export default class ReactLory extends Component {
     this.handleInit = this.handleInit.bind(this)
     this.loryInstance = null
 
-    this.state = { currentSlide: 0, loadedItems: { 0: true } }
+    this.state = { currentSlide: 0 }
   }
 
   componentDidMount () {
@@ -121,7 +121,11 @@ ReactLory.defaultProps = {
   ease: 'ease',
   enableMouseEvents: true,
   infinite: 1,
-  lazyLoadConfig: { enabled: true, itemsOnLoad: 2 },
+  lazyLoadConfig: {
+    enabled: true,
+    itemsOnLoad: 2,
+    componentPlaceholder: <div />
+  },
   rewind: false,
   rewindSpeed: 600,
   slideSpeed: 300,
