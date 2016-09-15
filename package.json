@@ -60,7 +60,9 @@
     "webpack-merge": "0.8.3"
   },
   "dependencies": {
+    "@schibstedspain/sui-spinner": "1.0",
     "imagesloaded": "4.1.1",
-    "lory.js": "2.2.0"
+    "lory.js": "2.2.0",
+    "react-lazy-load": "3.0.10"
   }
 }
