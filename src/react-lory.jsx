@@ -107,7 +107,7 @@ ReactLory.propTypes = {
 }
 
 ReactLory.defaultProps = {
-  classNameBase: 'react-lory',
+  classNameBase: 'react-Lory',
   doAfterDestroy: () => {},
   doAfterSlide: () => {},
   ease: 'ease',
