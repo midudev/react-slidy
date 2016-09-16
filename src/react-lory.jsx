@@ -58,8 +58,7 @@ export default class ReactLory extends Component {
   handleAfterSlide (event) {
     const {detail} = event
     const currentSlide = detail && detail.currentSlide ? detail.currentSlide : 0
-    const loadedItems = Object.assign({}, this.state.loadedItems, {[currentSlide]: true})
-    this.setState({currentSlide, loadedItems})
+    this.setState({currentSlide})
     this.props.doAfterSlide({currentSlide, event})
   }
 
@@ -83,7 +82,6 @@ export default class ReactLory extends Component {
             classNameItem={this.getClassName('item')}
             currentSlide={this.state.currentSlide}
             lazyLoadConfig={this.props.lazyLoadConfig}
-            loadedItems={this.state.loadedItems}
             items={listItems} />
         </div>
       </div>

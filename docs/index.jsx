@@ -24,17 +24,6 @@ const images = [{
 }, {
   src: 'https://instagram.fmad3-1.fna.fbcdn.net/t51.2885-15/e15/11116616_484078385076616_1251856526_n.jpg?ig_cache_key=MzE5NjE0NDY4MjE2OTAwMjQ2.2',
   alt: 'Music'
-}, {
-  src: 'http://www.foo.com/not-found.png',
-  alt: 'Not Found',
-  routerLink: '/not-found'
-}, {
-  src: 'http://www.foo.com/not-found.png',
-  alt: 'Not Found',
-  defaultSrc: './img/default_src.png'
-}, {
-  src: 'https://scontent-mad1-1.cdninstagram.com/t51.2885-15/e15/11189686_499366993548088_1592806536_n.jpg',
-  routerLink: '/not-found'
 }]
 
 const handlers = {
@@ -58,6 +47,8 @@ class App extends Component {
   }
 
   componentWillReceiveProps ({mounted}) {
+    /* we're using mounted state in order to change this prop with React Dev Tools
+      and check that componentWillUnmount is executed as expected */
     this.setState({mounted})
   }
 
@@ -81,8 +72,8 @@ class App extends Component {
 
         <h3>Basic example</h3>
         <ReactLory {...config}>
-          <img src={images[0].src} />
-          <img src={images[1].src} />
+          <img {...images[0]} />
+          <img {...images[1]} />
         </ReactLory>
       </div>
     }

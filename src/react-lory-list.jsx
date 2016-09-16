@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 import ReactLoryItem from './react-lory-item'
 
-export default function ReactLoryList ({className, classNameItem, currentSlide, items, lazyLoadConfig, loadedItems}) {
+export default function ReactLoryList ({className, classNameItem, currentSlide, items, lazyLoadConfig}) {
   const { enabled, itemsOnLoad, componentPlaceholder } = lazyLoadConfig
   const hasToLoadItem = (index) => {
     return !enabled ||
@@ -31,6 +31,5 @@ ReactLoryList.propTypes = {
   classNameItem: PropTypes.string,
   currentSlide: PropTypes.number,
   items: PropTypes.array,
-  lazyLoadConfig: PropTypes.object,
-  loadedItems: PropTypes.object
+  lazyLoadConfig: PropTypes.object
 }
