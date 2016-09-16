@@ -36,19 +36,19 @@
   },
   "devDependencies": {
     "@schibstedspain/frontend-pre-commit-rules": "7.0",
-    "@schibstedspain/sui-multimedia": "^0.2.8",
-    "babel": "6.1.18",
-    "babel-cli": "6.2.0",
-    "babel-core": "6.2.1",
-    "babel-loader": "6.2.0",
-    "babel-plugin-transform-object-rest-spread": "^6.8.0",
-    "babel-preset-es2015": "6.1.18",
-    "babel-preset-react": "6.1.18",
+    "@schibstedspain/sui-multimedia": "0.2",
+    "babel": "^6.5.2",
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-transform-object-rest-spread": "6.8.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
     "copyfiles": "^1.0.0",
     "css-loader": "0.23.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "node-sass": "3.4.2",
-    "opener": "1.4.1",
+    "opener": "^1.4.2",
     "react": "0.14.0",
     "react-dom": "0.14.0",
     "react-hot-loader": "1.3.0",
@@ -60,6 +60,8 @@
     "webpack-merge": "0.8.3"
   },
   "dependencies": {
+    "@schibstedspain/sui-spinner": "1.0",
+    "react-lazy-load": "3.0.10",
     "imagesloaded": "4.1.1",
     "lory.js": "2.2.0"
   }

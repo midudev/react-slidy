@@ -70,6 +70,12 @@ class App extends Component {
           <SuiMultimedia lazyLoad={false} images={images[4]} />
         </ReactLory>
 
+        <h3>Infinite Slider</h3>
+        <ReactLory {...config} infinite>
+          <img {...images[0]} />
+          <img {...images[1]} />
+        </ReactLory>
+
         <h3>Basic example</h3>
         <ReactLory {...config}>
           <img {...images[0]} />

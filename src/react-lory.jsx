@@ -36,7 +36,11 @@ export default class ReactLory extends Component {
       this.sliderNode.addEventListener(EVENTS.INIT, this.handleInit)
       this.sliderNode.addEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
       this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
-      this.loryInstance = lory(this.sliderNode, {...this.props, ...classes})
+
+      // fix if the user try to use a `true` value for infinite
+      const infiniteValue = this.props.infinite === true ? 1 : this.props.infinite
+      const infiniteOption = { infinite: infiniteValue }
+      this.loryInstance = lory(this.sliderNode, {...this.props, ...classes, ...infiniteOption})
     })
   }
 
