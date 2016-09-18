@@ -5,9 +5,10 @@ import imagesLoaded from 'imagesloaded'
 import ReactLoryList from './react-lory-list'
 
 const EVENTS = {
-  INIT: 'after.lory.init',
   AFTER_DESTROY: 'after.lory.destroy',
-  AFTER_SLIDE: 'after.lory.slide'
+  AFTER_SLIDE: 'after.lory.slide',
+  BEFORE_SLIDE: 'before.lory.slide',
+  INIT: 'after.lory.init'
 }
 
 const NO_OP = () => {}
@@ -36,9 +37,10 @@ export default class ReactLorySlider extends Component {
         classNameNextCtrl: this.getClassName('next')
       }
 
-      this.sliderNode.addEventListener(EVENTS.INIT, this.handleInit)
       this.sliderNode.addEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
       this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
+      this.sliderNode.addEventListener(EVENTS.INIT, this.handleInit)
+      this.sliderNode.addEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
 
       // fix if the user try to use a `true` value for infinite
       const infiniteValue = this.props.infinite === true ? 1 : this.props.infinite
@@ -53,6 +55,7 @@ export default class ReactLorySlider extends Component {
     this.sliderNode.removeEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
     this.loryInstance.destroy()
     this.sliderNode.removeEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
+    this.sliderNode.removeEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
   }
 
   getClassName (element) {
@@ -71,7 +74,9 @@ export default class ReactLorySlider extends Component {
   }
 
   handleBeforeSlide (event) {
-
+    const {detail} = event
+    const nextSlide = detail && detail.nextSlide ? detail.nextSlide : 0
+    this.props.doBeforeSlide({nextSlide, event})
   }
 
   handleDestroy (event) {
@@ -110,6 +115,7 @@ ReactLorySlider.propTypes = {
   classNameBase: PropTypes.string,
   doAfterDestroy: PropTypes.func,
   doAfterSlide: PropTypes.func,
+  doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
   enableMouseEvents: PropTypes.bool,
   infinite: PropTypes.oneOfType([
@@ -129,6 +135,7 @@ ReactLorySlider.defaultProps = {
   classNameBase: 'react-Lory',
   doAfterDestroy: NO_OP,
   doAfterSlide: NO_OP,
+  doBeforeSlide: NO_OP,
   ease: 'ease',
   enableMouseEvents: true,
   infinite: 1,
