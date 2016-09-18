@@ -33,7 +33,7 @@ const handlers = {
 
 const config = {
   enableMouseEvents: true,
-  classNameBase: 'react-lory',
+  classNameBase: 'react-Lory',
   slidesToScroll: 1,
   infinite: false,
   ...handlers
@@ -74,6 +74,15 @@ class App extends Component {
         <ReactLory {...config} infinite>
           <img {...images[0]} />
           <img {...images[1]} />
+        </ReactLory>
+
+        <h3>Slider with lazy loading</h3>
+        <ReactLory {...config} lazyLoadConfig={{enabledForContainer: true}}>
+          <SuiMultimedia lazyLoad={false} images={images[0]} />
+          <SuiMultimedia lazyLoad={false} images={images[1]} />
+          <SuiMultimedia lazyLoad={false} images={images[2]} />
+          <SuiMultimedia lazyLoad={false} images={images[3]} />
+          <SuiMultimedia lazyLoad={false} images={images[4]} />
         </ReactLory>
 
         <h3>Basic example</h3>

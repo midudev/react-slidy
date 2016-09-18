@@ -3,11 +3,11 @@ import React, { PropTypes } from 'react'
 import ReactLoryItem from './react-lory-item'
 
 export default function ReactLoryList ({className, classNameItem, currentSlide, items, lazyLoadConfig}) {
-  const { enabled, itemsOnLoad, componentPlaceholder } = lazyLoadConfig
+  const { enabledForItems, itemsOnLoad, componentPlaceholder } = lazyLoadConfig
   const hasToLoadItem = (index) => {
-    return !enabled ||
-           (enabled && index < itemsOnLoad) ||
-           (enabled && currentSlide + 1 >= index)
+    return !enabledForItems ||
+           (enabledForItems && index < itemsOnLoad) ||
+           (enabledForItems && currentSlide + 1 >= index)
   }
 
   return (
