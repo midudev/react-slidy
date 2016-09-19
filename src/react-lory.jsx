@@ -3,7 +3,11 @@ import ReactLorySlider from './react-lory-slider'
 import Spinner from '@schibstedspain/sui-spinner'
 import LazyLoad from 'react-lazy-load'
 
-const spinnerType = 'circle'
+const spinnerConfig = {
+  size: 20,
+  thickness: 2,
+  type: 'circle'
+}
 
 export default class ReactLory extends Component {
 
@@ -22,7 +26,7 @@ export default class ReactLory extends Component {
   render () {
     return (
       <div className={this.props.classNameBase}>
-        {this.state.loading && <Spinner type={spinnerType} />}
+        {this.state.loading && <Spinner {...spinnerConfig} />}
         <LazyLoad offsetVertical={500}>
           <ReactLorySlider {...this.props} onReady={this.hideSpinner}>
             {this.props.children}

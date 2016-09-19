@@ -22,8 +22,14 @@ const images = [{
   src: 'https://instagram.fmad3-1.fna.fbcdn.net/t51.2885-15/e15/11193129_1465144090443130_787558483_n.jpg?ig_cache_key=MzIyNDE3MzI5NzU3ODAxMzk0.2',
   alt: 'Barcelona rain'
 }, {
-  src: 'https://instagram.fmad3-1.fna.fbcdn.net/t51.2885-15/e15/11116616_484078385076616_1251856526_n.jpg?ig_cache_key=MzE5NjE0NDY4MjE2OTAwMjQ2.2',
-  alt: 'Music'
+  src: 'https://instagram.fmad3-1.fna.fbcdn.net/t51.2885-15/e35/14279139_1165353656857042_1035970169_n.jpg?ig_cache_key=MTM0MjY0Mzg5NDg0NDQxMDYyNA%3D%3D.2',
+  alt: 'Tokyo'
+}, {
+  src: 'https://instagram.fmad3-1.fna.fbcdn.net/t51.2885-15/e35/14295422_1145460988876046_1900069445_n.jpg?ig_cache_key=MTM0MjY0MzUzNzQ4MTAyNTA5Ng%3D%3D.2',
+  alt: 'Mall'
+}, {
+  src: 'https://instagram.fmad3-1.fna.fbcdn.net/t51.2885-15/s480x480/e35/14280638_887699054694002_1554320480_n.jpg?ig_cache_key=MTM0MjY0MzE4MzkxNzkyMjUzNA%3D%3D.2',
+  alt: 'Tower'
 }]
 
 const handlers = {
@@ -63,11 +69,7 @@ class App extends Component {
 
         <h3>With other components</h3>
         <ReactLory {...config}>
-          <SuiMultimedia lazyLoad={false} images={images[0]} />
-          <SuiMultimedia lazyLoad={false} images={images[1]} />
-          <SuiMultimedia lazyLoad={false} images={images[2]} />
-          <SuiMultimedia lazyLoad={false} images={images[3]} />
-          <SuiMultimedia lazyLoad={false} images={images[4]} />
+          {images.map((img) => <SuiMultimedia lazyLoad={false} images={img} />)}
         </ReactLory>
 
         <h3>Infinite Slider</h3>
@@ -78,11 +80,7 @@ class App extends Component {
 
         <h3>Slider with lazy loading</h3>
         <ReactLory {...config} lazyLoadConfig={{enabledForContainer: true}}>
-          <SuiMultimedia lazyLoad={false} images={images[0]} />
-          <SuiMultimedia lazyLoad={false} images={images[1]} />
-          <SuiMultimedia lazyLoad={false} images={images[2]} />
-          <SuiMultimedia lazyLoad={false} images={images[3]} />
-          <SuiMultimedia lazyLoad={false} images={images[4]} />
+          {images.map((img) => <SuiMultimedia lazyLoad={false} images={img} />)}
         </ReactLory>
 
         <h3>Basic example</h3>
