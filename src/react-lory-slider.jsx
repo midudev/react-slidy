@@ -46,7 +46,7 @@ export default class ReactLorySlider extends Component {
       const infiniteValue = this.props.infinite === true ? 1 : this.props.infinite
       const infiniteOption = { infinite: infiniteValue }
       this.loryInstance = lory(this.sliderNode, {...this.props, ...classes, ...infiniteOption})
-      this.props.onImagesLoaded()
+      this.props.onReady()
     })
   }
 
@@ -123,7 +123,7 @@ ReactLorySlider.propTypes = {
     PropTypes.number
   ]),
   lazyLoadConfig: PropTypes.object,
-  onImagesLoaded: PropTypes.func,
+  onReady: PropTypes.func,
   rewind: PropTypes.bool,
   rewindSpeed: PropTypes.number,
   slideSpeed: PropTypes.number,
@@ -145,7 +145,7 @@ ReactLorySlider.defaultProps = {
     itemsOnLoad: 2,
     componentPlaceholder: <div />
   },
-  onImagesLoaded: NO_OP,
+  onReady: NO_OP,
   rewind: false,
   rewindSpeed: 600,
   slideSpeed: 300,

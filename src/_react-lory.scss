@@ -1,5 +1,11 @@
+@import '~@schibstedspain/sui-spinner/dist/index';
+
+$c-background: #dcdcdc;
+
 .react-Lory {
+  background: $c-background;
   min-height: 100px;
+  position: relative;
 
   &-frame {
     font-size: 0;
@@ -28,5 +34,15 @@
     display: block;
     height: auto;
     width: 100%;
+  }
+
+  .sui-Spinner {
+    bottom: 0;
+    display: block;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }

@@ -23,8 +23,8 @@ export default class ReactLory extends Component {
     return (
       <div className={this.props.classNameBase}>
         {this.state.loading && <Spinner type={spinnerType} />}
-        <LazyLoad offsetVertical={100}>
-          <ReactLorySlider {...this.props} onImagesLoaded={this.hideSpinner}>
+        <LazyLoad offsetVertical={500}>
+          <ReactLorySlider {...this.props} onReady={this.hideSpinner}>
             {this.props.children}
           </ReactLorySlider>
         </LazyLoad>
