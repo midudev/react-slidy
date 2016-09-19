@@ -40,3 +40,7 @@ ReactLory.propTypes = {
   ]).isRequired,
   classNameBase: PropTypes.string
 }
+
+ReactLory.defaultProps = {
+  classNameBase: 'react-Lory'
+}

@@ -132,7 +132,6 @@ ReactLorySlider.propTypes = {
 }
 
 ReactLorySlider.defaultProps = {
-  classNameBase: 'react-Lory',
   doAfterDestroy: NO_OP,
   doAfterSlide: NO_OP,
   doBeforeSlide: NO_OP,
