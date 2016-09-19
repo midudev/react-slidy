@@ -69,7 +69,7 @@ class App extends Component {
 
         <h3>With other components</h3>
         <ReactLory {...config}>
-          {images.map((img) => <SuiMultimedia lazyLoad={false} images={img} />)}
+          {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
         </ReactLory>
 
         <h3>Infinite Slider</h3>
@@ -80,7 +80,7 @@ class App extends Component {
 
         <h3>Slider with lazy loading</h3>
         <ReactLory {...config} lazyLoadConfig={{enabledForContainer: true}}>
-          {images.map((img) => <SuiMultimedia lazyLoad={false} images={img} />)}
+          {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
         </ReactLory>
 
         <h3>Basic example</h3>

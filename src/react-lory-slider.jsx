@@ -3,6 +3,7 @@ import { lory } from 'lory.js'
 import imagesLoaded from 'imagesloaded'
 
 import ReactLoryList from './react-lory-list'
+import ReactLoryArrows from './react-lory-arrows'
 
 const EVENTS = {
   AFTER_DESTROY: 'after.lory.destroy',
@@ -89,12 +90,18 @@ export default class ReactLorySlider extends Component {
   }
 
   render () {
-    const { children } = this.props
+    const { children, showArrows } = this.props
     const listItems = Array.isArray(children) ? children : [children]
 
     return (
       <div ref={this.getSliderNode}>
         <div className={this.getClassName('frame')}>
+          <ReactLoryArrows
+            className={this.getClassName('nav')}
+            classNamePrev={this.getClassName('prev')}
+            classNameNext={this.getClassName('next')}
+            showArrows={showArrows}
+            />
           <ReactLoryList
             className={this.getClassName('slides')}
             classNameItem={this.getClassName('item')}
@@ -126,6 +133,7 @@ ReactLorySlider.propTypes = {
   onReady: PropTypes.func,
   rewind: PropTypes.bool,
   rewindSpeed: PropTypes.number,
+  showArrows: PropTypes.bool,
   slideSpeed: PropTypes.number,
   slidesToScroll: PropTypes.number,
   snapBackSpeed: PropTypes.number
@@ -147,6 +155,7 @@ ReactLorySlider.defaultProps = {
   onReady: NO_OP,
   rewind: false,
   rewindSpeed: 600,
+  showArrows: true,
   slideSpeed: 300,
   slidesToScroll: 1,
   snapBackSpeed: 200
