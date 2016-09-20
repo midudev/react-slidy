@@ -55,7 +55,7 @@ export default class ReactLorySlider extends Component {
     imgLoad.once('done', () => {
       this.sliderNode.addEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
       this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
-      this.sliderNode.addEventListener(EVENTS.INIT, this.handleAfterInit)
+      this.sliderNode.addEventListener(EVENTS.AFTER_INIT, this.handleAfterInit)
       this.sliderNode.addEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
       this.sliderNode.addEventListener(EVENTS.RESIZE, this.handleResize)
       // start lory slider instance
@@ -64,7 +64,7 @@ export default class ReactLorySlider extends Component {
   }
 
   componentWillUnmount () {
-    this.sliderNode.removeEventListener(EVENTS.INIT, this.handleAfterInit)
+    this.sliderNode.removeEventListener(EVENTS.AFTER_INIT, this.handleAfterInit)
     this.sliderNode.removeEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
     this.sliderNode.removeEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
     this.sliderNode.removeEventListener(EVENTS.RESIZE, this.handleResize)
