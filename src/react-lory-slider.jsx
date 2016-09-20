@@ -40,23 +40,24 @@ export default class ReactLorySlider extends Component {
   componentDidMount () {
     // wait to load the images in order to start some stuff only when needed
     imagesLoaded(this.sliderNode, () => {
-      const classes = {
-        classNameFrame: this.getClassName('frame'),
-        classNameSlideContainer: this.getClassName('slides'),
-        classNamePrevCtrl: this.getClassName('prev'),
-        classNameNextCtrl: this.getClassName('next')
-      }
-
       this.sliderNode.addEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
       this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
       this.sliderNode.addEventListener(EVENTS.INIT, this.handleInit)
       this.sliderNode.addEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
       this.sliderNode.addEventListener(EVENTS.RESIZE, this.handleResize)
 
-      // fix if the user try to use a `true` value for infinite
-      const infiniteValue = this.props.infinite === true ? 1 : this.props.infinite
-      const infiniteOption = { infinite: infiniteValue }
-      this.loryInstance = lory(this.sliderNode, {...this.props, ...classes, ...infiniteOption})
+      const sliderOptions = {
+        classNameFrame: this.getClassName('frame'),
+        classNameSlideContainer: this.getClassName('slides'),
+        classNamePrevCtrl: this.getClassName('prev'),
+        classNameNextCtrl: this.getClassName('next'),
+        // fix if the user try to use a `true` value for infinite
+        infinite: this.props.infinite === true ? 1 : this.props.infinite,
+        // if infinite, rewindOnResize is always true
+        rewindOnResize: this.props.rewindOnResize || this.props.infinite
+      }
+
+      this.loryInstance = lory(this.sliderNode, {...this.props, ...sliderOptions})
       this.props.onReady()
     })
   }
