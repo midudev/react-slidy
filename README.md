@@ -8,6 +8,11 @@ React wrapper for the minimalistic Lory.js slider
 
 ** Attention: This component is still at alpha stage and its API could change. Use it on your own risk **
 
+## Features
+* Lazy Loading for slider and for every slide
+* Configurable events
+* Server rendering compatible
+
 ## Available Props
 
 ```
@@ -33,3 +38,4 @@ React wrapper for the minimalistic Lory.js slider
 ## TODO
 
 * [ ] Improve documentation
+* [ ] Improve server rendering compatibility
