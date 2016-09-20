@@ -7,7 +7,8 @@ const EVENTS = {
   AFTER_DESTROY: 'after.lory.destroy',
   AFTER_SLIDE: 'after.lory.slide',
   BEFORE_SLIDE: 'before.lory.slide',
-  INIT: 'after.lory.init'
+  INIT: 'after.lory.init',
+  RESIZE: 'on.lory.resize'
 }
 
 const NO_OP = () => {}
@@ -30,6 +31,7 @@ export default class ReactLorySlider extends Component {
     this.handleAfterSlide = this.handleAfterSlide.bind(this)
     this.handleDestroy = this.handleDestroy.bind(this)
     this.handleInit = this.handleInit.bind(this)
+    this.handleResize = this.handleResize.bind(this)
     this.loryInstance = null
 
     this.state = { currentSlide: 0 }
@@ -49,6 +51,7 @@ export default class ReactLorySlider extends Component {
       this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
       this.sliderNode.addEventListener(EVENTS.INIT, this.handleInit)
       this.sliderNode.addEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
+      this.sliderNode.addEventListener(EVENTS.RESIZE, this.handleResize)
 
       // fix if the user try to use a `true` value for infinite
       const infiniteValue = this.props.infinite === true ? 1 : this.props.infinite
@@ -61,9 +64,10 @@ export default class ReactLorySlider extends Component {
   componentWillUnmount () {
     this.sliderNode.removeEventListener(EVENTS.INIT, this.handleInit)
     this.sliderNode.removeEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
+    this.sliderNode.removeEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
+    this.sliderNode.removeEventListener(EVENTS.RESIZE, this.handleResize)
     this.loryInstance.destroy()
     this.sliderNode.removeEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
-    this.sliderNode.removeEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
   }
 
   getClassName (element) {
@@ -96,6 +100,10 @@ export default class ReactLorySlider extends Component {
     this.setState({ loading: false })
   }
 
+  handleResize () {
+    this.props.doOnResize()
+  }
+
   render () {
     const { children, showArrows } = this.props
     const listItems = Array.isArray(children) ? children : [children]
@@ -114,6 +122,7 @@ export default class ReactLorySlider extends Component {
             classNameItem={this.getClassName('item')}
             currentSlide={this.state.currentSlide}
             lazyLoadConfig={this.props.lazyLoadConfig}
+            infinite={this.props.infinite}
             items={listItems} />
         </div>
       </div>
@@ -130,6 +139,7 @@ ReactLorySlider.propTypes = {
   doAfterDestroy: PropTypes.func,
   doAfterSlide: PropTypes.func,
   doBeforeSlide: PropTypes.func,
+  doOnResize: PropTypes.func,
   ease: PropTypes.string,
   enableMouseEvents: PropTypes.bool,
   infinite: PropTypes.oneOfType([
@@ -139,6 +149,7 @@ ReactLorySlider.propTypes = {
   lazyLoadConfig: PropTypes.object,
   onReady: PropTypes.func,
   rewind: PropTypes.bool,
+  rewindOnResize: PropTypes.bool,
   rewindSpeed: PropTypes.number,
   showArrows: PropTypes.bool,
   slideSpeed: PropTypes.number,
@@ -150,6 +161,7 @@ ReactLorySlider.defaultProps = {
   doAfterDestroy: NO_OP,
   doAfterSlide: NO_OP,
   doBeforeSlide: NO_OP,
+  doOnResize: NO_OP,
   ease: 'ease',
   enableMouseEvents: true,
   infinite: 1,
@@ -161,6 +173,7 @@ ReactLorySlider.defaultProps = {
   },
   onReady: NO_OP,
   rewind: false,
+  rewindOnResize: false,
   rewindSpeed: 600,
   showArrows: true,
   slideSpeed: 300,

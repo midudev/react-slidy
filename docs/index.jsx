@@ -62,20 +62,23 @@ class App extends Component {
     return (<div>
     {this.state.mounted &&
       <div>
-        <h3>Only one image</h3>
-        <ReactLory {...config}>
-          <SuiMultimedia lazyLoad={false} images={images[0]} />
-        </ReactLory>
 
         <h3>With other components</h3>
         <ReactLory {...config}>
           {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
         </ReactLory>
 
+        <h3>Only one image</h3>
+        <ReactLory {...config}>
+          <SuiMultimedia lazyLoad={false} images={images[0]} />
+        </ReactLory>
+
         <h3>Infinite Slider</h3>
         <ReactLory {...config} infinite>
           <img {...images[0]} />
           <img {...images[1]} />
+          <img {...images[2]} />
+          <img {...images[3]} />
         </ReactLory>
 
         <h3>Slider with lazy loading</h3>
