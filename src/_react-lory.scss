@@ -25,15 +25,6 @@ $c-nav-color: #aaaaaa;
   min-height: 175px;
   position: relative;
 
-  &-nav {
-    height: 100%;
-    opacity: 0;
-    position: absolute;
-    transition: opacity .3s ease;
-    width: 100%;
-    z-index: 1;
-  }
-
   &-next,
   &-prev {
     background: $c-nav-background;
@@ -42,9 +33,12 @@ $c-nav-color: #aaaaaa;
     height: 56px;
     margin: 0;
     margin: auto 0;
+    opacity: 0;
     position: absolute;
     top: 0;
+    transition: opacity .3s ease;
     width: 28px;
+    z-index: 1;
   }
 
   &-next {
@@ -67,7 +61,8 @@ $c-nav-color: #aaaaaa;
     }
   }
 
-  &:hover &-nav {
+  &:hover &-next,
+  &:hover &-prev {
     opacity: 1;
   }
 

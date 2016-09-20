@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
 import ReactLoryList from './react-lory-list'
-import ReactLoryArrows from './react-lory-arrows'
 
 const EVENTS = {
   AFTER_DESTROY: 'after.lory.destroy',
@@ -112,12 +111,8 @@ export default class ReactLorySlider extends Component {
     return (
       <div ref={this.getSliderNode}>
         <div className={this.getClassName('frame')}>
-          <ReactLoryArrows
-            className={this.getClassName('nav')}
-            classNamePrev={this.getClassName('prev')}
-            classNameNext={this.getClassName('next')}
-            showArrows={showArrows}
-            />
+          {showArrows && <span className={this.getClassName('prev')} />}
+          {showArrows && <span className={this.getClassName('next')} />}
           <ReactLoryList
             className={this.getClassName('slides')}
             classNameItem={this.getClassName('item')}
