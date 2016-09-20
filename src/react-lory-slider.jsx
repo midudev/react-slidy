@@ -51,11 +51,10 @@ export default class ReactLorySlider extends Component {
 
   componentDidMount () {
     // wait to load the images in order to start some stuff only when needed
-    const imgLoad = imagesLoaded(this.sliderNode)
-    imgLoad.once('done', () => {
+    imagesLoaded(this.sliderNode, () => {
+      this.sliderNode.addEventListener(EVENTS.AFTER_INIT, this.handleAfterInit)
       this.sliderNode.addEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
       this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
-      this.sliderNode.addEventListener(EVENTS.AFTER_INIT, this.handleAfterInit)
       this.sliderNode.addEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
       this.sliderNode.addEventListener(EVENTS.RESIZE, this.handleResize)
       // start lory slider instance
