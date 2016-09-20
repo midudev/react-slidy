@@ -2,7 +2,7 @@
 
 $c-background: #dcdcdc;
 $c-nav-background: rgba(255, 255, 255, .8);
-$c-nav-color: #999999;
+$c-nav-color: #aaaaaa;
 
 @mixin arrow($symbol) {
   bottom: 0;
@@ -14,7 +14,9 @@ $c-nav-color: #999999;
   line-height: 45px;
   margin: auto;
   position: absolute;
+  text-align: center;
   top: 0;
+  width: 28px;
   z-index: 2;
 }
 
