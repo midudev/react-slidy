@@ -1,5 +1,6 @@
 src
 docs
+dist
 node_modules
 test
 scripts
@@ -8,6 +9,7 @@ scripts
 .eslintrc
 .gitignore
 .jscsrc
+.sass-lint.yml
 .scss-lint.yml
 npm-debug.log
 webpack.config.js
