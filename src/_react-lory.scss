@@ -7,6 +7,29 @@ $c-background: #dcdcdc;
   min-height: 175px;
   position: relative;
 
+  &-nav {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+
+  &-next,
+  &-prev {
+    bottom: 0;
+    margin: 0;
+    margin: auto 0;
+    position: absolute;
+    top: 0;
+  }
+
+  &-next {
+    right: 0;
+  }
+
+  &-prev {
+    left: 0;
+  }
+
   &-frame {
     font-size: 0;
     line-height: 0;

@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { lory } from 'lory.js'
-import imagesLoaded from 'imagesloaded'
 
 import ReactLoryList from './react-lory-list'
 import ReactLoryArrows from './react-lory-arrows'
@@ -13,6 +11,15 @@ const EVENTS = {
 }
 
 const NO_OP = () => {}
+
+let lory = NO_OP
+let imagesLoaded = NO_OP
+
+// in order to make react-lory compatible with server-rendering
+if (typeof (window) !== 'undefined' && window.document) {
+  lory = require('lory.js').lory
+  imagesLoaded = require('imagesloaded')
+}
 
 export default class ReactLorySlider extends Component {
 
