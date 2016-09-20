@@ -22,6 +22,10 @@ export default class ReactLory extends Component {
     this.setState({ loading: false })
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    return this.state.loading !== this.nextState.loading
+  }
+
   render () {
     return (
       <div className={this.props.classNameBase}>
