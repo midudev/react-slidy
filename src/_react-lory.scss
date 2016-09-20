@@ -1,6 +1,22 @@
 @import '~@schibstedspain/sui-spinner/dist/index';
 
 $c-background: #dcdcdc;
+$c-nav-background: rgba(255, 255, 255, .8);
+$c-nav-color: #999999;
+
+@mixin arrow($symbol) {
+  bottom: 0;
+  color: $c-nav-color;
+  content: $symbol;
+  font-size: 65px;
+  font-weight: 100;
+  height: 100%;
+  line-height: 45px;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+}
 
 .react-Lory {
   background: $c-background;
@@ -9,25 +25,48 @@ $c-background: #dcdcdc;
 
   &-nav {
     height: 100%;
+    opacity: 0;
     position: absolute;
+    transition: opacity .3s ease;
     width: 100%;
+    z-index: 1;
   }
 
   &-next,
   &-prev {
+    background: $c-nav-background;
     bottom: 0;
+    cursor: pointer;
+    height: 56px;
     margin: 0;
     margin: auto 0;
     position: absolute;
     top: 0;
+    width: 28px;
   }
 
   &-next {
+    border-radius: 10px 0 0 10px;
     right: 0;
+
+    &::after {
+      @include arrow('›');
+      right: 0;
+    }
   }
 
   &-prev {
+    border-radius: 0 10px 10px 0;
     left: 0;
+
+    &::after {
+      @include arrow('‹');
+      left: 0;
+    }
+  }
+
+  &:hover &-nav {
+    opacity: 1;
   }
 
   &-frame {
