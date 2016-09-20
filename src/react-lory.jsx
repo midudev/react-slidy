@@ -9,29 +9,21 @@ const spinnerConfig = {
   type: 'circle'
 }
 
+const lazyLoadOffsetVerical = 500
+
 export default class ReactLory extends Component {
-  constructor (...args) {
-    super(...args)
-
-    this.hideSpinner = this.hideSpinner.bind(this)
-
-    this.state = { loading: true }
-  }
-
-  hideSpinner () {
-    this.setState({ loading: false })
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    return this.state.loading !== this.nextState.loading
+  // as it's a slider, we don't want to re-render it and don't expect
+  // to add new childrens to it, so we don't want unexpected behaviour
+  shouldComponentUpdate () {
+    return false
   }
 
   render () {
     return (
       <div className={this.props.classNameBase}>
-        {this.state.loading && <Spinner {...spinnerConfig} />}
-        <LazyLoad offsetVertical={500}>
-          <ReactLorySlider {...this.props} onReady={this.hideSpinner}>
+        <Spinner {...spinnerConfig} />
+        <LazyLoad offsetVertical={lazyLoadOffsetVerical}>
+          <ReactLorySlider {...this.props}>
             {this.props.children}
           </ReactLorySlider>
         </LazyLoad>

@@ -164,7 +164,7 @@ ReactLorySlider.defaultProps = {
   doAfterSlide: NO_OP,
   doBeforeSlide: NO_OP,
   doOnResize: NO_OP,
-  ease: 'easeInSine',
+  ease: 'easeOutCubic',
   enableMouseEvents: true,
   infinite: 1,
   lazyLoadConfig: {
