@@ -10,7 +10,6 @@ const spinnerConfig = {
 }
 
 export default class ReactLory extends Component {
-
   constructor (...args) {
     super(...args)
 

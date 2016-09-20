@@ -4,6 +4,7 @@ import ReactLoryItem from './react-lory-item'
 
 export default function ReactLoryList ({className, classNameItem, currentSlide, infinite, items, lazyLoadConfig}) {
   const { enabledForItems, itemsOnLoad, componentPlaceholder } = lazyLoadConfig
+
   const hasToLoadItem = (index) => {
     return (!enabledForItems || infinite) ||
            (enabledForItems && index < itemsOnLoad) ||
@@ -15,11 +16,11 @@ export default function ReactLoryList ({className, classNameItem, currentSlide, 
       {items.map((item, index) => {
         const itemToRender = hasToLoadItem(index)
                              ? item
-                             : <div key={index}>{componentPlaceholder}</div>
+                             : <div key={`placeholder-${index}`}>{componentPlaceholder}</div>
         return (<ReactLoryItem
           className={classNameItem}
           item={itemToRender}
-          key={index} />
+          key={`item-${index}`} />
         )
       })}
     </ul>

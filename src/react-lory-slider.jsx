@@ -4,18 +4,20 @@ import ReactLoryList from './react-lory-list'
 
 const EVENTS = {
   AFTER_DESTROY: 'after.lory.destroy',
+  AFTER_INIT: 'after.lory.init',
   AFTER_SLIDE: 'after.lory.slide',
   BEFORE_SLIDE: 'before.lory.slide',
-  INIT: 'after.lory.init',
   RESIZE: 'on.lory.resize'
 }
 
 const NO_OP = () => {}
 
+// in order to make react-lory compatible with server-rendering
+// by default lory and imagesLoaded are empty functions
 let lory = NO_OP
 let imagesLoaded = NO_OP
 
-// in order to make react-lory compatible with server-rendering
+// if window is present, then we get the needed library
 if (typeof (window) !== 'undefined' && window.document) {
   lory = require('lory.js').lory
   imagesLoaded = require('imagesloaded')
@@ -27,37 +29,37 @@ export default class ReactLorySlider extends Component {
     super(...args)
     this.getSliderNode = this.getSliderNode.bind(this)
     this.handleBeforeSlide = this.handleBeforeSlide.bind(this)
+    this.handleAfterInit = this.handleAfterInit.bind(this)
     this.handleAfterSlide = this.handleAfterSlide.bind(this)
     this.handleDestroy = this.handleDestroy.bind(this)
-    this.handleInit = this.handleInit.bind(this)
     this.handleResize = this.handleResize.bind(this)
     this.loryInstance = null
 
     this.state = { currentSlide: 0 }
+    this.sliderOptions = {
+      classNameItem: this.getClassName('item'),
+      classNameFrame: this.getClassName('frame'),
+      classNameSlideContainer: this.getClassName('slides'),
+      classNamePrevCtrl: this.getClassName('prev'),
+      classNameNextCtrl: this.getClassName('next'),
+      // fix if the user try to use a `true` value for infinite
+      infinite: this.props.infinite === true ? 1 : this.props.infinite,
+      // if infinite, rewindOnResize is always true
+      rewindOnResize: this.props.rewindOnResize || this.props.infinite
+    }
   }
 
   componentDidMount () {
     // wait to load the images in order to start some stuff only when needed
-    imagesLoaded(this.sliderNode, () => {
+    const imgLoad = imagesLoaded(this.sliderNode)
+    imgLoad.once('done', () => {
       this.sliderNode.addEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
       this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
       this.sliderNode.addEventListener(EVENTS.INIT, this.handleInit)
       this.sliderNode.addEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
       this.sliderNode.addEventListener(EVENTS.RESIZE, this.handleResize)
-
-      const sliderOptions = {
-        classNameFrame: this.getClassName('frame'),
-        classNameSlideContainer: this.getClassName('slides'),
-        classNamePrevCtrl: this.getClassName('prev'),
-        classNameNextCtrl: this.getClassName('next'),
-        // fix if the user try to use a `true` value for infinite
-        infinite: this.props.infinite === true ? 1 : this.props.infinite,
-        // if infinite, rewindOnResize is always true
-        rewindOnResize: this.props.rewindOnResize || this.props.infinite
-      }
-
-      this.loryInstance = lory(this.sliderNode, {...this.props, ...sliderOptions})
-      this.props.onReady()
+      // start lory slider instance
+      this.loryInstance = lory(this.sliderNode, {...this.props, ...this.sliderOptions})
     })
   }
 
@@ -68,6 +70,10 @@ export default class ReactLorySlider extends Component {
     this.sliderNode.removeEventListener(EVENTS.RESIZE, this.handleResize)
     this.loryInstance.destroy()
     this.sliderNode.removeEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    return nextState.currentSlide !== this.state.currentSlide
   }
 
   getClassName (element) {
@@ -95,9 +101,9 @@ export default class ReactLorySlider extends Component {
     this.props.doAfterDestroy({event})
   }
 
-  handleInit () {
+  handleAfterInit () {
     this.sliderNode.classList.add(this.getClassName('-ready'))
-    this.setState({ loading: false })
+    this.props.onReady()
   }
 
   handleResize () {
@@ -105,20 +111,20 @@ export default class ReactLorySlider extends Component {
   }
 
   render () {
-    const { children, showArrows } = this.props
+    const { children, infinite, lazyLoadConfig, showArrows } = this.props
     const listItems = Array.isArray(children) ? children : [children]
 
     return (
       <div ref={this.getSliderNode}>
-        <div className={this.getClassName('frame')}>
-          {showArrows && <span className={this.getClassName('prev')} />}
-          {showArrows && <span className={this.getClassName('next')} />}
+        <div className={this.sliderOptions.classNameFrame}>
+          {showArrows && <span className={this.sliderOptions.classNamePrevCtrl} />}
+          {showArrows && <span className={this.sliderOptions.classNameNextCtrl} />}
           <ReactLoryList
-            className={this.getClassName('slides')}
-            classNameItem={this.getClassName('item')}
+            className={this.sliderOptions.classNameSlideContainer}
+            classNameItem={this.sliderOptions.classNameItem}
             currentSlide={this.state.currentSlide}
-            lazyLoadConfig={this.props.lazyLoadConfig}
-            infinite={this.props.infinite}
+            lazyLoadConfig={lazyLoadConfig}
+            infinite={infinite}
             items={listItems} />
         </div>
       </div>
@@ -158,7 +164,7 @@ ReactLorySlider.defaultProps = {
   doAfterSlide: NO_OP,
   doBeforeSlide: NO_OP,
   doOnResize: NO_OP,
-  ease: 'ease',
+  ease: 'easeInSine',
   enableMouseEvents: true,
   infinite: 1,
   lazyLoadConfig: {
@@ -172,7 +178,7 @@ ReactLorySlider.defaultProps = {
   rewindOnResize: false,
   rewindSpeed: 600,
   showArrows: true,
-  slideSpeed: 300,
+  slideSpeed: 150,
   slidesToScroll: 1,
   snapBackSpeed: 200
 }
