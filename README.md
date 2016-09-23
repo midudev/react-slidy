@@ -37,5 +37,6 @@ _Attention: This component is under heavy development still at alpha stage and i
 
 ## TODO
 
+* [ ] Add a Demo page
 * [ ] Improve documentation
 * [ ] Improve server rendering compatibility
