@@ -19,7 +19,7 @@ let imagesLoaded = NO_OP
 
 // if window is present, then we get the needed library
 if (typeof (window) !== 'undefined' && window.document) {
-  lory = require('lory.js').lory
+  lory = require('./lib/lory.js').lory
   imagesLoaded = require('imagesloaded')
 }
 
