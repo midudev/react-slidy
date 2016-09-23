@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react'
 export default class ReactLoryItem extends Component {
 
   shouldComponentUpdate (nextProps) {
-    console.log(nextProps)
     return nextProps.load === true && this.props.load !== nextProps.load
   }
 
