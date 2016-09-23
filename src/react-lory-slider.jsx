@@ -71,8 +71,8 @@ export default class ReactLorySlider extends Component {
     this.sliderNode.removeEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return nextState.currentSlide !== this.state.currentSlide
+  shouldComponentUpdate (nextProps, {currentSlide}) {
+    return currentSlide !== this.state.currentSlide
   }
 
   getClassName (element) {
