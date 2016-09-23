@@ -9,8 +9,8 @@ export default function detectPrefixes () {
   let transitionEnd
   let translate
 
-  (function (d) {
-    const el = d.createElement('div')
+  (function () {
+    const el = document.createElement('div')
     const style = el.style
     let prop
 
@@ -36,7 +36,7 @@ export default function detectPrefixes () {
       transform = prop
     }
 
-    d.body.insertBefore(el, null)
+    document.body.insertBefore(el, null)
     style[transform] = TRANSLATE_3D_INIT
     const hasTranslate3d = !!el.style.getPropertyValue(transform)
 
@@ -46,8 +46,8 @@ export default function detectPrefixes () {
         : function (to) { return 'translate(' + to + 'px, 0)' }
     }())
 
-    d.body.removeChild(el)
-  }(document))
+    document.body.removeChild(el)
+  }())
 
   return {
     transform,

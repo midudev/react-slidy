@@ -76,11 +76,11 @@ export function lory (slider, opts) {
    * @ease      {string} easing css property
    */
   function _translate (to, duration, ease) {
-    const easeCssText = ease ? `${prefixes.transitionTiming}: ${ease}` : ''
+    const easeCssText = ease ? `${prefixes.transitionTiming}: ${ease};` : ''
     const cssText = `
       ${easeCssText}
-      ${prefixes.transitionDuration}: ${duration}ms
-      ${prefixes.transform}: ${prefixes.translate(to)}`
+      ${prefixes.transitionDuration}: ${duration}ms;
+      ${prefixes.transform}: ${prefixes.translate(to)};`
     requestFrame(function () {
       slideContainer.style.cssText = cssText
     })
