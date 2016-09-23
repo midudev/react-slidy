@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react'
 
 export default class ReactLoryItem extends Component {
 
-  shouldComponentUpdate (nextProps) {
-    return nextProps.load === true && this.props.load !== nextProps.load
+  shouldComponentUpdate ({load}) {
+    return load === true && this.props.load !== load
   }
 
   render () {
