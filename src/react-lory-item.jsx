@@ -1,10 +1,21 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 
-export default function ReactLoryItem ({className, item}) {
-  return <li className={className}>{item}</li>
+export default class ReactLoryItem extends Component {
+
+  shouldComponentUpdate (nextProps) {
+    console.log(nextProps)
+    return nextProps.load === true && this.props.load !== nextProps.load
+  }
+
+  render () {
+    return (
+      <li className={this.props.className}>{this.props.children}</li>
+    )
+  }
 }
 
 ReactLoryItem.propTypes = {
   className: PropTypes.string,
-  item: PropTypes.node
+  children: PropTypes.node,
+  load: PropTypes.bool
 }

@@ -14,13 +14,15 @@ export default function ReactLoryList ({className, classNameItem, currentSlide, 
   return (
     <ul className={className}>
       {items.map((item, index) => {
-        const itemToRender = hasToLoadItem(index)
-                             ? item
-                             : <div key={`placeholder-${index}`}>{componentPlaceholder}</div>
-        return (<ReactLoryItem
-          className={classNameItem}
-          item={itemToRender}
-          key={`item-${index}`} />
+        const hasToLoad = hasToLoadItem(index)
+        const itemToRender = hasToLoad ? item : componentPlaceholder
+        return (
+          <ReactLoryItem
+            className={classNameItem}
+            key={index}
+            load={hasToLoad}>
+              {itemToRender}
+          </ReactLoryItem>
         )
       })}
     </ul>
