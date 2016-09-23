@@ -62,7 +62,6 @@ class App extends Component {
     return (<div>
     {this.state.mounted &&
       <div>
-
         <h3>With other components</h3>
         <ReactLory {...config}>
           {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
