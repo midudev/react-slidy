@@ -8,7 +8,9 @@ export default class ReactLoryItem extends Component {
 
   render () {
     return (
-      <li className={this.props.className}>{this.props.children}</li>
+      <li className={this.props.className}>
+        {this.props.children}
+      </li>
     )
   }
 }

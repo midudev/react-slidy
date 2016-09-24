@@ -2,13 +2,6 @@ import React, { Component, PropTypes } from 'react'
 
 import ReactLoryList from './react-lory-list'
 
-const EVENTS = {
-  AFTER_DESTROY: 'after.lory.destroy',
-  AFTER_INIT: 'after.lory.init',
-  AFTER_SLIDE: 'after.lory.slide',
-  BEFORE_SLIDE: 'before.lory.slide'
-}
-
 const NO_OP = () => {}
 
 // in order to make react-lory compatible with server-rendering
@@ -27,10 +20,7 @@ export default class ReactLorySlider extends Component {
   constructor (...args) {
     super(...args)
     this.getSliderNode = this.getSliderNode.bind(this)
-    this.handleBeforeSlide = this.handleBeforeSlide.bind(this)
-    this.handleAfterInit = this.handleAfterInit.bind(this)
     this.handleAfterSlide = this.handleAfterSlide.bind(this)
-    this.handleDestroy = this.handleDestroy.bind(this)
     this.loryInstance = null
 
     this.state = { currentSlide: 0 }
@@ -40,31 +30,27 @@ export default class ReactLorySlider extends Component {
       classNameSlideContainer: this.getClassName('slides'),
       classNamePrevCtrl: this.getClassName('prev'),
       classNameNextCtrl: this.getClassName('next'),
+      doAfterSlide: this.handleAfterSlide,
       // fix if the user try to use a `true` value for infinite
       infinite: this.props.infinite === true ? 1 : this.props.infinite,
       // if infinite, rewindOnResize is always true
       rewindOnResize: this.props.rewindOnResize || this.props.infinite
     }
+
+    const { children } = this.props
+    this.listItems = Array.isArray(children) ? children : [children]
   }
 
   componentDidMount () {
     // wait to load the images in order to start some stuff only when needed
     imagesLoaded(this.sliderNode, () => {
-      this.sliderNode.addEventListener(EVENTS.AFTER_INIT, this.handleAfterInit)
-      this.sliderNode.addEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
-      this.sliderNode.addEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
-      this.sliderNode.addEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
       // start lory slider instance
       this.loryInstance = lory(this.sliderNode, {...this.props, ...this.sliderOptions})
     })
   }
 
   componentWillUnmount () {
-    this.sliderNode.removeEventListener(EVENTS.AFTER_INIT, this.handleAfterInit)
-    this.sliderNode.removeEventListener(EVENTS.AFTER_SLIDE, this.handleAfterSlide)
-    this.sliderNode.removeEventListener(EVENTS.BEFORE_SLIDE, this.handleBeforeSlide)
     this.loryInstance.destroy()
-    this.sliderNode.removeEventListener(EVENTS.AFTER_DESTROY, this.handleDestroy)
   }
 
   shouldComponentUpdate (nextProps, {currentSlide}) {
@@ -79,31 +65,19 @@ export default class ReactLorySlider extends Component {
     this.sliderNode = node
   }
 
-  handleAfterSlide (event) {
-    const {detail} = event
-    const currentSlide = detail && detail.currentSlide ? detail.currentSlide : 0
-    this.setState({currentSlide})
-    this.props.doAfterSlide({currentSlide, event})
-  }
-
-  handleBeforeSlide (event) {
-    const {detail} = event
-    const nextSlide = detail && detail.nextSlide ? detail.nextSlide : 0
-    this.props.doBeforeSlide({nextSlide, event})
-  }
-
-  handleDestroy (event) {
-    this.props.doAfterDestroy({event})
+  handleAfterSlide ({currentSlide}) {
+    this.setState({currentSlide}, function () {
+      this.props.doAfterSlide({currentSlide})
+    })
   }
 
   handleAfterInit () {
+    // TODO
     this.sliderNode.classList.add(this.getClassName('-ready'))
-    this.props.onReady()
   }
 
   render () {
-    const { children, infinite, lazyLoadConfig, showArrows } = this.props
-    const listItems = Array.isArray(children) ? children : [children]
+    const { infinite, lazyLoadConfig, showArrows } = this.props
 
     return (
       <div ref={this.getSliderNode}>
@@ -116,7 +90,7 @@ export default class ReactLorySlider extends Component {
             currentSlide={this.state.currentSlide}
             lazyLoadConfig={lazyLoadConfig}
             infinite={infinite}
-            items={listItems} />
+            items={this.listItems} />
         </div>
       </div>
     )
@@ -129,9 +103,7 @@ ReactLorySlider.propTypes = {
     PropTypes.object
   ]).isRequired,
   classNameBase: PropTypes.string,
-  doAfterDestroy: PropTypes.func,
   doAfterSlide: PropTypes.func,
-  doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
   enableMouseEvents: PropTypes.bool,
   infinite: PropTypes.oneOfType([
@@ -150,14 +122,11 @@ ReactLorySlider.propTypes = {
 }
 
 ReactLorySlider.defaultProps = {
-  doAfterDestroy: NO_OP,
   doAfterSlide: NO_OP,
-  doBeforeSlide: NO_OP,
   ease: 'ease',
   enableMouseEvents: true,
   infinite: 1,
   lazyLoadConfig: {
-    enabledForContainer: false,
     enabledForItems: true,
     itemsOnLoad: 2,
     componentPlaceholder: <div />

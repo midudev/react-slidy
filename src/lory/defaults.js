@@ -1,4 +1,5 @@
 export default {
+  doAfterSlide: function () {},
   /**
    * slides scrolled at once
    * @slidesToScroll {Number}

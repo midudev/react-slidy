@@ -1,11 +1,11 @@
 'use strict'
 
 import detectPrefixes from './utils/detect-prefixes.js'
-import dispatchEvent from './utils/dispatch-event.js'
 import defaults from './defaults.js'
 
 const { slice } = Array.prototype
-const requestFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
+
+const TOUCH_DURATION = 300
 
 export function lory (slider, opts) {
   let position
@@ -55,17 +55,7 @@ export function lory (slider, opts) {
         slideContainer.insertBefore(cloned, firstChild)
       })
 
-    slideContainer.addEventListener(prefixes.transitionEnd, onTransitionEnd)
-
     return slice.call(slideContainer.children)
-  }
-
-  /**
-   * [dispatchSliderEvent description]
-   * @return {[type]} [description]
-   */
-  function _dispatchSliderEvent (phase, type, detail) {
-    dispatchEvent(slider, `${phase}.lory.${type}`, detail)
   }
 
   /**
@@ -77,13 +67,11 @@ export function lory (slider, opts) {
    */
   function _translate (to, duration, ease) {
     const easeCssText = ease ? `${prefixes.transitionTiming}: ${ease};` : ''
-    const cssText = `
-      ${easeCssText}
+    const cssText = `${easeCssText}
       ${prefixes.transitionDuration}: ${duration}ms;
       ${prefixes.transform}: ${prefixes.translate(to)};`
-    requestFrame(function () {
-      slideContainer.style.cssText = cssText
-    })
+
+    slideContainer.style.cssText = cssText
   }
 
   /**
@@ -107,17 +95,16 @@ export function lory (slider, opts) {
     let duration = slideSpeed
 
     const movement = direction ? 1 : -1
-    const nextSlide = index * movement
     const maxOffset = Math.round(slidesWidth - frameWidth)
-
-    _dispatchSliderEvent('before', 'slide', { index, nextSlide })
+    const totalSlides = slides.length
 
     // if it's not a number, then is used for prev and next
     if (typeof nextIndex !== 'number') {
       nextIndex = index + slidesToScroll * movement
     }
 
-    nextIndex = Math.min(Math.max(nextIndex, 0), slides.length - 1)
+    // nextIndex should be  between 0 and total slides minus 1
+    nextIndex = Math.min(Math.max(nextIndex, 0), totalSlides - 1)
 
     if (infinite && direction === undefined) {
       nextIndex += infinite
@@ -125,7 +112,7 @@ export function lory (slider, opts) {
 
     let nextOffset = Math.min(Math.max(_getOffsetLeft(nextIndex) * -1, maxOffset * -1), 0)
 
-    if (rewind && Math.abs(position.x) === maxOffset && direction) {
+    if (rewind && direction && Math.abs(position.x) === maxOffset) {
       nextOffset = 0
       nextIndex = 0
       duration = rewindSpeed
@@ -137,26 +124,24 @@ export function lory (slider, opts) {
     // update the position with the next position
     position.x = nextOffset
 
-    /**
-     * TODO
-     * update the index with the nextIndex only if
-     * the offset of the nextIndex is in the range of the maxOffset
-     */
+    // if we offset of the next index is inside the maxOffset then use nextIndex
     if (_getOffsetLeft(nextIndex) <= maxOffset) {
       index = nextIndex
     }
 
-    if (infinite && (nextIndex === slides.length - infinite || nextIndex === 0)) {
-      index = direction ? infinite : slides.length - (infinite * 2)
+    if (infinite && (nextIndex === totalSlides - infinite || nextIndex === 0)) {
+      index = direction ? infinite : totalSlides - (infinite * 2)
 
       position.x = _getOffsetLeft(index) * -1
 
       transitionEndCallback = function () {
         _translate(_getOffsetLeft(index) * -1, 0, undefined)
       }
+    } else {
+      transitionEndCallback = function () {
+        options.doAfterSlide({ currentSlide: index })
+      }
     }
-
-    _dispatchSliderEvent('after', 'slide', { currentSlide: index })
   }
 
   /**
@@ -164,8 +149,6 @@ export function lory (slider, opts) {
    * setup function
    */
   function setup () {
-    _dispatchSliderEvent('before', 'init')
-
     prefixes = detectPrefixes()
 
     options = {...defaults, ...opts}
@@ -205,14 +188,13 @@ export function lory (slider, opts) {
       frame.addEventListener('click', onClick)
     }
 
+    slideContainer.addEventListener(prefixes.transitionEnd, onTransitionEnd)
     frame.addEventListener('touchstart', onTouchstart)
     options.window.addEventListener('resize', onResize)
-
-    _dispatchSliderEvent('after', 'init')
   }
 
   function _getWidthFromDOMEl (el) {
-    return el.getBoundingClientRect().width || el.offsetWidth
+    return el.getBoundingClientRect().width
   }
 
   /**
@@ -232,6 +214,11 @@ export function lory (slider, opts) {
       }, 0)
     }
 
+    const slidesHeight = Math.floor(slideContainer.firstChild.getBoundingClientRect().height) + 'px'
+    slider.style.height = slidesHeight
+    slideContainer.style.height = slidesHeight
+    frame.style.height = slidesHeight
+
     if (rewindOnResize) {
       index = 0
     } else {
@@ -239,16 +226,15 @@ export function lory (slider, opts) {
       rewindSpeed = 0
     }
 
+    const offsetIndex = infinite ? index + infinite : index
+    const newX = _getOffsetLeft(offsetIndex) * -1
     if (infinite) {
-      const newX = _getOffsetLeft(index + infinite) * -1
       _translate(newX, 0, null)
-      index = index + infinite
-      position.x = newX
     } else {
-      const newX = _getOffsetLeft(index) * -1
       _translate(newX, rewindSpeed, ease)
-      position.x = newX
     }
+    index = offsetIndex
+    position.x = newX
   }
 
   /**
@@ -301,7 +287,6 @@ export function lory (slider, opts) {
    * destroy function: called to gracefully destroy the lory instance
    */
   function destroy () {
-    _dispatchSliderEvent('before', 'destroy')
     const {infinite, window} = options
     // remove event listeners
     removeTouchMouseEventsListeners(true)
@@ -322,8 +307,6 @@ export function lory (slider, opts) {
         slideContainer.removeChild(lastChild)
       })
     }
-
-    _dispatchSliderEvent('after', 'destroy')
   }
 
   // event handling
@@ -338,10 +321,13 @@ export function lory (slider, opts) {
     }
   }
 
+  function _getCoordinatesFromEvent (event) {
+    return event.touches ? event.touches[0] : event
+  }
+
   function onTouchstart (event) {
-    const {enableMouseEvents} = options
-    const touches = event.touches ? event.touches[0] : event
-    const {pageX, pageY} = touches
+    const { pageX, pageY } = _getCoordinatesFromEvent(event)
+    const { enableMouseEvents } = options
 
     if (enableMouseEvents) {
       frame.addEventListener('mousemove', onTouchmove)
@@ -358,47 +344,24 @@ export function lory (slider, opts) {
       time: Date.now()
     }
 
-    isScrolling = false
-    translating = false
-
     delta = {}
   }
 
-  var translating = false
-
   function onTouchmove (event) {
-    const touches = event.touches ? event.touches[0] : event
-    const {pageX, pageY} = touches
+    const { pageX, pageY } = _getCoordinatesFromEvent(event)
 
     delta = {
       x: pageX - touchOffset.x,
       y: pageY - touchOffset.y
     }
 
-    const isScrollingNow = Math.abs(delta.x) < Math.abs(delta.y)
-
-    if (!isScrolling & !isScrollingNow) {
-      _translate(position.x + delta.x, 0, null)
-      event.preventDefault()
-      event.stopPropagation()
-      translating = true
-      return false
-    }
-
-    if (isScrollingNow && translating) {
-      event.preventDefault()
-      event.stopPropagation()
-      return false
-    }
+    // const isScrollingNow = Math.abs(delta.x) < Math.abs(delta.y)
+    _translate(position.x + delta.x, 0, null)
   }
 
   function onTouchend (event) {
-    translating = false
-    /**
-     * time between touchstart and touchend in milliseconds
-     * @duration {number}
-     */
-    const duration = touchOffset ? Date.now() - touchOffset.time : 300
+    // time between touchstart and touchend in milliseconds
+    const duration = touchOffset ? Date.now() - touchOffset.time : TOUCH_DURATION
 
     /**
      * is valid if:
@@ -412,7 +375,7 @@ export function lory (slider, opts) {
      * @isValidSlide {Boolean}
      */
     const absoluteX = Math.abs(delta.x)
-    const isValid = duration < 300 &&
+    const isValid = duration < TOUCH_DURATION &&
         absoluteX > 25 ||
         absoluteX > frameWidth / 3
 
@@ -426,21 +389,18 @@ export function lory (slider, opts) {
     const isOutOfBounds = !index && delta.x > 0 ||
         index === slides.length - 1 && delta.x < 0
 
-    const direction = delta.x < 0
-
     if (!isScrolling) {
       if (isValid && !isOutOfBounds) {
+        const direction = delta.x < 0
         slide(false, direction)
       } else {
         _translate(position.x, options.snapBackSpeed)
       }
     }
 
-    touchOffset = undefined
+    touchOffset = {}
 
-    /**
-     * remove eventlisteners after swipe attempt
-     */
+    // remove eventlisteners after swipe attempt
     removeTouchMouseEventsListeners()
   }
 
