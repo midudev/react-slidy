@@ -76,14 +76,14 @@ export default {
   enableMouseEvents: false,
 
   /**
-   * window instance
-   * @window {object}
-   */
-  window: window,
-
-  /**
    * If false, slides lory to the first slide on window resize.
    * @rewindOnResize {boolean}
    */
-  rewindOnResize: true
+  rewindOnResize: true,
+
+  /**
+   * window instance
+   * @window {object}
+   */
+  window: window
 }

@@ -41,5 +41,5 @@ ReactLory.propTypes = {
 }
 
 ReactLory.defaultProps = {
-  classNameBase: 'react-Lory'
+  classNameBase: 'react-Slidy'
 }

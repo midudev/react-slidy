@@ -1,8 +1,6 @@
 const TRANSLATE_3D_INIT = 'translate3d(0, 0, 0)'
 
-/**
- * Detecting prefixes for saving time and bytes
- */
+// Detect prefixes for saving time and bytes
 export default function detectPrefixes () {
   let transform
   let transition

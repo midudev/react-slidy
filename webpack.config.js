@@ -35,7 +35,7 @@ var base = {
 if (TARGET === 'start:server' || !TARGET) {
   module.exports = merge(base, {
     entry: [
-      'webpack-dev-server/client?http://0.0.0.0:8080',
+      'webpack-dev-server/client?http://0.0.0.0:8081',
       'webpack/hot/only-dev-server',
       path.resolve(__dirname, 'docs/index.jsx')
     ],
@@ -44,7 +44,7 @@ if (TARGET === 'start:server' || !TARGET) {
       filename: 'dist/index.js'
     },
     devServer: {
-      port: 8080,
+      port: 8081,
       stats: { colors: true },
       inline: true,
       contentBase: 'docs'

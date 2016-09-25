@@ -39,7 +39,6 @@ const handlers = {
 
 const config = {
   enableMouseEvents: true,
-  classNameBase: 'react-Lory',
   slidesToScroll: 1,
   infinite: false,
   ...handlers

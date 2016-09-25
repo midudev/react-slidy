@@ -20,7 +20,7 @@ $c-nav-color: #aaaaaa;
   z-index: 2;
 }
 
-.react-Lory {
+.react-Slidy {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: $c-background;
   min-height: 175px;
@@ -79,10 +79,12 @@ $c-nav-color: #aaaaaa;
   }
 
   &-slides {
+    backface-visibility: hidden;
     display: block;
     list-style: none;
     padding: 0;
     position: absolute;
+    will-change: transform;
   }
 
   &-item {
@@ -95,6 +97,7 @@ $c-nav-color: #aaaaaa;
   img {
     display: block;
     height: auto;
+    pointer-events: none;
     width: 100%;
   }
 
@@ -103,6 +106,7 @@ $c-nav-color: #aaaaaa;
     display: block;
     left: 0;
     margin: auto;
+    pointer-events: none;
     position: absolute;
     right: 0;
     top: 0;
