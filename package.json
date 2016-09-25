@@ -10,6 +10,7 @@
   "scripts": {
     "clean:lib": "rimraf ./lib/*",
     "prelib": "npm run clean:lib -s",
+    "dist": "webpack",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",

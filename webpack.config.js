@@ -32,6 +32,25 @@ var base = {
   ]
 }
 
+if (TARGET === 'dist') {
+  module.exports = merge(base, {
+    entry: path.resolve(__dirname, 'docs/index.jsx'),
+    output: {
+      filename: 'dist/index.js'
+    },
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
+      }),
+      new ExtractTextPlugin('dist/index.css', {
+        allChunks: true
+      })
+    ]
+  })
+}
+
 if (TARGET === 'start:server' || !TARGET) {
   module.exports = merge(base, {
     entry: [
