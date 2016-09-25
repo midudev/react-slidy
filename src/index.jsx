@@ -1,3 +1,3 @@
-import ReactLory from './react-lory'
+import ReactSlidy from './react-slidy'
 
-export default ReactLory
+export default ReactSlidy

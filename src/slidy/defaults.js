@@ -76,7 +76,7 @@ export default {
   enableMouseEvents: false,
 
   /**
-   * If false, slides lory to the first slide on window resize.
+   * If false, slides slidy to the first slide on window resize.
    * @rewindOnResize {boolean}
    */
   rewindOnResize: true,

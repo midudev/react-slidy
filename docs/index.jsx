@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react'
 import ReactDom from 'react-dom'
-import ReactLory from '../src'
+import ReactSlidy from '../src'
 
 import SuiMultimedia from '@schibstedspain/sui-multimedia'
 
@@ -62,33 +62,33 @@ class App extends Component {
     {this.state.mounted &&
       <div>
         <h3>With other components</h3>
-        <ReactLory {...config}>
+        <ReactSlidy {...config}>
           {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
-        </ReactLory>
+        </ReactSlidy>
 
         <h3>Only one image</h3>
-        <ReactLory {...config}>
+        <ReactSlidy {...config}>
           <SuiMultimedia lazyLoad={false} images={images[0]} />
-        </ReactLory>
+        </ReactSlidy>
 
         <h3>Infinite Slider</h3>
-        <ReactLory {...config} infinite>
+        <ReactSlidy {...config} infinite>
           <img {...images[0]} />
           <img {...images[1]} />
           <img {...images[2]} />
           <img {...images[3]} />
-        </ReactLory>
+        </ReactSlidy>
 
         <h3>Slider with lazy loading</h3>
-        <ReactLory {...config} lazyLoadConfig={{enabledForContainer: true}}>
+        <ReactSlidy {...config} lazyLoadConfig={{enabledForContainer: true}}>
           {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
-        </ReactLory>
+        </ReactSlidy>
 
         <h3>Basic example</h3>
-        <ReactLory {...config}>
+        <ReactSlidy {...config}>
           <img {...images[0]} />
           <img {...images[1]} />
-        </ReactLory>
+        </ReactSlidy>
       </div>
     }
     </div>)

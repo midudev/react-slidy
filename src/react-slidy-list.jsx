@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react'
 
-import ReactLoryItem from './react-lory-item'
+import ReactSlidyItem from './react-slidy-item'
 
-export default function ReactLoryList ({className, classNameItem, currentSlide, infinite, items, lazyLoadConfig}) {
+export default function ReactSlidyList ({className, classNameItem, currentSlide, infinite, items, lazyLoadConfig}) {
   const { enabledForItems, itemsOnLoad, componentPlaceholder } = lazyLoadConfig
 
   const hasToLoadItem = (index) => {
@@ -17,19 +17,19 @@ export default function ReactLoryList ({className, classNameItem, currentSlide, 
         const hasToLoad = hasToLoadItem(index)
         const itemToRender = hasToLoad ? item : componentPlaceholder
         return (
-          <ReactLoryItem
+          <ReactSlidyItem
             className={classNameItem}
             key={index}
             load={hasToLoad}>
               {itemToRender}
-          </ReactLoryItem>
+          </ReactSlidyItem>
         )
       })}
     </ul>
   )
 }
 
-ReactLoryList.propTypes = {
+ReactSlidyList.propTypes = {
   className: PropTypes.string,
   classNameItem: PropTypes.string,
   currentSlide: PropTypes.number,

@@ -1,12 +1,15 @@
 'use strict'
 
-import detectPrefixes from './utils/detect-prefixes.js'
+import detectPrefixes from './detect-prefixes.js'
 import defaults from './defaults.js'
 
 const { slice } = Array.prototype
 const prefixes = detectPrefixes()
 
-export function lory (slider, opts) {
+const LINEAR_ANIMATION = 'linear'
+const VALID_SWIPE_DISTANCE = 25
+
+export function slidy (slider, opts) {
   const options = {...defaults, ...opts}
 
   let position
@@ -131,7 +134,7 @@ export function lory (slider, opts) {
 
     let nextOffset = _clampNumber(_getOffsetLeft(nextIndex) * -1, maxOffset * -1, 0)
 
-    if (rewind && direction && Math.abs(position.x) === maxOffset) {
+    if (rewind && direction && Math.abs(position) === maxOffset) {
       nextOffset = 0
       nextIndex = 0
       duration = rewindSpeed
@@ -141,7 +144,7 @@ export function lory (slider, opts) {
     _translate(nextOffset, duration, ease)
 
     // update the position with the next position
-    position.x = nextOffset
+    position = nextOffset
 
     // if the nextIndex is possible according to totalSlides, then use it
     if (nextIndex <= totalSlides) {
@@ -151,16 +154,14 @@ export function lory (slider, opts) {
     if (infinite && (nextIndex === totalSlides - infinite || nextIndex === 0)) {
       index = direction ? infinite : totalSlides - (infinite * 2)
 
-      position.x = _getOffsetLeft(index) * -1
+      position = _getOffsetLeft(index) * -1
 
       transitionEndCallback = function () {
         _translate(_getOffsetLeft(index) * -1, 0)
       }
-    } else {
-      transitionEndCallback = function () {
-        options.doAfterSlide({ currentSlide: index })
-      }
     }
+
+    options.doAfterSlide({ currentSlide: index })
   }
 
   function _startTouchMouseEventsListeners () {
@@ -244,7 +245,7 @@ export function lory (slider, opts) {
     isScrolling = !!(isScrolling || isScrollingNow)
 
     if (!isScrolling && delta.x !== 0) {
-      _translate(position.x + delta.x, 50, 'linear')
+      _translate(position + delta.x, 50, LINEAR_ANIMATION)
     } else if (isScrolling) {
       onTouchend(event)
     }
@@ -253,12 +254,12 @@ export function lory (slider, opts) {
   function onTouchend (event) {
     /**
      * is valid if:
-     * -> swipe distance is greater than 25px
+     * -> swipe distance is greater than the specified valid swipe distance
      * -> swipe distance is more then a third of the swipe area
      * @isValidSlide {Boolean}
      */
     const absoluteX = Math.abs(delta.x)
-    const isValid = absoluteX > 25 || absoluteX > frameWidth / 3
+    const isValid = absoluteX > VALID_SWIPE_DISTANCE || absoluteX > frameWidth / 3
 
     /**
      * is out of bounds if:
@@ -273,7 +274,7 @@ export function lory (slider, opts) {
       const direction = delta.x < 0
       slide(direction)
     } else {
-      _translate(position.x, options.snapBackSpeed, 'linear')
+      _translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
     }
 
     touchOffset = {}
@@ -312,10 +313,7 @@ export function lory (slider, opts) {
     prevCtrl = slider.getElementsByClassName(classNamePrevCtrl)[0]
     nextCtrl = slider.getElementsByClassName(classNameNextCtrl)[0]
 
-    position = {
-      x: slideContainer.offsetLeft,
-      y: slideContainer.offsetTop
-    }
+    position = slideContainer.offsetLeft
 
     slides = infinite
              ? _setupInfinite(slice.call(slideContainer.children))
@@ -375,7 +373,7 @@ export function lory (slider, opts) {
       _translate(newX, rewindSpeed, ease)
     }
     index = offsetIndex
-    position.x = newX
+    position = newX
   }
 
   /**
@@ -404,7 +402,7 @@ export function lory (slider, opts) {
 
   /**
    * public
-   * destroy function: called to gracefully destroy the lory instance
+   * destroy function: called to gracefully destroy the slidy instance
    */
   function destroy () {
     const { infinite } = options

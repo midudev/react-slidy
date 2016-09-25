@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import ReactLorySlider from './react-lory-slider'
+import ReactSlidySlider from './react-slidy-slider'
 import Spinner from '@schibstedspain/sui-spinner'
 import LazyLoad from 'react-lazy-load'
 
@@ -11,7 +11,7 @@ const spinnerConfig = {
 
 const lazyLoadOffsetVerical = 500
 
-export default class ReactLory extends Component {
+export default class ReactSlidy extends Component {
   // as it's a slider, we don't want to re-render it and don't expect
   // to add new childrens to it, so we don't want unexpected behaviour
   shouldComponentUpdate () {
@@ -23,16 +23,16 @@ export default class ReactLory extends Component {
       <div className={this.props.classNameBase}>
         <Spinner {...spinnerConfig} />
         <LazyLoad offsetVertical={lazyLoadOffsetVerical}>
-          <ReactLorySlider {...this.props}>
+          <ReactSlidySlider {...this.props}>
             {this.props.children}
-          </ReactLorySlider>
+          </ReactSlidySlider>
         </LazyLoad>
       </div>
     )
   }
 }
 
-ReactLory.propTypes = {
+ReactSlidy.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object
@@ -40,6 +40,6 @@ ReactLory.propTypes = {
   classNameBase: PropTypes.string
 }
 
-ReactLory.defaultProps = {
+ReactSlidy.defaultProps = {
   classNameBase: 'react-Slidy'
 }
