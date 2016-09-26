@@ -2,7 +2,6 @@
 
 import detectPrefixes from './detect-prefixes'
 import checkSupportsPassive from './check-supports-passive'
-import defaults from './defaults'
 
 const { slice } = Array.prototype
 const prefixes = detectPrefixes()
@@ -11,8 +10,7 @@ const EVENT_OPTIONS = checkSupportsPassive() ? { passive: true } : false
 const LINEAR_ANIMATION = 'linear'
 const VALID_SWIPE_DISTANCE = 25
 
-export function slidy (slider, opts) {
-  const options = {...defaults, ...opts}
+export function slidy (slider, options) {
   const {abs, floor, min, max, round} = Math
 
   let position
@@ -183,7 +181,7 @@ export function slidy (slider, opts) {
   function _removeAllEventsListeners () {
     _removeTouchEventsListeners(true)
     frame.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
-    options.window.removeEventListener('resize', onResize)
+    window.removeEventListener('resize', onResize)
   }
 
   function onTransitionEnd () {
@@ -286,7 +284,7 @@ export function slidy (slider, opts) {
 
     slideContainer.addEventListener(prefixes.transitionEnd, onTransitionEnd)
     frame.addEventListener('touchstart', onTouchstart, EVENT_OPTIONS)
-    options.window.addEventListener('resize', onResize, EVENT_OPTIONS)
+    window.addEventListener('resize', onResize, EVENT_OPTIONS)
   }
 
   /**
