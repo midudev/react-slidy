@@ -162,9 +162,7 @@ export function slidy (slider, opts) {
       }
     }
 
-    setTimeout(function () {
-      options.doAfterSlide({ currentSlide: index })
-    }, 0)
+    options.doAfterSlide({ currentSlide: index })
   }
 
   function _startTouchEventsListeners () {
@@ -203,62 +201,58 @@ export function slidy (slider, opts) {
   }
 
   function onTouchmove (event) {
-    window.requestAnimationFrame(function () {
-      const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
+    const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
 
-      delta = {
-        x: pageX - touchOffset.pageX,
-        y: pageY - touchOffset.pageY
-      }
+    delta = {
+      x: pageX - touchOffset.pageX,
+      y: pageY - touchOffset.pageY
+    }
 
-      const deltaNow = {
-        x: pageX - currentTouchOffset.pageX,
-        y: pageY - currentTouchOffset.pageY
-      }
+    const deltaNow = {
+      x: pageX - currentTouchOffset.pageX,
+      y: pageY - currentTouchOffset.pageY
+    }
 
-      currentTouchOffset = { pageX, pageY }
+    currentTouchOffset = { pageX, pageY }
 
-      const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
-      isScrolling = !!(isScrolling || isScrollingNow)
+    const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
+    isScrolling = !!(isScrolling || isScrollingNow)
 
-      if (!isScrolling && delta.x !== 0) {
-        _translate(position + delta.x, 50, LINEAR_ANIMATION)
-      } else if (isScrolling) {
-        onTouchend(event)
-      }
-    })
+    if (!isScrolling && delta.x !== 0) {
+      _translate(position + delta.x, 50, LINEAR_ANIMATION)
+    } else if (isScrolling) {
+      onTouchend(event)
+    }
   }
 
   function onTouchend (event) {
-    window.requestAnimationFrame(function () {
-      /**
-       * is valid if:
-       * -> swipe distance is greater than the specified valid swipe distance
-       * -> swipe distance is more then a third of the swipe area
-       * @isValidSlide {Boolean}
-       */
-      const absoluteX = abs(delta.x)
-      const isValid = absoluteX > VALID_SWIPE_DISTANCE || absoluteX > frameWidth / 3
+    /**
+     * is valid if:
+     * -> swipe distance is greater than the specified valid swipe distance
+     * -> swipe distance is more then a third of the swipe area
+     * @isValidSlide {Boolean}
+     */
+    const absoluteX = abs(delta.x)
+    const isValid = absoluteX > VALID_SWIPE_DISTANCE || absoluteX > frameWidth / 3
 
-      /**
-       * is out of bounds if:
-       * -> index is 0 and delta x is greater than 0
-       * -> index is the last slide and delta is smaller than 0
-       * @isOutOfBounds {Boolean}
-       */
-      const direction = delta.x < 0
-      const isOutOfBounds = !index && !direction ||
-          index === slides.length - 1 && direction
+    /**
+     * is out of bounds if:
+     * -> index is 0 and delta x is greater than 0
+     * -> index is the last slide and delta is smaller than 0
+     * @isOutOfBounds {Boolean}
+     */
+    const direction = delta.x < 0
+    const isOutOfBounds = !index && !direction ||
+        index === slides.length - 1 && direction
 
-      if (isValid && !isOutOfBounds) {
-        slide(direction)
-      } else {
-        _translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
-      }
+    if (isValid && !isOutOfBounds) {
+      slide(direction)
+    } else {
+      _translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
+    }
 
-      touchOffset = {}
-      isScrolling = false
-    })
+    touchOffset = {}
+    isScrolling = false
     _removeTouchEventsListeners()
   }
 
