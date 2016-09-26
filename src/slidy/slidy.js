@@ -1,22 +1,19 @@
-'use strict'
-
-import detectPrefixes from './detect-prefixes'
-import checkSupportsPassive from './check-supports-passive'
+import detectPrefixes from './detect-prefixes.js'
 
 const { slice } = Array.prototype
 const prefixes = detectPrefixes()
-const EVENT_OPTIONS = checkSupportsPassive() ? { passive: true } : false
 
 const LINEAR_ANIMATION = 'linear'
 const VALID_SWIPE_DISTANCE = 25
 
 export function slidy (slider, options) {
   const {abs, floor, min, max, round} = Math
+  const windowDOM = window
 
-  let position
-  let slidesWidth
-  let frameWidth
-  let slides
+  let position = 0
+  let slidesWidth = 0
+  let frameWidth = 0
+  let slides = 0
   let transitionEndCallback
 
   // DOM elements
@@ -26,10 +23,10 @@ export function slidy (slider, options) {
   let index = 0
 
   // event handling
-  let touchOffset
-  let currentTouchOffset
-  let delta
-  let isScrolling
+  let touchOffset = {}
+  let currentTouchOffset = {}
+  let delta = {}
+  let isScrolling = false
 
   // clamp a number between two min and max values
   function _clampNumber (x, minValue, maxValue) {
@@ -43,7 +40,7 @@ export function slidy (slider, options) {
 
   // get the coordinates from touch event
   function _getTouchCoordinatesFromEvent (event) {
-    const { pageX, pageY } = event.changedTouches ? event.changedTouches[0] : event
+    const { pageX, pageY } = event.targetTouches ? event.targetTouches[0] : event
     return { pageX: round(pageX), pageY: round(pageY) }
   }
 
@@ -166,8 +163,8 @@ export function slidy (slider, options) {
   }
 
   function _startTouchEventsListeners () {
-    frame.addEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
-    frame.addEventListener('touchend', onTouchend, EVENT_OPTIONS)
+    frame.addEventListener('touchmove', onTouchmove)
+    frame.addEventListener('touchend', onTouchend)
   }
 
   function _removeTouchEventsListeners (all = false) {
@@ -181,7 +178,7 @@ export function slidy (slider, options) {
   function _removeAllEventsListeners () {
     _removeTouchEventsListeners(true)
     frame.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
-    window.removeEventListener('resize', onResize)
+    windowDOM.removeEventListener('resize', onResize)
   }
 
   function onTransitionEnd () {
@@ -195,34 +192,33 @@ export function slidy (slider, options) {
     _startTouchEventsListeners()
     const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
     touchOffset = currentTouchOffset = { pageX, pageY }
-
-    delta = {}
-    isScrolling = false
   }
 
   function onTouchmove (event) {
-    const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
+    window.requestAnimationFrame(function () {
+      const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
 
-    delta = {
-      x: pageX - touchOffset.pageX,
-      y: pageY - touchOffset.pageY
-    }
+      delta = {
+        x: pageX - touchOffset.pageX,
+        y: pageY - touchOffset.pageY
+      }
 
-    const deltaNow = {
-      x: pageX - currentTouchOffset.pageX,
-      y: pageY - currentTouchOffset.pageY
-    }
+      const deltaNow = {
+        x: pageX - currentTouchOffset.pageX,
+        y: pageY - currentTouchOffset.pageY
+      }
 
-    currentTouchOffset = { pageX, pageY }
+      currentTouchOffset = { pageX, pageY }
 
-    const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
-    isScrolling = !!(isScrolling || isScrollingNow)
+      const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
+      isScrolling = !!(isScrolling || isScrollingNow)
 
-    if (!isScrolling && delta.x !== 0) {
-      _translate(position + delta.x, 10, LINEAR_ANIMATION)
-    } else if (isScrolling) {
-      onTouchend(event)
-    }
+      if (!isScrolling && delta.x !== 0) {
+        _translate(position + delta.x, 50, LINEAR_ANIMATION)
+      } else if (isScrolling) {
+        onTouchend(event)
+      }
+    })
   }
 
   function onTouchend (event) {
@@ -251,8 +247,10 @@ export function slidy (slider, options) {
       _translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
     }
 
+    delta = {}
     touchOffset = {}
     isScrolling = false
+
     _removeTouchEventsListeners()
   }
 
@@ -283,8 +281,8 @@ export function slidy (slider, options) {
     reset()
 
     slideContainer.addEventListener(prefixes.transitionEnd, onTransitionEnd)
-    frame.addEventListener('touchstart', onTouchstart, EVENT_OPTIONS)
-    window.addEventListener('resize', onResize, EVENT_OPTIONS)
+    frame.addEventListener('touchstart', onTouchstart)
+    windowDOM.addEventListener('resize', onResize)
   }
 
   /**
