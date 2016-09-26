@@ -162,7 +162,9 @@ export function slidy (slider, opts) {
       }
     }
 
-    options.doAfterSlide({ currentSlide: index })
+    setTimeout(function () {
+      options.doAfterSlide({ currentSlide: index })
+    }, 0)
   }
 
   function _startTouchEventsListeners () {
@@ -219,7 +221,7 @@ export function slidy (slider, opts) {
     isScrolling = !!(isScrolling || isScrollingNow)
 
     if (!isScrolling && delta.x !== 0) {
-      _translate(position + delta.x, 50, LINEAR_ANIMATION)
+      _translate(position + delta.x, 10, LINEAR_ANIMATION)
     } else if (isScrolling) {
       onTouchend(event)
     }
