@@ -9,23 +9,21 @@ const VALID_SWIPE_DISTANCE = 25
 export function slidy (slider, options) {
   const {abs, floor, min, max, round} = Math
   const windowDOM = window
-
-  let position = 0
-  let slidesWidth = 0
+  // DOM elements
+  const frame = slider.getElementsByClassName(options.classNameFrame)[0]
+  const slideContainer = frame.getElementsByClassName(options.classNameSlideContainer)[0]
+  // initialize some variables
   let frameWidth = 0
+  let index = 0
+  let position = 0
   let slides = 0
+  let slidesWidth = 0
   let transitionEndCallback
 
-  // DOM elements
-  let frame
-  let slideContainer
-
-  let index = 0
-
   // event handling
-  let touchOffset = {}
-  let currentTouchOffset = {}
-  let delta = {}
+  let touchOffset = { pageX: 0, pageY: 0 }
+  let currentTouchOffset = { pageX: 0, pageY: 0 }
+  let delta = { x: 0, y: 0 }
   let isScrolling = false
 
   // clamp a number between two min and max values
@@ -189,36 +187,34 @@ export function slidy (slider, options) {
   }
 
   function onTouchstart (event) {
-    _startTouchEventsListeners()
     const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
     touchOffset = currentTouchOffset = { pageX, pageY }
+    _startTouchEventsListeners()
   }
 
   function onTouchmove (event) {
-    window.requestAnimationFrame(function () {
-      const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
+    const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
 
-      delta = {
-        x: pageX - touchOffset.pageX,
-        y: pageY - touchOffset.pageY
-      }
+    delta = {
+      x: pageX - touchOffset.pageX,
+      y: pageY - touchOffset.pageY
+    }
 
-      const deltaNow = {
-        x: pageX - currentTouchOffset.pageX,
-        y: pageY - currentTouchOffset.pageY
-      }
+    const deltaNow = {
+      x: pageX - currentTouchOffset.pageX,
+      y: pageY - currentTouchOffset.pageY
+    }
 
-      currentTouchOffset = { pageX, pageY }
+    currentTouchOffset = { pageX, pageY }
 
-      const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
-      isScrolling = !!(isScrolling || isScrollingNow)
+    const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
+    isScrolling = !!(isScrolling || isScrollingNow)
 
-      if (!isScrolling && delta.x !== 0) {
-        _translate(position + delta.x, 50, LINEAR_ANIMATION)
-      } else if (isScrolling) {
-        onTouchend(event)
-      }
-    })
+    if (!isScrolling && delta.x !== 0) {
+      _translate(position + delta.x, 50, LINEAR_ANIMATION)
+    } else if (isScrolling) {
+      onTouchend(event)
+    }
   }
 
   function onTouchend (event) {
@@ -263,14 +259,7 @@ export function slidy (slider, options) {
    * setup function
    */
   function _setup () {
-    const {
-      classNameFrame,
-      classNameSlideContainer,
-      infinite
-    } = options
-
-    frame = slider.getElementsByClassName(classNameFrame)[0]
-    slideContainer = frame.getElementsByClassName(classNameSlideContainer)[0]
+    const { infinite } = options
 
     position = slideContainer.offsetLeft
 
