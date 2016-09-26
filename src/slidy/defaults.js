@@ -58,24 +58,6 @@ export default {
   classNameSlideContainer: 'js_slides',
 
   /**
-   * class name for slider prev control
-   * @classNamePrevCtrl {string}
-   */
-  classNamePrevCtrl: 'js_prev',
-
-  /**
-   * class name for slider next control
-   * @classNameNextCtrl {string}
-   */
-  classNameNextCtrl: 'js_next',
-
-  /**
-   * enables mouse events for swiping on desktop devices
-   * @enableMouseEvents {boolean}
-   */
-  enableMouseEvents: false,
-
-  /**
    * If false, slides slidy to the first slide on window resize.
    * @rewindOnResize {boolean}
    */

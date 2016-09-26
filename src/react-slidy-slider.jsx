@@ -21,6 +21,8 @@ export default class ReactSlidySlider extends Component {
     super(...args)
     this.getSliderNode = this.getSliderNode.bind(this)
     this.handleAfterSlide = this.handleAfterSlide.bind(this)
+    this.nextSlider = this.nextSlider.bind(this)
+    this.prevSlider = this.prevSlider.bind(this)
     this.slidyInstance = null
 
     this.state = { currentSlide: 0 }
@@ -71,9 +73,14 @@ export default class ReactSlidySlider extends Component {
     })
   }
 
-  handleAfterInit () {
-    // TODO
-    this.sliderNode.classList.add(this.getClassName('-ready'))
+  nextSlider (e) {
+    e.preventDefault()
+    this.slidyInstance.next()
+  }
+
+  prevSlider (e) {
+    e.preventDefault()
+    this.slidyInstance.prev()
   }
 
   render () {
@@ -82,8 +89,8 @@ export default class ReactSlidySlider extends Component {
     return (
       <div ref={this.getSliderNode}>
         <div className={this.sliderOptions.classNameFrame}>
-          {showArrows && <span className={this.sliderOptions.classNamePrevCtrl} />}
-          {showArrows && <span className={this.sliderOptions.classNameNextCtrl} />}
+          {showArrows && <span className={this.sliderOptions.classNamePrevCtrl} onClick={this.prevSlider} />}
+          {showArrows && <span className={this.sliderOptions.classNameNextCtrl} onClick={this.nextSlider} />}
           <ReactSlidyList
             className={this.sliderOptions.classNameSlideContainer}
             classNameItem={this.sliderOptions.classNameItem}

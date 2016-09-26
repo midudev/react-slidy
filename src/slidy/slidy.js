@@ -1,16 +1,19 @@
 'use strict'
 
-import detectPrefixes from './detect-prefixes.js'
-import defaults from './defaults.js'
+import detectPrefixes from './detect-prefixes'
+import checkSupportsPassive from './check-supports-passive'
+import defaults from './defaults'
 
 const { slice } = Array.prototype
 const prefixes = detectPrefixes()
+const EVENT_OPTIONS = checkSupportsPassive() ? { passive: true } : false
 
 const LINEAR_ANIMATION = 'linear'
 const VALID_SWIPE_DISTANCE = 25
 
 export function slidy (slider, opts) {
   const options = {...defaults, ...opts}
+  const {abs, floor, min, max, round} = Math
 
   let position
   let slidesWidth
@@ -21,8 +24,6 @@ export function slidy (slider, opts) {
   // DOM elements
   let frame
   let slideContainer
-  let prevCtrl
-  let nextCtrl
 
   let index = 0
 
@@ -32,9 +33,9 @@ export function slidy (slider, opts) {
   let delta
   let isScrolling
 
-  // clamp a number between two min and max
-  function _clampNumber (x, min, max) {
-    return Math.min(Math.max(x, min), max)
+  // clamp a number between two min and max values
+  function _clampNumber (x, minValue, maxValue) {
+    return min(max(x, minValue), maxValue)
   }
 
   // get the width from a DOM element
@@ -44,13 +45,13 @@ export function slidy (slider, opts) {
 
   // get the coordinates from touch event
   function _getTouchCoordinatesFromEvent (event) {
-    const { pageX, pageY } = event.targetTouches ? event.targetTouches[0] : event
-    return { pageX: Math.round(pageX), pageY: Math.round(pageY) }
+    const { pageX, pageY } = event.changedTouches ? event.changedTouches[0] : event
+    return { pageX: round(pageX), pageY: round(pageY) }
   }
 
   // calculate the offset with the width of the frame and the desired position
-  function _getOffsetLeft (position) {
-    return frameWidth * position
+  function _getOffsetLeft (slidePosition) {
+    return frameWidth * slidePosition
   }
 
   /**
@@ -119,7 +120,7 @@ export function slidy (slider, opts) {
     let duration = slideSpeed
 
     const movement = direction ? 1 : -1
-    const maxOffset = Math.round(slidesWidth - frameWidth)
+    const maxOffset = round(slidesWidth - frameWidth)
     const totalSlides = slides.length
 
     // calculate the nextIndex according to the movement and the slidesToScroll
@@ -134,7 +135,7 @@ export function slidy (slider, opts) {
 
     let nextOffset = _clampNumber(_getOffsetLeft(nextIndex) * -1, maxOffset * -1, 0)
 
-    if (rewind && direction && Math.abs(position) === maxOffset) {
+    if (rewind && direction && abs(position) === maxOffset) {
       nextOffset = 0
       nextIndex = 0
       duration = rewindSpeed
@@ -161,52 +162,28 @@ export function slidy (slider, opts) {
       }
     }
 
-    options.doAfterSlide({ currentSlide: index })
+    setTimeout(function () {
+      options.doAfterSlide({ currentSlide: index })
+    }, 0)
   }
 
-  function _startTouchMouseEventsListeners () {
-    const { enableMouseEvents } = options
-
-    if (enableMouseEvents) {
-      frame.addEventListener('mousemove', onTouchmove)
-      frame.addEventListener('mouseup', onTouchend)
-      frame.addEventListener('mouseleave', onTouchend)
-    }
-
-    frame.addEventListener('touchmove', onTouchmove)
-    frame.addEventListener('touchend', onTouchend)
+  function _startTouchEventsListeners () {
+    frame.addEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
+    frame.addEventListener('touchend', onTouchend, EVENT_OPTIONS)
   }
 
-  function _removeTouchMouseEventsListeners (all = false) {
-    const {enableMouseEvents} = options
-
+  function _removeTouchEventsListeners (all = false) {
     frame.removeEventListener('touchmove', onTouchmove)
     frame.removeEventListener('touchend', onTouchend)
-
     if (all) {
       frame.removeEventListener('touchstart', onTouchstart)
-    }
-
-    if (enableMouseEvents) {
-      frame.removeEventListener('mousemove', onTouchmove)
-      frame.removeEventListener('mouseup', onTouchend)
-      frame.removeEventListener('mouseleave', onTouchend)
-      if (all) {
-        frame.removeEventListener('mousedown', onTouchstart)
-        frame.removeEventListener('click', onClick)
-      }
     }
   }
 
   function _removeAllEventsListeners () {
-    _removeTouchMouseEventsListeners(true)
+    _removeTouchEventsListeners(true)
     frame.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
     options.window.removeEventListener('resize', onResize)
-
-    if (prevCtrl && nextCtrl) {
-      nextCtrl.removeEventListener('click', next)
-      prevCtrl.removeEventListener('click', prev)
-    }
   }
 
   function onTransitionEnd () {
@@ -217,77 +194,72 @@ export function slidy (slider, opts) {
   }
 
   function onTouchstart (event) {
+    _startTouchEventsListeners()
     const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
     touchOffset = currentTouchOffset = { pageX, pageY }
 
     delta = {}
     isScrolling = false
-
-    _startTouchMouseEventsListeners()
   }
 
   function onTouchmove (event) {
-    const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
+    window.requestAnimationFrame(function () {
+      const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
 
-    delta = {
-      x: pageX - touchOffset.pageX,
-      y: pageY - touchOffset.pageY
-    }
+      delta = {
+        x: pageX - touchOffset.pageX,
+        y: pageY - touchOffset.pageY
+      }
 
-    const deltaNow = {
-      x: pageX - currentTouchOffset.pageX,
-      y: pageY - currentTouchOffset.pageY
-    }
+      const deltaNow = {
+        x: pageX - currentTouchOffset.pageX,
+        y: pageY - currentTouchOffset.pageY
+      }
 
-    currentTouchOffset = { pageX, pageY }
+      currentTouchOffset = { pageX, pageY }
 
-    const isScrollingNow = Math.abs(deltaNow.x) < Math.abs(deltaNow.y)
-    isScrolling = !!(isScrolling || isScrollingNow)
+      const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
+      isScrolling = !!(isScrolling || isScrollingNow)
 
-    if (!isScrolling && delta.x !== 0) {
-      _translate(position + delta.x, 50, LINEAR_ANIMATION)
-    } else if (isScrolling) {
-      onTouchend(event)
-    }
+      if (!isScrolling && delta.x !== 0) {
+        _translate(position + delta.x, 50, LINEAR_ANIMATION)
+      } else if (isScrolling) {
+        onTouchend(event)
+      }
+    })
   }
 
   function onTouchend (event) {
-    /**
-     * is valid if:
-     * -> swipe distance is greater than the specified valid swipe distance
-     * -> swipe distance is more then a third of the swipe area
-     * @isValidSlide {Boolean}
-     */
-    const absoluteX = Math.abs(delta.x)
-    const isValid = absoluteX > VALID_SWIPE_DISTANCE || absoluteX > frameWidth / 3
+    window.requestAnimationFrame(function () {
+      /**
+       * is valid if:
+       * -> swipe distance is greater than the specified valid swipe distance
+       * -> swipe distance is more then a third of the swipe area
+       * @isValidSlide {Boolean}
+       */
+      const absoluteX = abs(delta.x)
+      const isValid = absoluteX > VALID_SWIPE_DISTANCE || absoluteX > frameWidth / 3
 
-    /**
-     * is out of bounds if:
-     * -> index is 0 and delta x is greater than 0
-     * -> index is the last slide and delta is smaller than 0
-     * @isOutOfBounds {Boolean}
-     */
-    const isOutOfBounds = !index && delta.x > 0 ||
-        index === slides.length - 1 && delta.x < 0
-
-    if (isValid && !isOutOfBounds) {
+      /**
+       * is out of bounds if:
+       * -> index is 0 and delta x is greater than 0
+       * -> index is the last slide and delta is smaller than 0
+       * @isOutOfBounds {Boolean}
+       */
       const direction = delta.x < 0
-      slide(direction)
-    } else {
-      _translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
-    }
+      const isOutOfBounds = !index && !direction ||
+          index === slides.length - 1 && direction
 
-    touchOffset = {}
-    isScrolling = false
+      if (isValid && !isOutOfBounds) {
+        slide(direction)
+      } else {
+        _translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
+      }
 
-    // remove eventlisteners after swipe attempt
-    _removeTouchMouseEventsListeners()
-  }
-
-  function onClick (event) {
-    if (delta.x) {
-      event.preventDefault()
-    }
+      touchOffset = {}
+      isScrolling = false
+    })
+    _removeTouchEventsListeners()
   }
 
   function onResize (event) {
@@ -302,16 +274,11 @@ export function slidy (slider, opts) {
     const {
       classNameFrame,
       classNameSlideContainer,
-      classNamePrevCtrl,
-      classNameNextCtrl,
-      enableMouseEvents,
       infinite
     } = options
 
     frame = slider.getElementsByClassName(classNameFrame)[0]
     slideContainer = frame.getElementsByClassName(classNameSlideContainer)[0]
-    prevCtrl = slider.getElementsByClassName(classNamePrevCtrl)[0]
-    nextCtrl = slider.getElementsByClassName(classNameNextCtrl)[0]
 
     position = slideContainer.offsetLeft
 
@@ -321,19 +288,9 @@ export function slidy (slider, opts) {
 
     reset()
 
-    if (prevCtrl && nextCtrl) {
-      prevCtrl.addEventListener('click', prev)
-      nextCtrl.addEventListener('click', next)
-    }
-
-    if (enableMouseEvents) {
-      frame.addEventListener('mousedown', onTouchstart)
-      frame.addEventListener('click', onClick)
-    }
-
     slideContainer.addEventListener(prefixes.transitionEnd, onTransitionEnd)
-    frame.addEventListener('touchstart', onTouchstart)
-    options.window.addEventListener('resize', onResize)
+    frame.addEventListener('touchstart', onTouchstart, EVENT_OPTIONS)
+    options.window.addEventListener('resize', onResize, EVENT_OPTIONS)
   }
 
   /**
@@ -353,7 +310,7 @@ export function slidy (slider, opts) {
       }, 0)
     }
 
-    const slidesHeight = Math.floor(slideContainer.firstChild.getBoundingClientRect().height) + 'px'
+    const slidesHeight = floor(slideContainer.firstChild.getBoundingClientRect().height) + 'px'
     slider.style.height = slidesHeight
     slideContainer.style.height = slidesHeight
     frame.style.height = slidesHeight
