@@ -8,10 +8,10 @@ const VALID_SWIPE_DISTANCE = 25
 
 export function slidy (slider, options) {
   const {abs, floor, min, max, round} = Math
+  const {frameDOMEl} = options
   const windowDOM = window
   // DOM elements
-  const frame = slider.getElementsByClassName(options.classNameFrame)[0]
-  const slideContainer = frame.getElementsByClassName(options.classNameSlideContainer)[0]
+  const slideContainerDOMEl = frameDOMEl.getElementsByClassName(options.classNameSlideContainer)[0]
   // initialize some variables
   let frameWidth = 0
   let index = 0
@@ -60,20 +60,20 @@ export function slidy (slider, options) {
     const totalSlides = slideArray.length
     const front = slideArray.slice(0, infinite)
     const back = slideArray.slice(totalSlides - infinite, totalSlides)
-    const { firstChild } = slideContainer
+    const { firstChild } = slideContainerDOMEl
 
     front.forEach(function (el) {
       const cloned = el.cloneNode(true)
-      slideContainer.appendChild(cloned)
+      slideContainerDOMEl.appendChild(cloned)
     })
 
     back.reverse()
       .forEach(function (el) {
         const cloned = el.cloneNode(true)
-        slideContainer.insertBefore(cloned, firstChild)
+        slideContainerDOMEl.insertBefore(cloned, firstChild)
       })
 
-    return slice.call(slideContainer.children)
+    return slice.call(slideContainerDOMEl.children)
   }
 
   /**
@@ -89,7 +89,7 @@ export function slidy (slider, options) {
     const cssText = `${easeCssText}${durationCssText}
       ${prefixes.transform}: ${prefixes.translate(to)};`
 
-    slideContainer.style.cssText = cssText
+    slideContainerDOMEl.style.cssText = cssText
   }
 
   /**
@@ -161,21 +161,21 @@ export function slidy (slider, options) {
   }
 
   function _startTouchEventsListeners () {
-    frame.addEventListener('touchmove', onTouchmove)
-    frame.addEventListener('touchend', onTouchend)
+    frameDOMEl.addEventListener('touchmove', onTouchmove)
+    frameDOMEl.addEventListener('touchend', onTouchend)
   }
 
   function _removeTouchEventsListeners (all = false) {
-    frame.removeEventListener('touchmove', onTouchmove)
-    frame.removeEventListener('touchend', onTouchend)
+    frameDOMEl.removeEventListener('touchmove', onTouchmove)
+    frameDOMEl.removeEventListener('touchend', onTouchend)
     if (all) {
-      frame.removeEventListener('touchstart', onTouchstart)
+      frameDOMEl.removeEventListener('touchstart', onTouchstart)
     }
   }
 
   function _removeAllEventsListeners () {
     _removeTouchEventsListeners(true)
-    frame.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
+    frameDOMEl.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
     windowDOM.removeEventListener('resize', onResize)
   }
 
@@ -261,16 +261,16 @@ export function slidy (slider, options) {
   function _setup () {
     const { infinite } = options
 
-    position = slideContainer.offsetLeft
+    position = slideContainerDOMEl.offsetLeft
 
     slides = infinite
-             ? _setupInfinite(slice.call(slideContainer.children))
-             : slice.call(slideContainer.children)
+             ? _setupInfinite(slice.call(slideContainerDOMEl.children))
+             : slice.call(slideContainerDOMEl.children)
 
     reset()
 
-    slideContainer.addEventListener(prefixes.transitionEnd, onTransitionEnd)
-    frame.addEventListener('touchstart', onTouchstart)
+    slideContainerDOMEl.addEventListener(prefixes.transitionEnd, onTransitionEnd)
+    frameDOMEl.addEventListener('touchstart', onTouchstart)
     windowDOM.addEventListener('resize', onResize)
   }
 
@@ -282,8 +282,8 @@ export function slidy (slider, options) {
     const {infinite, rewindOnResize} = options
     let { ease, rewindSpeed } = options
 
-    slidesWidth = _getWidthFromDOMEl(slideContainer)
-    frameWidth = _getWidthFromDOMEl(frame)
+    slidesWidth = _getWidthFromDOMEl(slideContainerDOMEl)
+    frameWidth = _getWidthFromDOMEl(frameDOMEl)
 
     if (frameWidth === slidesWidth) {
       slidesWidth = slides.reduce(function (previousValue, slide) {
@@ -291,10 +291,10 @@ export function slidy (slider, options) {
       }, 0)
     }
 
-    const slidesHeight = floor(slideContainer.firstChild.getBoundingClientRect().height) + 'px'
+    const slidesHeight = floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
     slider.style.height = slidesHeight
-    slideContainer.style.height = slidesHeight
-    frame.style.height = slidesHeight
+    slideContainerDOMEl.style.height = slidesHeight
+    frameDOMEl.style.height = slidesHeight
 
     if (rewindOnResize) {
       index = 0
@@ -347,10 +347,10 @@ export function slidy (slider, options) {
     _removeAllEventsListeners()
     // remove cloned slides if infinite is set
     if (infinite) {
-      const {firstChild, lastChild} = slideContainer
+      const {firstChild, lastChild} = slideContainerDOMEl
       Array.apply(null, Array(infinite)).forEach(function () {
-        slideContainer.removeChild(firstChild)
-        slideContainer.removeChild(lastChild)
+        slideContainerDOMEl.removeChild(firstChild)
+        slideContainerDOMEl.removeChild(lastChild)
       })
     }
   }

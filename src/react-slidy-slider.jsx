@@ -19,19 +19,25 @@ export default class ReactSlidySlider extends Component {
 
   constructor (...args) {
     super(...args)
+
+    this.getFrameNode = this.getFrameNode.bind(this)
     this.getSliderNode = this.getSliderNode.bind(this)
     this.handleAfterSlide = this.handleAfterSlide.bind(this)
     this.nextSlider = this.nextSlider.bind(this)
     this.prevSlider = this.prevSlider.bind(this)
     this.slidyInstance = null
 
-    this.state = { currentSlide: 0 }
-    this.sliderOptions = {
+    this.classes = {
       classNameItem: this.getClassName('item'),
       classNameFrame: this.getClassName('frame'),
       classNameSlideContainer: this.getClassName('slides'),
       classNamePrevCtrl: this.getClassName('prev'),
-      classNameNextCtrl: this.getClassName('next'),
+      classNameNextCtrl: this.getClassName('next')
+    }
+
+    this.state = { currentSlide: 0 }
+    this.sliderOptions = {
+      ...this.classes,
       doAfterSlide: this.handleAfterSlide,
       // fix if the user try to use a `true` value for infinite
       infinite: this.props.infinite === true ? 1 : this.props.infinite,
@@ -40,14 +46,20 @@ export default class ReactSlidySlider extends Component {
     }
 
     const { children } = this.props
+    this.DOM = {}
     this.listItems = Array.isArray(children) ? children : [children]
   }
 
   componentDidMount () {
     // wait to load the images in order to start some stuff only when needed
     imagesLoaded(this.sliderNode, () => {
+      const slidyOptions = {
+        ...this.props,
+        ...this.sliderOptions,
+        frameDOMEl: this.DOM['frame']
+      }
       // start slidy slider instance
-      this.slidyInstance = slidy(this.sliderNode, {...this.props, ...this.sliderOptions})
+      this.slidyInstance = slidy(this.sliderNode, slidyOptions)
     })
   }
 
@@ -61,6 +73,10 @@ export default class ReactSlidySlider extends Component {
 
   getClassName (element) {
     return `${this.props.classNameBase}-${element}`
+  }
+
+  getFrameNode (node) {
+    this.DOM['frame'] = node
   }
 
   getSliderNode (node) {
@@ -88,7 +104,7 @@ export default class ReactSlidySlider extends Component {
 
     return (
       <div ref={this.getSliderNode}>
-        <div className={this.sliderOptions.classNameFrame}>
+        <div ref={this.getFrameNode} className={this.sliderOptions.classNameFrame}>
           {showArrows && <span className={this.sliderOptions.classNamePrevCtrl} onClick={this.prevSlider} />}
           {showArrows && <span className={this.sliderOptions.classNameNextCtrl} onClick={this.nextSlider} />}
           <ReactSlidyList
