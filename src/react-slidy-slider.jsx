@@ -64,7 +64,7 @@ export default class ReactSlidySlider extends Component {
   }
 
   componentWillUnmount () {
-    this.slidyInstance.destroy()
+    this.slidyInstance && this.slidyInstance.destroy()
   }
 
   shouldComponentUpdate (nextProps, {currentSlide}) {
