@@ -52,14 +52,14 @@ export default class ReactSlidySlider extends Component {
 
   componentDidMount () {
     // wait to load the images in order to start some stuff only when needed
-    imagesLoaded(this.sliderNode, () => {
+    imagesLoaded(this.DOM['slider'], () => {
       const slidyOptions = {
         ...this.props,
         ...this.sliderOptions,
         frameDOMEl: this.DOM['frame']
       }
       // start slidy slider instance
-      this.slidyInstance = slidy(this.sliderNode, slidyOptions)
+      this.slidyInstance = slidy(this.DOM['slider'], slidyOptions)
     })
   }
 
@@ -80,7 +80,7 @@ export default class ReactSlidySlider extends Component {
   }
 
   getSliderNode (node) {
-    this.sliderNode = node
+    this.DOM['slider'] = node
   }
 
   handleAfterSlide ({currentSlide}) {

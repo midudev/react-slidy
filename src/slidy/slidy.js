@@ -15,9 +15,9 @@ export function slidy (slider, options) {
   // initialize some variables
   let frameWidth = 0
   let index = 0
+  let maxOffset = 0
   let position = 0
-  let slides = 0
-  let slidesWidth = 0
+  let slides = []
   let transitionEndCallback
 
   // event handling
@@ -113,7 +113,6 @@ export function slidy (slider, options) {
     let duration = slideSpeed
 
     const movement = direction ? 1 : -1
-    const maxOffset = round(slidesWidth - frameWidth)
     const totalSlides = slides.length
 
     // calculate the nextIndex according to the movement and the slidesToScroll
@@ -211,7 +210,7 @@ export function slidy (slider, options) {
     isScrolling = !!(isScrolling || isScrollingNow)
 
     if (!isScrolling && delta.x !== 0) {
-      _translate(position + delta.x, 50, LINEAR_ANIMATION)
+      _translate(position + delta.x, 0)
     } else if (isScrolling) {
       onTouchend(event)
     }
@@ -260,12 +259,10 @@ export function slidy (slider, options) {
    */
   function _setup () {
     const { infinite } = options
-
+    const slidesArray = slice.call(slideContainerDOMEl.children)
     position = slideContainerDOMEl.offsetLeft
 
-    slides = infinite
-             ? _setupInfinite(slice.call(slideContainerDOMEl.children))
-             : slice.call(slideContainerDOMEl.children)
+    slides = infinite ? _setupInfinite(slidesArray) : slice.call(slidesArray)
 
     reset()
 
@@ -282,14 +279,8 @@ export function slidy (slider, options) {
     const {infinite, rewindOnResize} = options
     let { ease, rewindSpeed } = options
 
-    slidesWidth = _getWidthFromDOMEl(slideContainerDOMEl)
     frameWidth = _getWidthFromDOMEl(frameDOMEl)
-
-    if (frameWidth === slidesWidth) {
-      slidesWidth = slides.reduce(function (previousValue, slide) {
-        return previousValue + _getWidthFromDOMEl(slide)
-      }, 0)
-    }
+    maxOffset = round(frameWidth * slides.length - frameWidth)
 
     const slidesHeight = floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
     slider.style.height = slidesHeight
