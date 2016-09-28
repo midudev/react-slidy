@@ -267,7 +267,7 @@ export function slidy (slider, options) {
     reset()
 
     slideContainerDOMEl.addEventListener(prefixes.transitionEnd, onTransitionEnd)
-    frameDOMEl.addEventListener('touchstart', onTouchstart)
+    // frameDOMEl.addEventListener('touchstart', onTouchstart)
     windowDOM.addEventListener('resize', onResize)
   }
 

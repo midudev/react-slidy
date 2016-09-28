@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react'
+import detectPrefixes from './slidy/detect-prefixes.js'
 
 import ReactSlidyList from './react-slidy-list'
 
+// const LINEAR_ANIMATION = 'linear'
+// const VALID_SWIPE_DISTANCE = 25
 const NO_OP = () => {}
 
 // in order to make react-slidy compatible with server-rendering
@@ -23,8 +26,13 @@ export default class ReactSlidySlider extends Component {
     this.getFrameNode = this.getFrameNode.bind(this)
     this.getSliderNode = this.getSliderNode.bind(this)
     this.handleAfterSlide = this.handleAfterSlide.bind(this)
+    this.handleTouchStart = this.handleTouchStart.bind(this)
+    this.handleTouchMove = this.handleTouchMove.bind(this)
+    this.handleTouchEnd = this.handleTouchEnd.bind(this)
     this.nextSlider = this.nextSlider.bind(this)
     this.prevSlider = this.prevSlider.bind(this)
+
+    this.cssVendorPrefixes = {}
     this.slidyInstance = null
 
     this.classes = {
@@ -35,7 +43,18 @@ export default class ReactSlidySlider extends Component {
       classNameNextCtrl: this.getClassName('next')
     }
 
-    this.state = { currentSlide: 0 }
+    this.state = {
+      cssTransform: '',
+      currentSlide: 0,
+      currentTouchOffset: { pageX: 0, pageY: 0 },
+      delta: { x: 0, y: 0 },
+      index: 0,
+      isScrolling: false,
+      position: 0,
+      touchOffset: { pageX: 0, pageY: 0 },
+      touchStarted: false
+    }
+
     this.sliderOptions = {
       ...this.classes,
       doAfterSlide: this.handleAfterSlide,
@@ -51,6 +70,7 @@ export default class ReactSlidySlider extends Component {
   }
 
   componentDidMount () {
+    this.cssVendorPrefixes = detectPrefixes()
     // wait to load the images in order to start some stuff only when needed
     imagesLoaded(this.DOM['slider'], () => {
       const slidyOptions = {
@@ -60,6 +80,7 @@ export default class ReactSlidySlider extends Component {
       }
       // start slidy slider instance
       this.slidyInstance = slidy(this.DOM['slider'], slidyOptions)
+      this.slidyInstance.destroy()
     })
   }
 
@@ -89,6 +110,90 @@ export default class ReactSlidySlider extends Component {
     })
   }
 
+  handleTouchStart (e) {
+    const {pageX, pageY} = e.touches[0]
+    this.setState({
+      currentTouchOffset: { pageX, pageY },
+      touchOffset: { pageX, pageY },
+      touchStarted: true,
+      isScrolling: false
+    })
+  }
+
+  handleTouchMove (e) {
+    const { pageX, pageY } = e.touches[0]
+    const { currentTouchOffset, touchOffset } = this.state
+    let { cssTransform } = this.state
+
+    const delta = {
+      x: pageX - touchOffset.pageX,
+      y: pageY - touchOffset.pageY
+    }
+
+    const deltaNow = {
+      x: pageX - currentTouchOffset.pageX,
+      y: pageY - currentTouchOffset.pageY
+    }
+
+    const isScrollingNow = Math.abs(deltaNow.x) < Math.abs(deltaNow.y)
+    const isScrolling = !!(this.state.isScrolling || isScrollingNow)
+
+    this.setState({
+      isScrolling
+    }, () => {
+      if (!isScrolling && delta.x !== 0) {
+        cssTransform = this.createTranslation()
+        this.setState({ cssTransform })
+      } else if (isScrolling) {
+        this.handleTouchEnd()
+      }
+    })
+  }
+
+  handleTouchEnd () {
+    // const { delta, index } = this.state
+    /**
+     * is valid if:
+     * -> swipe distance is greater than the specified valid swipe distance
+     * -> swipe distance is more then a third of the swipe area
+     * @isValidSlide {Boolean}
+     */
+    // const absoluteX = Math.abs(delta.x)
+    // const isValid = absoluteX > VALID_SWIPE_DISTANCE || absoluteX > frameWidth / 3
+
+    /**
+     * is out of bounds if:
+     * -> index is 0 and delta x is greater than 0
+     * -> index is the last slide and delta is smaller than 0
+     * @isOutOfBounds {Boolean}
+     */
+
+    // const direction = delta.x < 0
+    // const isOutOfBounds = !index && !direction ||
+    //     index === slides.length - 1 && direction
+    //
+    // if (isValid && !isOutOfBounds) {
+    //   //slide(direction)
+    // } else {
+    //   //_translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
+    // }
+
+    this.setState({
+      delta: { x: 0, y: 0 },
+      touchOffset: { x: 0, y: 0 },
+      isScrolling: false,
+      touchStarted: false
+    })
+  }
+
+  createTranslation (to, duration, ease) {
+    const { cssVendorPrefixes } = this
+    const easeCssText = ease ? `${cssVendorPrefixes.transitionTiming}: ${ease};` : ''
+    const durationCssText = duration ? `${cssVendorPrefixes.transitionDuration}: ${duration}ms;` : ''
+    return `${easeCssText}${durationCssText}
+      ${cssVendorPrefixes.transform}: ${cssVendorPrefixes.translate(to)};`
+  }
+
   nextSlider (e) {
     e.preventDefault()
     this.slidyInstance.next()
@@ -104,7 +209,12 @@ export default class ReactSlidySlider extends Component {
 
     return (
       <div ref={this.getSliderNode}>
-        <div ref={this.getFrameNode} className={this.sliderOptions.classNameFrame}>
+        <div
+          className={this.sliderOptions.classNameFrame}
+          onTouchStart={this.handleTouchStart}
+          onTouchMove={this.handleTouchMove}
+          onTouchEnd={this.handleTouchEnd}
+          ref={this.getFrameNode}>
           {showArrows && <span className={this.sliderOptions.classNamePrevCtrl} onClick={this.prevSlider} />}
           {showArrows && <span className={this.sliderOptions.classNameNextCtrl} onClick={this.nextSlider} />}
           <ReactSlidyList
