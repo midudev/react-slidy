@@ -44,6 +44,14 @@ const config = {
   ...handlers
 }
 
+const createStyleBackgroundWithImgObject = (imageObj) => {
+  return {
+    backgroundImage: `url('${imageObj.src}')`,
+    backgroundSize: 'contain',
+    display: 'none'
+  }
+}
+
 class App extends Component {
 
   constructor (...args) {
@@ -61,6 +69,14 @@ class App extends Component {
     return (<div>
     {this.state.mounted &&
       <div>
+        <h3>With background images</h3>
+        <ReactSlidy {...config} aspectRatio={1}>
+          <div style={createStyleBackgroundWithImgObject(images[0])} />
+          <div style={createStyleBackgroundWithImgObject(images[1])} />
+          <div style={createStyleBackgroundWithImgObject(images[2])} />
+          <div style={createStyleBackgroundWithImgObject(images[3])} />
+        </ReactSlidy>
+
         <h3>With other components</h3>
         <ReactSlidy {...config}>
           {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}

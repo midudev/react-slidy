@@ -121,6 +121,7 @@ export default class ReactSlidySlider extends Component {
 }
 
 ReactSlidySlider.propTypes = {
+  aspectRatio: PropTypes.number,
   children: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object
@@ -140,11 +141,11 @@ ReactSlidySlider.propTypes = {
   rewindSpeed: PropTypes.number,
   showArrows: PropTypes.bool,
   slideSpeed: PropTypes.number,
-  slidesToScroll: PropTypes.number,
   snapBackSpeed: PropTypes.number
 }
 
 ReactSlidySlider.defaultProps = {
+  aspectRatio: 0,
   doAfterSlide: NO_OP,
   ease: 'ease',
   enableMouseEvents: true,
@@ -160,6 +161,5 @@ ReactSlidySlider.defaultProps = {
   rewindSpeed: 300,
   showArrows: true,
   slideSpeed: 300,
-  slidesToScroll: 1,
   snapBackSpeed: 300
 }

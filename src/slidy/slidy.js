@@ -4,9 +4,19 @@ const { slice } = Array.prototype
 const prefixes = detectPrefixes()
 
 const LINEAR_ANIMATION = 'linear'
+const SLIDES_TO_SCROLL = 1
 const VALID_SWIPE_DISTANCE = 25
 
 export function slidy (slider, options) {
+  const {
+    aspectRatio,
+    ease,
+    infinite,
+    rewind,
+    rewindSpeed,
+    slideSpeed
+  } = options
+
   const {abs, floor, min, max, round} = Math
   const {frameDOMEl} = options
   const windowDOM = window
@@ -101,22 +111,13 @@ export function slidy (slider, options) {
    * @direction  {boolean}
    */
   function slide (direction) {
-    const {
-      slideSpeed,
-      slidesToScroll,
-      infinite,
-      rewind,
-      rewindSpeed,
-      ease
-    } = options
-
     let duration = slideSpeed
 
     const movement = direction ? 1 : -1
     const totalSlides = slides.length
 
-    // calculate the nextIndex according to the movement and the slidesToScroll
-    let nextIndex = index + slidesToScroll * movement
+    // calculate the nextIndex according to the movement
+    let nextIndex = index + SLIDES_TO_SCROLL * movement
 
     // nextIndex should be between 0 and totalSlides minus 1
     nextIndex = _clampNumber(nextIndex, 0, totalSlides - 1)
@@ -154,9 +155,7 @@ export function slidy (slider, options) {
       }
     }
 
-    setTimeout(function () {
-      options.doAfterSlide({ currentSlide: index })
-    }, 0)
+    options.doAfterSlide({ currentSlide: index })
   }
 
   function _startTouchEventsListeners () {
@@ -282,7 +281,10 @@ export function slidy (slider, options) {
     frameWidth = _getWidthFromDOMEl(frameDOMEl)
     maxOffset = round(frameWidth * slides.length - frameWidth)
 
-    const slidesHeight = floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
+    let slidesHeight = aspectRatio
+                       ? aspectRatio * frameWidth
+                       : floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
+
     slider.style.height = slidesHeight
     slideContainerDOMEl.style.height = slidesHeight
     frameDOMEl.style.height = slidesHeight

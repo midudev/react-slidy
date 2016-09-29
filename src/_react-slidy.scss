@@ -71,6 +71,7 @@ $c-nav-color: #aaaaaa;
   }
 
   &-frame {
+    backface-visibility: hidden;
     font-size: 0;
     overflow: hidden;
     position: relative;
@@ -83,14 +84,17 @@ $c-nav-color: #aaaaaa;
     backface-visibility: hidden;
     display: block;
     list-style: none;
+    height: 100%;
     padding: 0;
     position: absolute;
+    transform: translateZ(0);
     width: 100%;
     will-change: transform;
   }
 
   &-item {
     display: inline-block;
+    height: 100%;
     position: relative;
     vertical-align: top;
     width: 100%;
