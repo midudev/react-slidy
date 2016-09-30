@@ -4,9 +4,20 @@ const { slice } = Array.prototype
 const prefixes = detectPrefixes()
 
 const LINEAR_ANIMATION = 'linear'
+const SLIDES_TO_SCROLL = 1
 const VALID_SWIPE_DISTANCE = 25
 
 export function slidy (slider, options) {
+  const {
+    aspectRatio,
+    ease,
+    infinite,
+    items,
+    rewind,
+    rewindSpeed,
+    slideSpeed
+  } = options
+
   const {abs, floor, min, max, round} = Math
   const {frameDOMEl} = options
   const windowDOM = window
@@ -15,6 +26,7 @@ export function slidy (slider, options) {
   // initialize some variables
   let frameWidth = 0
   let index = 0
+  let loadedIndex = { 0: 1 }
   let maxOffset = 0
   let position = 0
   let slides = []
@@ -92,6 +104,18 @@ export function slidy (slider, options) {
     slideContainerDOMEl.style.cssText = cssText
   }
 
+  function debounce (fn, delay) {
+    let timer = null
+    return function () {
+      let context = this
+      let args = arguments
+      clearTimeout(timer)
+      timer = setTimeout(function () {
+        fn.apply(context, args)
+      }, delay)
+    }
+  }
+
   /**
    * slidefunction called by prev, next & touchend
    *
@@ -101,22 +125,13 @@ export function slidy (slider, options) {
    * @direction  {boolean}
    */
   function slide (direction) {
-    const {
-      slideSpeed,
-      slidesToScroll,
-      infinite,
-      rewind,
-      rewindSpeed,
-      ease
-    } = options
-
     let duration = slideSpeed
 
     const movement = direction ? 1 : -1
     const totalSlides = slides.length
 
-    // calculate the nextIndex according to the movement and the slidesToScroll
-    let nextIndex = index + slidesToScroll * movement
+    // calculate the nextIndex according to the movement
+    let nextIndex = index + SLIDES_TO_SCROLL * movement
 
     // nextIndex should be between 0 and totalSlides minus 1
     nextIndex = _clampNumber(nextIndex, 0, totalSlides - 1)
@@ -152,11 +167,20 @@ export function slidy (slider, options) {
       transitionEndCallback = function () {
         _translate(_getOffsetLeft(index) * -1, 0)
       }
+    } else {
+      debounce(function () {
+        // get the next slide and add to the dom
+        const indexToLoad = index + SLIDES_TO_SCROLL * movement
+        const indexLoaded = !!loadedIndex[indexToLoad]
+        if (indexToLoad < totalSlides && indexToLoad >= 0 && !indexLoaded) {
+          // insert in the correct position
+          slideContainerDOMEl.appendChild(slides[indexToLoad])
+          loadedIndex[indexToLoad] = 1
+        }
+      }, 250)()
     }
 
-    setTimeout(function () {
-      options.doAfterSlide({ currentSlide: index })
-    }, 0)
+    options.doAfterSlide({ currentSlide: index })
   }
 
   function _startTouchEventsListeners () {
@@ -249,6 +273,12 @@ export function slidy (slider, options) {
     _removeTouchEventsListeners()
   }
 
+  function _convertItemToDOM (string) {
+    return document
+            .createRange()
+            .createContextualFragment(`<li class='${options.classNameItem}'>${string}</li>`)
+  }
+
   function onResize (event) {
     reset()
   }
@@ -259,7 +289,7 @@ export function slidy (slider, options) {
    */
   function _setup () {
     const { infinite } = options
-    const slidesArray = slice.call(slideContainerDOMEl.children)
+    const slidesArray = slice.call(items.map(i => _convertItemToDOM(i)))
     position = slideContainerDOMEl.offsetLeft
 
     slides = infinite ? _setupInfinite(slidesArray) : slice.call(slidesArray)
@@ -282,7 +312,10 @@ export function slidy (slider, options) {
     frameWidth = _getWidthFromDOMEl(frameDOMEl)
     maxOffset = round(frameWidth * slides.length - frameWidth)
 
-    const slidesHeight = floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
+    let slidesHeight = aspectRatio
+                       ? aspectRatio * frameWidth
+                       : floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
+
     slider.style.height = slidesHeight
     slideContainerDOMEl.style.height = slidesHeight
     frameDOMEl.style.height = slidesHeight
