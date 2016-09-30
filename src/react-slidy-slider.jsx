@@ -87,7 +87,7 @@ export default class ReactSlidySlider extends Component {
   }
 
   handleAfterSlide ({currentSlide}) {
-    this.props.doAfterSlide(currentSlide)
+    this.props.doAfterSlide({currentSlide})
   }
 
   nextSlider (e) {
