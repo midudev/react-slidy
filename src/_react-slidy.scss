@@ -71,6 +71,8 @@ $c-nav-color: #aaaaaa;
   }
 
   &-frame {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     font-size: 0;
     overflow: hidden;
     position: relative;
@@ -80,27 +82,34 @@ $c-nav-color: #aaaaaa;
   }
 
   &-slides {
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     display: block;
     list-style: none;
     padding: 0;
     position: absolute;
     width: 100%;
-    will-change: transform;
+    will-change: transform, transition-timing, transition-duration;
   }
 
   &-item {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     display: inline-block;
     position: relative;
+    transform: translateZ(0);
+    user-select: none;
     vertical-align: top;
     width: 100%;
   }
 
   img {
+    -webkit-backface-visibility: hidden;
     display: block;
     height: auto;
     pointer-events: none;
     touch-action: none;
+    user-select: none;
     width: 100%;
   }
 

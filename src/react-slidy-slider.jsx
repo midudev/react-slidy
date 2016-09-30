@@ -42,7 +42,6 @@ export default class ReactSlidySlider extends Component {
       return ReactDOMServer.renderToStaticMarkup(child)
     })
 
-    this.state = { currentSlide: 0 }
     this.sliderOptions = {
       ...this.classes,
       items: sliderItems,
@@ -88,9 +87,7 @@ export default class ReactSlidySlider extends Component {
   }
 
   handleAfterSlide ({currentSlide}) {
-    this.setState({currentSlide}, function () {
-      this.props.doAfterSlide({currentSlide})
-    })
+    this.props.doAfterSlide(currentSlide)
   }
 
   nextSlider (e) {
@@ -165,9 +162,9 @@ ReactSlidySlider.defaultProps = {
   onReady: NO_OP,
   rewind: false,
   rewindOnResize: false,
-  rewindSpeed: 300,
+  rewindSpeed: 500,
   showArrows: true,
-  slideSpeed: 300,
+  slideSpeed: 500,
   slidesToScroll: 1,
-  snapBackSpeed: 300
+  snapBackSpeed: 500
 }

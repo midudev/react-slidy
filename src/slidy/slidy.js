@@ -26,7 +26,7 @@ export function slidy (slider, options) {
   // initialize some variables
   let frameWidth = 0
   let index = 0
-  let loadedIndex = { 0: 1 }
+  let loadedIndex = { 0: 1, 1: 1 }
   let maxOffset = 0
   let position = 0
   let slides = []
@@ -46,12 +46,6 @@ export function slidy (slider, options) {
   // get the width from a DOM element
   function _getWidthFromDOMEl (el) {
     return el.getBoundingClientRect().width
-  }
-
-  // get the coordinates from touch event
-  function _getTouchCoordinatesFromEvent (event) {
-    const { pageX, pageY } = event.targetTouches ? event.targetTouches[0] : event
-    return { pageX: round(pageX), pageY: round(pageY) }
   }
 
   // calculate the offset with the width of the frame and the desired position
@@ -104,18 +98,6 @@ export function slidy (slider, options) {
     slideContainerDOMEl.style.cssText = cssText
   }
 
-  function debounce (fn, delay) {
-    let timer = null
-    return function () {
-      let context = this
-      let args = arguments
-      clearTimeout(timer)
-      timer = setTimeout(function () {
-        fn.apply(context, args)
-      }, delay)
-    }
-  }
-
   /**
    * slidefunction called by prev, next & touchend
    *
@@ -165,27 +147,20 @@ export function slidy (slider, options) {
       position = _getOffsetLeft(index) * -1
 
       transitionEndCallback = function () {
+        alert('hola')
         _translate(_getOffsetLeft(index) * -1, 0)
       }
     } else {
-      debounce(function () {
-        // get the next slide and add to the dom
-        const indexToLoad = index + SLIDES_TO_SCROLL * movement
-        const indexLoaded = !!loadedIndex[indexToLoad]
-        if (indexToLoad < totalSlides && indexToLoad >= 0 && !indexLoaded) {
-          // insert in the correct position
-          slideContainerDOMEl.appendChild(slides[indexToLoad])
-          loadedIndex[indexToLoad] = 1
-        }
-      }, 250)()
+      const indexToLoad = index + SLIDES_TO_SCROLL * movement
+      const indexLoaded = !!loadedIndex[indexToLoad]
+      if (indexToLoad < totalSlides && indexToLoad >= 0 && !indexLoaded) {
+        // insert in the correct position
+        slideContainerDOMEl.appendChild(slides[indexToLoad])
+        loadedIndex[indexToLoad] = 1
+      }
     }
 
     options.doAfterSlide({ currentSlide: index })
-  }
-
-  function _startTouchEventsListeners () {
-    frameDOMEl.addEventListener('touchmove', onTouchmove)
-    frameDOMEl.addEventListener('touchend', onTouchend)
   }
 
   function _removeTouchEventsListeners (all = false) {
@@ -210,13 +185,14 @@ export function slidy (slider, options) {
   }
 
   function onTouchstart (event) {
-    const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
+    const { pageX, pageY } = event.targetTouches ? event.targetTouches[0] : event
     touchOffset = currentTouchOffset = { pageX, pageY }
-    _startTouchEventsListeners()
+    frameDOMEl.addEventListener('touchmove', onTouchmove)
+    frameDOMEl.addEventListener('touchend', onTouchend)
   }
 
   function onTouchmove (event) {
-    const { pageX, pageY } = _getTouchCoordinatesFromEvent(event)
+    const { pageX, pageY } = event.targetTouches ? event.targetTouches[0] : event
 
     delta = {
       x: pageX - touchOffset.pageX,
@@ -234,8 +210,13 @@ export function slidy (slider, options) {
     isScrolling = !!(isScrolling || isScrollingNow)
 
     if (!isScrolling && delta.x !== 0) {
-      _translate(position + delta.x, 0)
+      document.getElementById('debugger').innerHTML = `
+        ${isScrolling}
+        ${delta.x}
+        ${Math.round(position + delta.x)}`
+      _translate(Math.round(position + delta.x), 0)
     } else if (isScrolling) {
+      event.preventDefault()
       onTouchend(event)
     }
   }
@@ -316,7 +297,6 @@ export function slidy (slider, options) {
                        ? aspectRatio * frameWidth
                        : floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
 
-    slider.style.height = slidesHeight
     slideContainerDOMEl.style.height = slidesHeight
     frameDOMEl.style.height = slidesHeight
 
