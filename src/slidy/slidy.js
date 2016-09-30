@@ -209,10 +209,6 @@ export function slidy (slider, options) {
     isScrolling = !!(isScrolling || isScrollingNow)
 
     if (!isScrolling && delta.x !== 0) {
-      document.getElementById('debugger').innerHTML = `
-        ${isScrolling}
-        ${delta.x}
-        ${Math.round(position + delta.x)}`
       _translate(Math.round(position + delta.x), 0)
     } else if (isScrolling) {
       event.preventDefault()
