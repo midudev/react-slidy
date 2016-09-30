@@ -138,7 +138,6 @@ ReactSlidySlider.propTypes = {
     PropTypes.bool,
     PropTypes.number
   ]),
-  lazyLoadConfig: PropTypes.object,
   onReady: PropTypes.func,
   rewind: PropTypes.bool,
   rewindOnResize: PropTypes.bool,
@@ -154,11 +153,6 @@ ReactSlidySlider.defaultProps = {
   ease: 'ease',
   enableMouseEvents: true,
   infinite: 1,
-  lazyLoadConfig: {
-    enabledForItems: true,
-    itemsOnLoad: 2,
-    componentPlaceholder: <div />
-  },
   onReady: NO_OP,
   rewind: false,
   rewindOnResize: false,
