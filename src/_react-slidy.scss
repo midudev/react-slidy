@@ -71,10 +71,11 @@ $c-nav-color: #aaaaaa;
   }
 
   &-frame {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     font-size: 0;
     overflow: hidden;
     position: relative;
-    transform: translateZ(0);
     white-space: nowrap;
     width: 100%;
   }
@@ -86,12 +87,14 @@ $c-nav-color: #aaaaaa;
     padding: 0;
     position: absolute;
     width: 100%;
-    will-change: transform;
+    will-change: transform, transition-timing, transition-duration;
   }
 
   &-item {
     display: inline-block;
     position: relative;
+    transform: translateZ(0);
+    user-select: none;
     vertical-align: top;
     width: 100%;
   }
@@ -101,6 +104,7 @@ $c-nav-color: #aaaaaa;
     height: auto;
     pointer-events: none;
     touch-action: none;
+    user-select: none;
     width: 100%;
   }
 

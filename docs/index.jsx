@@ -33,7 +33,7 @@ const images = [{
 }]
 
 const handlers = {
-  doAfterSlide: ({currentSlide}) => console.log(currentSlide),
+  doAfterSlide: ({currentSlide}) => {},
   doAfterDestroy: ({event}) => console.log(event)
 }
 
