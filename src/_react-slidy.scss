@@ -76,13 +76,11 @@ $c-nav-color: #aaaaaa;
     font-size: 0;
     overflow: hidden;
     position: relative;
-    transform: translateZ(0);
     white-space: nowrap;
     width: 100%;
   }
 
   &-slides {
-    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     display: block;
     list-style: none;
@@ -93,8 +91,6 @@ $c-nav-color: #aaaaaa;
   }
 
   &-item {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     display: inline-block;
     position: relative;
     transform: translateZ(0);
@@ -104,7 +100,6 @@ $c-nav-color: #aaaaaa;
   }
 
   img {
-    -webkit-backface-visibility: hidden;
     display: block;
     height: auto;
     pointer-events: none;
