@@ -147,7 +147,6 @@ export function slidy (slider, options) {
       position = _getOffsetLeft(index) * -1
 
       transitionEndCallback = function () {
-        alert('hola')
         _translate(_getOffsetLeft(index) * -1, 0)
       }
     } else {
