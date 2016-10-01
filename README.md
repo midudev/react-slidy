@@ -44,7 +44,6 @@ I haven't did a lot of testing on that but it's supposed to work on Firefox, Chr
 
 ## TODO
 
-* [ ] Add a Demo page
-* [ ] Move all library slider logic to react components
+* [ ] Improve demo page
 * [ ] Improve documentation
 * [ ] Improve server rendering compatibility
