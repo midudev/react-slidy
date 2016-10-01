@@ -1,6 +1,6 @@
 # React Slidy
 
-React minimalistic and performant slider.
+🍃 React Slidy - Minimalistic and smooth touch slider component for React
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![npm version](https://badge.fury.io/js/react-slidy.svg)](https://badge.fury.io/js/react-slidy)
@@ -15,6 +15,7 @@ React Slidy is a simple and minimal slider component. It was based on the fabulo
 I haven't did a lot of testing on that but it's supposed to work on Firefox, Chrome, Edge, Safari and IE 10+. If not, please, fill a issue.
 
 ## Features
+* 1:1 slide movement
 * Optimized for smoothness and performance
 * Lazy Loading for slider and for every slide
 * Server rendering compatible
