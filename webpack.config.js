@@ -36,7 +36,7 @@ if (TARGET === 'dist') {
   module.exports = merge(base, {
     entry: path.resolve(__dirname, 'docs/index.jsx'),
     output: {
-      filename: 'dist/index.js'
+      filename: 'docs/dist/index.js'
     },
     plugins: [
       new webpack.optimize.UglifyJsPlugin({
@@ -44,7 +44,7 @@ if (TARGET === 'dist') {
           warnings: false
         }
       }),
-      new ExtractTextPlugin('dist/index.css', {
+      new ExtractTextPlugin('docs/dist/index.css', {
         allChunks: true
       })
     ]
