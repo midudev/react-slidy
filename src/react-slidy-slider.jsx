@@ -114,8 +114,8 @@ export default class ReactSlidySlider extends Component {
     return (
       <div ref={this.getSliderNode}>
         <div ref={this.getFrameNode} className={this.sliderOptions.classNameFrame}>
-          {showArrows && <span className={this.sliderOptions.classNamePrevCtrl} onClick={this.prevSlider} />}
-          {showArrows && <span className={this.sliderOptions.classNameNextCtrl} onClick={this.nextSlider} />}
+          {showArrows && <span className={this.classes.classNamePrevCtrl} onClick={this.prevSlider} />}
+          {showArrows && <span className={this.classes.classNameNextCtrl} onClick={this.nextSlider} />}
           <ul className={this.sliderOptions.classNameSlideContainer}>
             {this.renderItems()}
           </ul>

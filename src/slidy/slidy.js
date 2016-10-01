@@ -9,7 +9,6 @@ const VALID_SWIPE_DISTANCE = 25
 
 export function slidy (slider, options) {
   const {
-    aspectRatio,
     ease,
     infinite,
     items,
@@ -165,6 +164,7 @@ export function slidy (slider, options) {
   function _removeTouchEventsListeners (all = false) {
     frameDOMEl.removeEventListener('touchmove', onTouchmove)
     frameDOMEl.removeEventListener('touchend', onTouchend)
+    frameDOMEl.removeEventListener('touchcancel', onTouchend)
     if (all) {
       frameDOMEl.removeEventListener('touchstart', onTouchstart)
     }
@@ -188,6 +188,7 @@ export function slidy (slider, options) {
     touchOffset = currentTouchOffset = { pageX, pageY }
     frameDOMEl.addEventListener('touchmove', onTouchmove)
     frameDOMEl.addEventListener('touchend', onTouchend)
+    frameDOMEl.addEventListener('touchcancel', onTouchend)
   }
 
   function onTouchmove (event) {
@@ -208,10 +209,13 @@ export function slidy (slider, options) {
     const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
     isScrolling = !!(isScrolling || isScrollingNow)
 
+    if (navigator.userAgent.indexOf('Android 4.3') >= 0 && !isScrollingNow) {
+      event.preventDefault()
+    }
+
     if (!isScrolling && delta.x !== 0) {
       _translate(Math.round(position + delta.x), 0)
     } else if (isScrolling) {
-      event.preventDefault()
       onTouchend(event)
     }
   }
@@ -250,9 +254,21 @@ export function slidy (slider, options) {
   }
 
   function _convertItemToDOM (string) {
-    return document
-            .createRange()
-            .createContextualFragment(`<li class='${options.classNameItem}'>${string}</li>`)
+    const wrappedString = `<li class='${options.classNameItem}'>${string}</li>`
+    const el = document.createElement('template')
+    if (el.content) {
+      el.innerHTML = wrappedString
+      return el.content
+    } else {
+      const container = document.createElement('ul')
+      const fragment = document.createDocumentFragment()
+      container.innerHTML = string
+      const root = container
+      while (root.firstChild) {
+        fragment.appendChild(root.firstChild)
+      }
+      return fragment
+    }
   }
 
   function onResize (event) {
@@ -288,9 +304,7 @@ export function slidy (slider, options) {
     frameWidth = _getWidthFromDOMEl(frameDOMEl)
     maxOffset = round(frameWidth * slides.length - frameWidth)
 
-    let slidesHeight = aspectRatio
-                       ? aspectRatio * frameWidth
-                       : floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
+    let slidesHeight = floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
 
     slideContainerDOMEl.style.height = slidesHeight
     frameDOMEl.style.height = slidesHeight
