@@ -1,11 +1,14 @@
 {
-  "name": "react-lory",
-  "version": "0.3.7",
+  "name": "react-slidy",
+  "version": "0.0.1",
   "main": "lib/",
   "keywords": [
     "slider",
     "react",
-    "lory"
+    "lory",
+    "slidy",
+    "react-lory",
+    "react-slidy"
   ],
   "scripts": {
     "clean:lib": "rimraf ./lib/*",
@@ -26,7 +29,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:miduga/react-lory.git"
+    "url": "git@github.com:miduga/react-slidy.git"
   },
   "pre-commit": [
     "lint",

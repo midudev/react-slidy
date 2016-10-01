@@ -6,17 +6,16 @@ React minimalistic and performant slider.
 [![npm version](https://badge.fury.io/js/react-lory.svg)](https://badge.fury.io/js/react-lory)
 [![npm](https://img.shields.io/npm/dm/react-lory.svg?maxAge=2592000)](https://www.npmjs.com/package/react-lory)
 
-_Attention: This component is under heavy development still at alpha stage and its API could change. Use it on your own risk_
-
 ## Overview
 
-React Slidy is a simple and minimal slider component. It's based on the fabulous [lory.js slider](https://github.com/meandmax/lory) altough the main idea is to move all the library javascript to React components.
+React Slidy is a simple and minimal slider component. It was based on the fabulous [lory.js slider](https://github.com/meandmax/lory) altough as the main objective is to achieve the best performance and smoothness a lot of it was rewrited and cutted. Also, it's wrapped on a React component in order to be used on projects using ReactJS.
 
 ## Browser compatibility
 
 I haven't did a lot of testing on that but it's supposed to work on Firefox, Chrome, Edge, Safari and IE 10+. If not, please, fill a issue.
 
 ## Features
+* Optimized for smoothness and performance
 * Lazy Loading for slider and for every slide
 * Server rendering compatible
 
