@@ -133,7 +133,6 @@ ReactSlidySlider.propTypes = {
   classNameBase: PropTypes.string,
   doAfterSlide: PropTypes.func,
   ease: PropTypes.string,
-  enableMouseEvents: PropTypes.bool,
   infinite: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.number
@@ -151,7 +150,6 @@ ReactSlidySlider.propTypes = {
 ReactSlidySlider.defaultProps = {
   doAfterSlide: NO_OP,
   ease: 'ease',
-  enableMouseEvents: true,
   infinite: 1,
   onReady: NO_OP,
   rewind: false,
