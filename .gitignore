@@ -63,5 +63,4 @@ Temporary Items
 .sass-cache
 *.css.map
 .tmp/
-dist/
 lib/
