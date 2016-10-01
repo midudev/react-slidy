@@ -32,9 +32,9 @@
     "url": "git@github.com:miduga/react-slidy.git"
   },
   "pre-commit": [
-    "dist",
     "lint",
-    "test"
+    "test",
+    "dist"
   ],
   "peerDependencies": {
     "react": "0.14"
