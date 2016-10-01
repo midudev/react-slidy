@@ -66,11 +66,6 @@ class App extends Component {
           {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
         </ReactSlidy>
 
-        <h3>Only one image</h3>
-        <ReactSlidy {...config}>
-          <SuiMultimedia lazyLoad={false} images={images[0]} />
-        </ReactSlidy>
-
         <h3>Infinite Slider</h3>
         <ReactSlidy {...config} infinite>
           <img {...images[0]} />
@@ -79,9 +74,9 @@ class App extends Component {
           <img {...images[3]} />
         </ReactSlidy>
 
-        <h3>Slider with lazy loading</h3>
-        <ReactSlidy {...config} lazyLoadConfig={{enabledForContainer: true}}>
-          {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
+        <h3>Only one image</h3>
+        <ReactSlidy {...config}>
+          <SuiMultimedia lazyLoad={false} images={images[0]} />
         </ReactSlidy>
 
         <h3>Basic example</h3>
