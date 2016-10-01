@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "main": "lib/",
   "keywords": [
     "slider",
