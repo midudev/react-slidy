@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a590a817b3498699099a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c992eb13fe00235cae28"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -27914,7 +27914,6 @@
 	  classNameBase: _react.PropTypes.string,
 	  doAfterSlide: _react.PropTypes.func,
 	  ease: _react.PropTypes.string,
-	  enableMouseEvents: _react.PropTypes.bool,
 	  infinite: _react.PropTypes.oneOfType([_react.PropTypes.bool, _react.PropTypes.number]),
 	  onReady: _react.PropTypes.func,
 	  rewind: _react.PropTypes.bool,
@@ -27929,7 +27928,6 @@
 	ReactSlidySlider.defaultProps = {
 	  doAfterSlide: NO_OP,
 	  ease: 'ease',
-	  enableMouseEvents: true,
 	  infinite: 1,
 	  onReady: NO_OP,
 	  rewind: false,

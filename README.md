@@ -8,7 +8,7 @@
 
 ## Overview
 
-React Slidy is a simple and minimal slider component. It was based on the fabulous [lory.js slider](https://github.com/meandmax/lory) altough as the main objective is to achieve the best performance and smoothness a lot of it was rewrited and cutted. Also, it's wrapped on a React component in order to be used on projects using ReactJS.
+React Slidy is a simple and minimal slider component. It was based on the fabulous [lory.js slider](https://github.com/meandmax/lory) altough as the main objective is to achieve the best performance and smoothness a lot of it was rewritten. Also, it's wrapped on a React component in order to be used on projects using ReactJS.
 
 ## Browser compatibility
 
