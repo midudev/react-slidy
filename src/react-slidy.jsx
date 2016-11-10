@@ -18,15 +18,33 @@ export default class ReactSlidy extends Component {
     return false
   }
 
+  renderSlider () {
+    return (
+      <ReactSlidySlider {...this.props}>
+        {this.props.children}
+      </ReactSlidySlider>
+    )
+  }
+
+  renderSliderWithLazyLoad () {
+    return (
+      <LazyLoad offsetVertical={lazyLoadOffsetVerical}>
+        {this.renderSlider()}
+      </LazyLoad>
+    )
+  }
+
   render () {
+    const { lazyLoadSlider } = this.props
+
     return (
       <div className={this.props.classNameBase}>
         <Spinner {...spinnerConfig} />
-        <LazyLoad offsetVertical={lazyLoadOffsetVerical}>
-          <ReactSlidySlider {...this.props}>
-            {this.props.children}
-          </ReactSlidySlider>
-        </LazyLoad>
+        {
+          lazyLoadSlider
+          ? this.renderSliderWithLazyLoad()
+          : this.renderSlider()
+        }
       </div>
     )
   }
@@ -37,9 +55,11 @@ ReactSlidy.propTypes = {
     PropTypes.array,
     PropTypes.object
   ]).isRequired,
-  classNameBase: PropTypes.string
+  classNameBase: PropTypes.string,
+  lazyLoadSlider: PropTypes.bool
 }
 
 ReactSlidy.defaultProps = {
-  classNameBase: 'react-Slidy'
+  classNameBase: 'react-Slidy',
+  lazyLoadSlider: true
 }

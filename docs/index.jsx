@@ -59,23 +59,23 @@ class App extends Component {
 
   render () {
     return (<div>
-    {this.state.mounted &&
-      <div>
-        <h3>With other components</h3>
-        <ReactSlidy {...config}>
-          {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
-        </ReactSlidy>
+      {this.state.mounted &&
+        <div>
+          <h3>With other components</h3>
+          <ReactSlidy {...config}>
+            {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
+          </ReactSlidy>
 
-        <h3>Infinite Slider</h3>
-        <ReactSlidy {...config} infinite>
-          <img {...images[0]} />
-          <img {...images[1]} />
-          <img {...images[2]} />
-          <img {...images[3]} />
-        </ReactSlidy>
+          <h3>Infinite Slider</h3>
+          <ReactSlidy {...config} infinite>
+            <img {...images[0]} />
+            <img {...images[1]} />
+            <img {...images[2]} />
+            <img {...images[3]} />
+          </ReactSlidy>
 
-        <h3>Only one image</h3>
-        <ReactSlidy {...config}>
+          <h3>Only one image</h3>
+          <ReactSlidy {...config} lazyLoadSlider={false}>
           <SuiMultimedia lazyLoad={false} images={images[0]} />
         </ReactSlidy>
 
