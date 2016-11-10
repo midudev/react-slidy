@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c992eb13fe00235cae28"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7705db317c45d06050f8"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8190,7 +8190,7 @@
 	          ),
 	          _react2.default.createElement(
 	            _src2.default,
-	            config,
+	            _extends({}, config, { lazyLoadSlider: false }),
 	            _react2.default.createElement(_suiMultimedia2.default, { lazyLoad: false, images: images[0] })
 	          ),
 	          _react2.default.createElement(
@@ -27682,21 +27682,34 @@
 	      return false;
 	    }
 	  }, {
+	    key: 'renderSlider',
+	    value: function renderSlider() {
+	      return _react2.default.createElement(
+	        _reactSlidySlider2.default,
+	        this.props,
+	        this.props.children
+	      );
+	    }
+	  }, {
+	    key: 'renderSliderWithLazyLoad',
+	    value: function renderSliderWithLazyLoad() {
+	      return _react2.default.createElement(
+	        _reactLazyLoad2.default,
+	        { offsetVertical: lazyLoadOffsetVerical },
+	        this.renderSlider()
+	      );
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var lazyLoadSlider = this.props.lazyLoadSlider;
+	
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: this.props.classNameBase },
 	        _react2.default.createElement(_suiSpinner2.default, spinnerConfig),
-	        _react2.default.createElement(
-	          _reactLazyLoad2.default,
-	          { offsetVertical: lazyLoadOffsetVerical },
-	          _react2.default.createElement(
-	            _reactSlidySlider2.default,
-	            this.props,
-	            this.props.children
-	          )
-	        )
+	        lazyLoadSlider ? this.renderSliderWithLazyLoad() : this.renderSlider()
 	      );
 	    }
 	  }]);
@@ -27709,11 +27722,13 @@
 	
 	ReactSlidy.propTypes = {
 	  children: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.object]).isRequired,
-	  classNameBase: _react.PropTypes.string
+	  classNameBase: _react.PropTypes.string,
+	  lazyLoadSlider: _react.PropTypes.bool
 	};
 	
 	ReactSlidy.defaultProps = {
-	  classNameBase: 'react-Slidy'
+	  classNameBase: 'react-Slidy',
+	  lazyLoadSlider: true
 	};
 
 /***/ },
