@@ -16,8 +16,8 @@ var base = {
       loaders: ['babel-loader'],
       exclude: path.join(__dirname, 'node_modules')
     }, {
-      test: /\.s?css$/,
-      loader: ExtractTextPlugin.extract('css!sass')
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract('css?importLoaders=1!postcss')
     }, {
       test: /\.svg$/,
       loader: 'svg-inline'

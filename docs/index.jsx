@@ -6,7 +6,8 @@ import ReactSlidy from '../src'
 
 import SuiMultimedia from '@schibstedspain/sui-multimedia'
 
-import docsStyle from './index.scss'
+import componentStyle from '../src/index.css'
+import docsStyle from './index.css'
 
 const images = [{
   src: 'https://scontent-mad1-1.cdninstagram.com/t51.2885-15/e15/11189686_499366993548088_1592806536_n.jpg',
@@ -76,15 +77,15 @@ class App extends Component {
 
           <h3>Only one image</h3>
           <ReactSlidy {...config} lazyLoadSlider={false}>
-          <SuiMultimedia lazyLoad={false} images={images[0]} />
-        </ReactSlidy>
+            <SuiMultimedia lazyLoad={false} images={images[0]} />
+          </ReactSlidy>
 
-        <h3>Basic example</h3>
-        <ReactSlidy {...config}>
-          <img {...images[0]} />
-          <img {...images[1]} />
-        </ReactSlidy>
-      </div>
+          <h3>Basic example</h3>
+          <ReactSlidy {...config}>
+            <img {...images[0]} />
+            <img {...images[1]} />
+          </ReactSlidy>
+        </div>
     }
     </div>)
   }
