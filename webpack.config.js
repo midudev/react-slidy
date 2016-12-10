@@ -59,7 +59,7 @@ if (TARGET === 'start:server' || !TARGET) {
       path.resolve(__dirname, 'docs/index.jsx')
     ],
     output: {
-      path: path.resolve(__dirname, 'docs/dist'),
+      path: path.resolve(__dirname, 'docs'),
       filename: 'dist/index.js'
     },
     devServer: {
