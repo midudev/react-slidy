@@ -45,6 +45,14 @@ const config = {
   ...handlers
 }
 
+const configWithCustomLazyLoad = {
+  ...config,
+  lazyLoadConfig: {
+    offsetVertical: 0,
+    debounce: false
+  }
+}
+
 class App extends Component {
 
   constructor (...args) {
@@ -83,6 +91,16 @@ class App extends Component {
           <h3>Basic example</h3>
           <ReactSlidy {...config}>
             <img {...images[0]} />
+            <img {...images[1]} />
+          </ReactSlidy>
+
+          <h3>LazyLoad config example</h3>
+          <ReactSlidy {...config}>
+            <img {...images[0]} />
+            <img {...images[1]} />
+          </ReactSlidy>
+          <ReactSlidy {...configWithCustomLazyLoad}>
+            <img {...images[2]} />
             <img {...images[1]} />
           </ReactSlidy>
         </div>
