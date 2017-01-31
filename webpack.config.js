@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const merge = require('webpack-merge')
 
-const APP_PATH = path.join(__dirname, '/src')
 const TARGET = process.env.npm_lifecycle_event
 
 var base = {
