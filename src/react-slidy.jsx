@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes as T } from 'react'
 import ReactSlidySlider from './react-slidy-slider'
 import Spinner from '@schibstedspain/sui-spinner'
 import LazyLoad from 'react-lazy-load'
@@ -49,35 +49,35 @@ export default class ReactSlidy extends Component {
 }
 
 ReactSlidy.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.object
+  children: T.oneOfType([
+    T.array,
+    T.object
   ]).isRequired,
-  classNameBase: PropTypes.string,
-  lazyLoadSlider: PropTypes.bool,
+  classNameBase: T.string,
+  lazyLoadSlider: T.bool,
   // Shape from https://github.com/loktar00/react-lazy-load/blob/master/src/LazyLoad.jsx#L121
-  lazyLoadConfig: PropTypes.shape({
-    className: PropTypes.string,
-    debounce: PropTypes.bool,
-    elementType: PropTypes.string,
-    height: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
+  lazyLoadConfig: T.shape({
+    className: T.string,
+    debounce: T.bool,
+    elementType: T.string,
+    height: T.oneOfType([
+      T.string,
+      T.number
     ]),
-    offset: PropTypes.number,
-    offsetBottom: PropTypes.number,
-    offsetHorizontal: PropTypes.number,
-    offsetLeft: PropTypes.number,
-    offsetRight: PropTypes.number,
-    offsetTop: PropTypes.number,
-    offsetVertical: PropTypes.number,
-    threshold: PropTypes.number,
-    throttle: PropTypes.number,
-    width: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
+    offset: T.number,
+    offsetBottom: T.number,
+    offsetHorizontal: T.number,
+    offsetLeft: T.number,
+    offsetRight: T.number,
+    offsetTop: T.number,
+    offsetVertical: T.number,
+    threshold: T.number,
+    throttle: T.number,
+    width: T.oneOfType([
+      T.string,
+      T.number
     ]),
-    onContentVisible: PropTypes.func
+    onContentVisible: T.func
   })
 }
 

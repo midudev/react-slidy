@@ -262,10 +262,9 @@ export function slidy (slider, options) {
     } else {
       const container = document.createElement('ul')
       const fragment = document.createDocumentFragment()
-      container.innerHTML = string
-      const root = container
-      while (root.firstChild) {
-        fragment.appendChild(root.firstChild)
+      container.innerHTML = wrappedString
+      while (container.firstChild) {
+        fragment.appendChild(container.firstChild)
       }
       return fragment
     }

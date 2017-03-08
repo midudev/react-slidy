@@ -6,8 +6,7 @@ import ReactSlidy from '../src'
 
 import SuiMultimedia from '@schibstedspain/sui-multimedia'
 
-import componentStyle from '../src/index.css'
-import docsStyle from './index.css'
+import docsStyle from './index.scss'
 
 const images = [{
   src: 'https://scontent-mad1-1.cdninstagram.com/t51.2885-15/e15/11189686_499366993548088_1592806536_n.jpg',
@@ -57,7 +56,7 @@ class App extends Component {
 
   constructor (...args) {
     super(...args)
-    this.state = { mounted: true, currentSlide: 0 }
+    this.state = { mounted: this.props.mounted, currentSlide: 0 }
   }
 
   componentWillReceiveProps ({mounted}) {
@@ -73,14 +72,6 @@ class App extends Component {
           <h3>With other components</h3>
           <ReactSlidy {...config}>
             {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
-          </ReactSlidy>
-
-          <h3>Infinite Slider</h3>
-          <ReactSlidy {...config} infinite>
-            <img {...images[0]} />
-            <img {...images[1]} />
-            <img {...images[2]} />
-            <img {...images[3]} />
           </ReactSlidy>
 
           <h3>Only one image</h3>
