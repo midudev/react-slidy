@@ -172,7 +172,7 @@ export function slidy (slider, options) {
 
   function _removeAllEventsListeners () {
     _removeTouchEventsListeners(true)
-    frameDOMEl.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
+    slideContainerDOMEl.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
     windowDOM.removeEventListener('resize', onResize)
   }
 
