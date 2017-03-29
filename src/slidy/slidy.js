@@ -112,7 +112,7 @@ export function slidy (slider, options) {
     const totalSlides = slides.length
 
     // calculate the nextIndex according to the movement
-    let nextIndex = index + SLIDES_TO_SCROLL * movement
+    let nextIndex = index + (SLIDES_TO_SCROLL * movement)
 
     // nextIndex should be between 0 and totalSlides minus 1
     nextIndex = _clampNumber(nextIndex, 0, totalSlides - 1)
@@ -149,7 +149,7 @@ export function slidy (slider, options) {
         _translate(_getOffsetLeft(index) * -1, 0)
       }
     } else {
-      const indexToLoad = index + SLIDES_TO_SCROLL * movement
+      const indexToLoad = index + (SLIDES_TO_SCROLL * movement)
       const indexLoaded = !!loadedIndex[indexToLoad]
       if (indexToLoad < totalSlides && indexToLoad >= 0 && !indexLoaded) {
         // insert in the correct position
@@ -237,8 +237,8 @@ export function slidy (slider, options) {
      * @isOutOfBounds {Boolean}
      */
     const direction = delta.x < 0
-    const isOutOfBounds = !index && !direction ||
-        index === slides.length - 1 && direction
+    const isOutOfBounds = (!index && !direction) ||
+        (index === slides.length - 1 && direction)
 
     if (isValid && !isOutOfBounds) {
       slide(direction)
@@ -301,7 +301,7 @@ export function slidy (slider, options) {
     let { ease, rewindSpeed } = options
 
     frameWidth = _getWidthFromDOMEl(frameDOMEl)
-    maxOffset = round(frameWidth * slides.length - frameWidth)
+    maxOffset = round((frameWidth * slides.length) - frameWidth)
 
     let slidesHeight = floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
 

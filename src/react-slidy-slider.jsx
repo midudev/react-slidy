@@ -15,7 +15,6 @@ if (typeof (window) !== 'undefined' && window.document) {
 }
 
 export default class ReactSlidySlider extends Component {
-
   constructor (...args) {
     super(...args)
 
