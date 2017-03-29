@@ -3,6 +3,7 @@
 $c-background: #dcdcdc;
 $c-nav-background: rgba(255, 255, 255, .8);
 $c-nav-color: #aaaaaa;
+$c-transparent: rgba(0, 0, 0, 0);
 
 @mixin arrow($symbol) {
   bottom: 0;
@@ -21,7 +22,7 @@ $c-nav-color: #aaaaaa;
 }
 
 .react-Slidy {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: $c-transparent;
   background: $c-background;
   min-height: 175px;
   position: relative;
