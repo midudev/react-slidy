@@ -1,12 +1,12 @@
 /* eslint-disable react/no-multi-comp */
 
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 import ReactDom from 'react-dom'
 import ReactSlidy from '../src'
 
 import SuiMultimedia from '@schibstedspain/sui-multimedia'
 
-import docsStyle from './index.scss'
+import './index.scss'
 
 const images = [{
   src: 'https://scontent-mad1-1.cdninstagram.com/t51.2885-15/e15/11189686_499366993548088_1592806536_n.jpg',
@@ -34,7 +34,7 @@ const images = [{
 
 const handlers = {
   doAfterSlide: ({currentSlide}) => {},
-  doAfterDestroy: ({event}) => console.log(event)
+  doAfterDestroy: ({event}) => window.console.info(event)
 }
 
 const config = {
@@ -53,7 +53,6 @@ const configWithCustomLazyLoad = {
 }
 
 class App extends Component {
-
   constructor (...args) {
     super(...args)
     this.state = { mounted: this.props.mounted, currentSlide: 0 }
@@ -66,38 +65,44 @@ class App extends Component {
   }
 
   render () {
-    return (<div>
-      {this.state.mounted &&
-        <div>
-          <h3>With other components</h3>
-          <ReactSlidy {...config}>
-            {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
-          </ReactSlidy>
+    return (
+      <div>
+        {this.state.mounted &&
+          <div>
+            <h3>With other components</h3>
+            <ReactSlidy {...config}>
+              {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
+            </ReactSlidy>
 
-          <h3>Only one image</h3>
-          <ReactSlidy {...config} lazyLoadSlider={false}>
-            <SuiMultimedia lazyLoad={false} images={images[0]} />
-          </ReactSlidy>
+            <h3>Only one image</h3>
+            <ReactSlidy {...config} lazyLoadSlider={false}>
+              <SuiMultimedia lazyLoad={false} images={images[0]} />
+            </ReactSlidy>
 
-          <h3>Basic example</h3>
-          <ReactSlidy {...config}>
-            <img {...images[0]} />
-            <img {...images[1]} />
-          </ReactSlidy>
+            <h3>Basic example</h3>
+            <ReactSlidy {...config}>
+              <img {...images[0]} />
+              <img {...images[1]} />
+            </ReactSlidy>
 
-          <h3>LazyLoad config example</h3>
-          <ReactSlidy {...config}>
-            <img {...images[0]} />
-            <img {...images[1]} />
-          </ReactSlidy>
-          <ReactSlidy {...configWithCustomLazyLoad}>
-            <img {...images[2]} />
-            <img {...images[1]} />
-          </ReactSlidy>
-        </div>
-    }
-    </div>)
+            <h3>LazyLoad config example</h3>
+            <ReactSlidy {...config}>
+              <img {...images[0]} />
+              <img {...images[1]} />
+            </ReactSlidy>
+            <ReactSlidy {...configWithCustomLazyLoad}>
+              <img {...images[2]} />
+              <img {...images[1]} />
+            </ReactSlidy>
+          </div>
+      }
+      </div>
+    )
   }
+}
+
+App.propTypes = {
+  mounted: PropTypes.bool
 }
 
 ReactDom.render(<App mounted />, document.getElementById('app'))
