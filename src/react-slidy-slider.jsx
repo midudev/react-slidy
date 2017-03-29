@@ -14,41 +14,39 @@ if (typeof (window) !== 'undefined' && window.document) {
   imagesLoaded = require('imagesloaded')
 }
 
+function getClassesName ({classNameBase}) {
+  return {
+    classNameFrame: `${classNameBase}-frame`,
+    classNameItem: `${classNameBase}-item`,
+    classNameNextCtrl: `${classNameBase}-next`,
+    classNamePrevCtrl: `${classNameBase}-prev`,
+    classNameSlideContainer: `${classNameBase}-slides`
+  }
+}
+
 export default class ReactSlidySlider extends Component {
-  constructor (...args) {
-    super(...args)
+  constructor (props) {
+    super(props)
 
-    this.getFrameNode = this.getFrameNode.bind(this)
-    this.getSliderNode = this.getSliderNode.bind(this)
-    this.handleAfterSlide = this.handleAfterSlide.bind(this)
-    this.nextSlider = this.nextSlider.bind(this)
-    this.prevSlider = this.prevSlider.bind(this)
-    this.slidyInstance = null
+    const { children } = props
+
     this.DOM = {}
-
-    this.classes = {
-      classNameItem: this.getClassName('item'),
-      classNameFrame: this.getClassName('frame'),
-      classNameSlideContainer: this.getClassName('slides'),
-      classNamePrevCtrl: this.getClassName('prev'),
-      classNameNextCtrl: this.getClassName('next')
-    }
-
-    const { children } = this.props
+    this.classes = getClassesName(props)
     this.listItems = Array.isArray(children) ? children : [children]
+    this.slidyInstance = null
 
-    const sliderItems = React.Children.map(this.listItems, (child) => {
-      return ReactDOMServer.renderToStaticMarkup(child)
-    })
+    const sliderItems = React.Children.map(this.listItems, child =>
+      ReactDOMServer.renderToStaticMarkup(child)
+    )
 
     this.sliderOptions = {
       ...this.classes,
       items: sliderItems,
       doAfterSlide: this.handleAfterSlide,
       // fix if the user try to use a `true` value for infinite
-      infinite: this.props.infinite === true ? 1 : this.props.infinite,
+      infinite: props.infinite === true ? 1 : props.infinite,
       // if infinite, rewindOnResize is always true
-      rewindOnResize: this.props.rewindOnResize || this.props.infinite
+      rewindOnResize: props.rewindOnResize || props.infinite
     }
   }
 
@@ -73,28 +71,24 @@ export default class ReactSlidySlider extends Component {
     return false
   }
 
-  getClassName (element) {
-    return `${this.props.classNameBase}-${element}`
-  }
-
-  getFrameNode (node) {
+  getFrameNode = (node) => {
     this.DOM['frame'] = node
   }
 
-  getSliderNode (node) {
+  getSliderNode = (node) => {
     this.DOM['slider'] = node
   }
 
-  handleAfterSlide ({currentSlide}) {
+  handleAfterSlide = ({currentSlide}) => {
     this.props.doAfterSlide({currentSlide})
   }
 
-  nextSlider (e) {
+  nextSlider = (e) => {
     e.preventDefault()
     this.slidyInstance.next()
   }
 
-  prevSlider (e) {
+  prevSlider = (e) => {
     e.preventDefault()
     this.slidyInstance.prev()
   }
@@ -112,7 +106,10 @@ export default class ReactSlidySlider extends Component {
 
     return (
       <div ref={this.getSliderNode}>
-        <div ref={this.getFrameNode} className={this.sliderOptions.classNameFrame}>
+        <div
+          className={this.sliderOptions.classNameFrame}
+          ref={this.getFrameNode}
+        >
           {showArrows && <span className={this.classes.classNamePrevCtrl} onClick={this.prevSlider} />}
           {showArrows && <span className={this.classes.classNameNextCtrl} onClick={this.nextSlider} />}
           <ul className={this.sliderOptions.classNameSlideContainer}>
