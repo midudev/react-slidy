@@ -12,18 +12,19 @@
   ],
   "scripts": {
     "clean:lib": "rimraf ./lib/*",
-    "prelib": "npm run clean:lib -s",
+    "deploy": "NODE_ENV=production npm run dist && surge ./docs",
     "dist": "webpack",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
-    "prepublish": "npm run lib",
-    "start": "npm run start:open && npm run start:server",
-    "start:server": "webpack-dev-server",
-    "start:open": "opener http://localhost:3000",
+    "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "linting-rules js",
     "lint:sass": "linting-rules sass",
-    "lint": "npm run lint:js && npm run lint:sass"
+    "prelib": "npm run clean:lib -s",
+    "prepublish": "npm run lib",
+    "start": "npm run start:open && npm run start:server",
+    "start:open": "opener http://localhost:3000",
+    "start:server": "webpack-dev-server"
   },
   "license": "MIT",
   "repository": {
