@@ -10,6 +10,7 @@ const VALID_SWIPE_DISTANCE = 25
 export function slidy (slider, options) {
   const {
     ease,
+    frameDOMEl,
     infinite,
     items,
     rewind,
@@ -17,8 +18,10 @@ export function slidy (slider, options) {
     slideSpeed
   } = options
 
+  // if frameDOMEl is null, then we do nothing
+  if (frameDOMEl === null) return
+
   const {abs, floor, min, max, round} = Math
-  const {frameDOMEl} = options
   const windowDOM = window
   // DOM elements
   const slideContainerDOMEl = frameDOMEl.getElementsByClassName(options.classNameSlideContainer)[0]
