@@ -103,7 +103,7 @@ export function slidy (slider, options) {
    * determine nextIndex and slide to next postion
    * under restrictions of the defined options
    *
-   * @direction  {boolean}
+   * @direction  {boolean} 'true' for right, 'false' for left
    */
   function slide (direction) {
     let duration = slideSpeed
