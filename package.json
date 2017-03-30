@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -66,9 +66,15 @@
     "test",
     "dist"
   ],
-  "eslintConfig": {"extends": ["./node_modules/@schibstedspain/linting-rules/eslintrc.js"]},
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/@schibstedspain/linting-rules/eslintrc.js"
+    ]
+  },
   "sasslintConfig": "./node_modules/@schibstedspain/linting-rules/sass-lint.yml",
   "babel": {
-    "presets": ["schibsted-spain"]
+    "presets": [
+      "schibsted-spain"
+    ]
   }
 }
