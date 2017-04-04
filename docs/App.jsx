@@ -14,6 +14,12 @@ const pages = [
   'with-other-components'
 ]
 
+const navButtonsContent = `
+<a class="github-button" href="https://github.com/miduga/react-slidy" aria-label="React Slidy Repo">Repo</a>
+<a class="github-button" href="https://github.com/miduga/react-slidy" data-icon="octicon-star" data-count-href="/miduga/react-slidy/stargazers" data-count-api="/repos/miduga/react-slidy#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star miduga/react-slidy on GitHub">Star</a>
+<a class="github-button" href="https://github.com/miduga/react-slidy/issues" data-icon="octicon-issue-opened" data-count-api="/repos/miduga/react-slidy#open_issues_count" data-count-aria-label="# issues on GitHub" aria-label="Issue miduga/react-slidy on GitHub">Issue</a>
+`
+
 const pagesComponents = pages.reduce((acc, page) => {
   acc[page] = require(`./pages/${page}.jsx`).demo
   return acc
@@ -33,6 +39,12 @@ export default class App extends Component {
     if (pageToLoad && pages.includes(pageToLoad)) {
       this.setState({ pageToLoad })
     }
+
+    const script = document.createElement('script')
+    script.src = 'https://buttons.github.io/buttons.js'
+    script.async = true
+
+    document.body.appendChild(script)
   }
 
   changeDemo (pageToLoad) {
@@ -49,7 +61,11 @@ export default class App extends Component {
     return (
       <div>
         <nav>
-          <h1 className='h1'>React Slidy</h1>
+          <h1 className='h1 mb0'>React Slidy</h1>
+          <div
+            className='nav-buttons mt1 mb2'
+            dangerouslySetInnerHTML={{ __html: navButtonsContent }}
+          />
           {pages.map(demo => (
             <button
               className={pageToLoad === demo ? 'active' : ''}
