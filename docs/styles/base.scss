@@ -11,6 +11,8 @@ body {
     "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
     "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .h1 {
@@ -35,8 +37,16 @@ body {
   margin-bottom: 16px;
 }
 
+.mt0 {
+  margin-top: 0px;
+}
+
 .mt1 {
   margin-top: 8px;
+}
+
+.mt2 {
+  margin-top: 16px;
 }
 
 .text-center {

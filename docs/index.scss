@@ -23,13 +23,11 @@ nav {
   position: fixed;
   text-align: center;
   width: 250px;
-}
-
-nav h3 {
-  color: #444;
-  padding-left: 10px;
-  text-align: left;
-  text-transform: uppercase;
+  @media only screen and (max-width: 500px) {
+    height: auto;
+    position: relative;
+    width: 100%;
+  }
 }
 
 nav button {
@@ -62,6 +60,9 @@ nav button:focus {
 
 .content {
   padding-left: 250px;
+  @media only screen and (max-width: 500px) {
+    padding-left: 0
+  }
 }
 
 .demo {
