@@ -1,53 +1,94 @@
 @import '../src/index';
+@import './styles/base';
 
-html {
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont,
-    'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  font-size: 1em;
-  margin: 50px 0;
-}
-
-h2 {
-  color: #555;
-  font-size: 2em;
-  text-align: center;
-}
-
-h3 {
-  color: #777;
-  font-size: 1.5em;
-  text-align: center;
-}
-
-#content {
-  margin: 0 auto;
-  width: 90%;
-}
-
-.react-Slidy {
-  margin: 0 auto;
-  max-width: 500px;
-}
-
-#debugger {
-  background: rgba(255, 255, 255, 0.7);
-  color: #333;
+code {
   font-size: 12px;
-  height: 50px;
+  padding: 35px 25px 25px;
+  text-align: left;
+}
+
+code[class*=language-], pre[class*=language-] {
+  white-space: pre-line;
+}
+
+p {
+  color: rgba(51, 48, 48, 0.6);
+}
+
+nav {
+  border-right: 1px solid #ccc;
+  left: 0;
+  top: 0;
+  height: 100%;
+  position: fixed;
+  text-align: center;
+  width: 250px;
+}
+
+nav h3 {
+  color: #444;
+  padding-left: 10px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+nav button {
+  background: transparent;
+  border: 0;
+  color: #222;
+  cursor: pointer;
+  display: block;
+  font-size: 10px;
+  padding: 10px 20px 10px 10px;
+  text-align: left;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+nav button:hover {
+  background-color: #ccc;
+  opacity: .85;
+}
+
+nav button.active {
+  background-color: #eee;
+  color: #555;
+}
+
+nav button:active,
+nav button:focus {
+  outline: 0;
+}
+
+.content {
+  padding-left: 250px;
+}
+
+.demo {
+  padding: 32px;
+  position: relative;
+}
+
+.usage {
+  background: #999;
+  position: relative;
+}
+
+.demo-tag {
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  font-size: 9px;
   left: 0;
   padding: 5px;
-  position: fixed;
-  right: 0;
+  position: absolute;
   top: 0;
-  width: 100%;
-  z-index: 9999;
+}
+
+.demo-tag.inverted {
+  background: rgba(0, 0, 0, 0.9);
+  font-weight: 100;
+}
+
+.hljs {
+  padding: 32px 32px 16px;
 }
