@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "clean:lib": "rimraf ./lib/*",
-    "deploy": "NODE_ENV=production npm run dist && surge ./docs",
+    "deploy": "NODE_ENV=production npm run dist && surge ./docs react-slidy.surge.sh",
     "dist": "webpack",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
