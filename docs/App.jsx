@@ -11,7 +11,8 @@ Lowlight.registerLanguage('js', js)
 
 const pages = [
   'intro',
-  'with-other-components'
+  'with-other-components',
+  'with-links'
 ]
 
 const navButtonsContent = `
