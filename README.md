@@ -28,7 +28,6 @@ I haven't did a lot of testing on that but it's supposed to work on Firefox, Chr
   doAfterSlide: PropTypes.func,
   doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
-  enableMouseEvents: PropTypes.bool,
   infinite: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.number
