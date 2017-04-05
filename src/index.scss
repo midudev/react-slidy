@@ -6,7 +6,6 @@ $c-nav-color: #aaaaaa;
 $c-transparent: rgba(0, 0, 0, 0);
 
 @mixin arrow($symbol) {
-  bottom: 0;
   color: $c-nav-color;
   content: $symbol;
   font-size: 65px;
@@ -14,10 +13,11 @@ $c-transparent: rgba(0, 0, 0, 0);
   height: 100%;
   line-height: 45px;
   margin: auto;
+  padding: 0 8px;
   position: absolute;
   text-align: center;
-  top: 0;
-  width: 28px;
+  top: calc(50% - 29px);
+  width: 40px;
   z-index: 2;
 }
 
@@ -31,13 +31,14 @@ $c-transparent: rgba(0, 0, 0, 0);
     background: $c-nav-background;
     bottom: 0;
     cursor: pointer;
-    height: 56px;
+    height: 20%;
     margin: auto 0;
+    min-height: 56px;
     opacity: 0;
     position: absolute;
     top: 0;
     transition: opacity .3s ease;
-    width: 28px;
+    width: 40px;
     z-index: 1;
 
     @media screen and (max-width: 850px) {
@@ -78,6 +79,10 @@ $c-transparent: rgba(0, 0, 0, 0);
     position: relative;
     white-space: nowrap;
     width: 100%;
+
+    &:hover > .react-Slidy--dimmed-arrow {
+      opacity: .3;
+    }
   }
 
   &-slides {
