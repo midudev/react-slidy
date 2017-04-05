@@ -25,6 +25,7 @@ function getClassesName ({classNameBase}) {
 }
 
 export default class ReactSlidySlider extends Component {
+
   constructor (props) {
     super(props)
 
@@ -34,6 +35,8 @@ export default class ReactSlidySlider extends Component {
     this.classes = getClassesName(props)
     this.listItems = Array.isArray(children) ? children : [children]
     this.slidyInstance = null
+
+    this.state = { currentSlide: 0 }
 
     const sliderItems = React.Children.map(this.listItems, child =>
       ReactDOMServer.renderToStaticMarkup(child)
@@ -45,6 +48,8 @@ export default class ReactSlidySlider extends Component {
       doAfterSlide: this.handleAfterSlide,
       // fix if the user try to use a `true` value for infinite
       infinite: props.infinite === true ? 1 : props.infinite,
+      // fix if the user try to use a `true` value for hideTailArrows
+      hideTailArrows: props.hideTailArrows === true ? 1 : props.hideTailArrows,
       // if infinite, rewindOnResize is always true
       rewindOnResize: props.rewindOnResize || props.infinite
     }
@@ -67,10 +72,6 @@ export default class ReactSlidySlider extends Component {
     this.slidyInstance && this.slidyInstance.destroy()
   }
 
-  shouldComponentUpdate (nextProps) {
-    return false
-  }
-
   getFrameNode = (node) => {
     this.DOM['frame'] = node
   }
@@ -80,6 +81,7 @@ export default class ReactSlidySlider extends Component {
   }
 
   handleAfterSlide = ({currentSlide}) => {
+    this.setState({ currentSlide })
     this.props.doAfterSlide({currentSlide})
   }
 
@@ -101,8 +103,27 @@ export default class ReactSlidySlider extends Component {
     ))
   }
 
-  render () {
+  _getShowArrows () {
     const { showArrows } = this.props
+    if (showArrows !== true) {
+      return [ false, false ]
+    }
+    if (this.sliderOptions.infinite === 1 || this.sliderOptions.hideTailArrows !== 1) {
+      return [ true, true ]
+    }
+
+    if (this.sliderOptions.items.length === 1) {
+      return [ false, false ]
+    }
+
+    return [
+      this.state.currentSlide > 0,
+      this.state.currentSlide < (this.sliderOptions.items.length - 1)
+    ]
+  }
+
+  render () {
+    const [ showLeftArrow, showRightArrow ] = this._getShowArrows()
 
     return (
       <div ref={this.getSliderNode}>
@@ -110,8 +131,8 @@ export default class ReactSlidySlider extends Component {
           className={this.sliderOptions.classNameFrame}
           ref={this.getFrameNode}
         >
-          {showArrows && <span className={this.classes.classNamePrevCtrl} onClick={this.prevSlider} />}
-          {showArrows && <span className={this.classes.classNameNextCtrl} onClick={this.nextSlider} />}
+          {showLeftArrow && <span className={this.classes.classNamePrevCtrl} onClick={this.prevSlider} />}
+          {showRightArrow && <span className={this.classes.classNameNextCtrl} onClick={this.nextSlider} />}
           <ul className={this.sliderOptions.classNameSlideContainer}>
             {this.renderItems()}
           </ul>
@@ -129,6 +150,7 @@ ReactSlidySlider.propTypes = {
   classNameBase: PropTypes.string,
   doAfterSlide: PropTypes.func,
   ease: PropTypes.string,
+  hideTailArrows: PropTypes.bool,
   infinite: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.number
