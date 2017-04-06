@@ -29,10 +29,6 @@ export function slidy (slider, options) {
 
   const prevArrow = frameDOMEl.getElementsByClassName(options.classNamePrevCtrl)[0]
   const nextArrow = frameDOMEl.getElementsByClassName(options.classNameNextCtrl)[0]
-  const updateTailArrows = (tailArrowClass !== undefined &&
-    !!tailArrowClass &&
-    !infinite &&
-    options.items.length > 1)
 
   // initialize some variables
   let frameWidth = 0
@@ -110,12 +106,16 @@ export function slidy (slider, options) {
   }
 
   function _setTailArrowClasses () {
-    if (!updateTailArrows) { return }
+    if (infinite) { return }
     if (prevArrow && prevArrow.classList) {
-      prevArrow.classList[ index < 1 ? 'add' : 'remove' ](tailArrowClass)
+      index < 1
+        ? prevArrow.classList.add(tailArrowClass)
+        : prevArrow.classList.remove(tailArrowClass)
     }
     if (nextArrow && nextArrow.classList) {
-      nextArrow.classList[ index > options.items.length - 2 ? 'add' : 'remove' ](tailArrowClass)
+      index > options.items.length - 2
+        ? nextArrow.classList.add(tailArrowClass)
+        : nextArrow.classList.remove(tailArrowClass)
     }
   }
 

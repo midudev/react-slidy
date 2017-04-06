@@ -71,7 +71,6 @@ ReactSlidy.propTypes = {
     offsetRight: T.number,
     offsetTop: T.number,
     offsetVertical: T.number,
-    tailArrowClass: T.string,
     threshold: T.number,
     throttle: T.number,
     width: T.oneOfType([
@@ -79,7 +78,8 @@ ReactSlidy.propTypes = {
       T.number
     ]),
     onContentVisible: T.func
-  })
+  }),
+  tailArrowClass: T.string
 }
 
 ReactSlidy.defaultProps = {
@@ -87,5 +87,6 @@ ReactSlidy.defaultProps = {
   lazyLoadSlider: true,
   lazyLoadConfig: {
     offsetVertical: 500
-  }
+  },
+  tailArrowClass: 'react-Slidy-arrow--disabled'
 }
