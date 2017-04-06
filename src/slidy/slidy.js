@@ -15,7 +15,8 @@ export function slidy (slider, options) {
     items,
     rewind,
     rewindSpeed,
-    slideSpeed
+    slideSpeed,
+    tailArrowClass
   } = options
 
   // if frameDOMEl is null, then we do nothing
@@ -25,6 +26,14 @@ export function slidy (slider, options) {
   const windowDOM = window
   // DOM elements
   const slideContainerDOMEl = frameDOMEl.getElementsByClassName(options.classNameSlideContainer)[0]
+
+  const prevArrow = frameDOMEl.getElementsByClassName(options.classNamePrevCtrl)[0]
+  const nextArrow = frameDOMEl.getElementsByClassName(options.classNameNextCtrl)[0]
+  const updateTailArrows = (tailArrowClass !== undefined &&
+    !!tailArrowClass &&
+    !infinite &&
+    options.items.length > 1)
+
   // initialize some variables
   let frameWidth = 0
   let index = 0
@@ -101,14 +110,13 @@ export function slidy (slider, options) {
   }
 
   function _setTailArrowClasses () {
-    const { tailArrowClass, infinite } = options
-    if (tailArrowClass === undefined || tailArrowClass === '' || infinite) { return }
-
-    const prevArrow = frameDOMEl.getElementsByClassName(options.classNamePrevCtrl)[0]
-    prevArrow.classList[ index < 1 ? 'add' : 'remove' ](tailArrowClass)
-
-    const nextArrow = frameDOMEl.getElementsByClassName(options.classNameNextCtrl)[0]
-    nextArrow.classList[ index > options.items.length - 2 ? 'add' : 'remove' ](tailArrowClass)
+    if (!updateTailArrows) { return }
+    if (prevArrow && prevArrow.classList) {
+      prevArrow.classList[ index < 1 ? 'add' : 'remove' ](tailArrowClass)
+    }
+    if (nextArrow && nextArrow.classList) {
+      nextArrow.classList[ index > options.items.length - 2 ? 'add' : 'remove' ](tailArrowClass)
+    }
   }
 
   /**
