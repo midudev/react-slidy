@@ -108,14 +108,12 @@ export function slidy (slider, options) {
   function _setTailArrowClasses () {
     if (infinite) { return }
     if (prevArrow && prevArrow.classList) {
-      index < 1
-        ? prevArrow.classList.add(tailArrowClass)
-        : prevArrow.classList.remove(tailArrowClass)
+      let action = index < 1 ? 'add' : 'remove'
+      prevArrow.classList[action](tailArrowClass)
     }
     if (nextArrow && nextArrow.classList) {
-      index > options.items.length - 2
-        ? nextArrow.classList.add(tailArrowClass)
-        : nextArrow.classList.remove(tailArrowClass)
+      let action = index > options.items.length - 2 ? 'add' : 'remove'
+      nextArrow.classList[action](tailArrowClass)
     }
   }
 
