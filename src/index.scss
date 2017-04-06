@@ -79,10 +79,6 @@ $c-transparent: rgba(0, 0, 0, 0);
     position: relative;
     white-space: nowrap;
     width: 100%;
-
-    &:hover > .react-Slidy--dimmed-arrow {
-      opacity: .3;
-    }
   }
 
   &-slides {

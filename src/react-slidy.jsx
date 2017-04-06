@@ -54,7 +54,6 @@ ReactSlidy.propTypes = {
     T.object
   ]).isRequired,
   classNameBase: T.string,
-  tailArrows: T.string,
   lazyLoadSlider: T.bool,
   // Shape from https://github.com/loktar00/react-lazy-load/blob/master/src/LazyLoad.jsx#L121
   lazyLoadConfig: T.shape({
@@ -72,6 +71,7 @@ ReactSlidy.propTypes = {
     offsetRight: T.number,
     offsetTop: T.number,
     offsetVertical: T.number,
+    tailArrowClass: T.string,
     threshold: T.number,
     throttle: T.number,
     width: T.oneOfType([
@@ -84,7 +84,6 @@ ReactSlidy.propTypes = {
 
 ReactSlidy.defaultProps = {
   classNameBase: 'react-Slidy',
-  tailArrows: 'dim', // 'hide', 'dim', 'show'
   lazyLoadSlider: true,
   lazyLoadConfig: {
     offsetVertical: 500

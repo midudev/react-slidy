@@ -100,6 +100,17 @@ export function slidy (slider, options) {
     slideContainerDOMEl.style.cssText = cssText
   }
 
+  function _setTailArrowClasses () {
+    const { tailArrowClass, infinite } = options
+    if (tailArrowClass === undefined || tailArrowClass === '' || infinite) { return }
+
+    const prevArrow = frameDOMEl.getElementsByClassName(options.classNamePrevCtrl)[0]
+    prevArrow.classList[ index < 1 ? 'add' : 'remove' ](tailArrowClass)
+
+    const nextArrow = frameDOMEl.getElementsByClassName(options.classNameNextCtrl)[0]
+    nextArrow.classList[ index > options.items.length - 2 ? 'add' : 'remove' ](tailArrowClass)
+  }
+
   /**
    * slidefunction called by prev, next & touchend
    *
@@ -160,6 +171,9 @@ export function slidy (slider, options) {
         loadedIndex[indexToLoad] = 1
       }
     }
+
+    // Checking wheter to paint or hide the arrows.
+    _setTailArrowClasses()
 
     options.doAfterSlide({ currentSlide: index })
   }
@@ -288,6 +302,7 @@ export function slidy (slider, options) {
 
     slides = infinite ? _setupInfinite(slidesArray) : slice.call(slidesArray)
 
+    _setTailArrowClasses()
     reset()
 
     slideContainerDOMEl.addEventListener(prefixes.transitionEnd, onTransitionEnd)

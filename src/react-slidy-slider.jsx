@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOMServer from 'react-dom/server'
 
 const NO_OP = () => {}
-const DEFAULT_TAIL_ARROW_BEHAVIOR = 'dim'
-const validTailArrows = [ 'hide', 'dim', 'show' ]
 
 // in order to make react-slidy compatible with server-rendering
 // by default slidy and imagesLoaded are empty functions
@@ -37,8 +35,6 @@ export default class ReactSlidySlider extends Component {
     this.listItems = Array.isArray(children) ? children : [children]
     this.slidyInstance = null
 
-    this.state = { currentSlide: 0 }
-
     const sliderItems = React.Children.map(this.listItems, child =>
       ReactDOMServer.renderToStaticMarkup(child)
     )
@@ -51,9 +47,7 @@ export default class ReactSlidySlider extends Component {
       infinite: props.infinite === true ? 1 : props.infinite,
       // if infinite, rewindOnResize is always true
       rewindOnResize: props.rewindOnResize || props.infinite,
-      tailArrows: validTailArrows.indexOf(props.tailArrows) === -1
-          ? DEFAULT_TAIL_ARROW_BEHAVIOR
-          : props.tailArrows
+      tailArrowClass: props.tailArrowClass
     }
   }
 
@@ -74,6 +68,10 @@ export default class ReactSlidySlider extends Component {
     this.slidyInstance && this.slidyInstance.destroy()
   }
 
+  shouldComponentUpdate (nextProps) {
+    return false
+  }
+
   getFrameNode = (node) => {
     this.DOM['frame'] = node
   }
@@ -83,7 +81,6 @@ export default class ReactSlidySlider extends Component {
   }
 
   handleAfterSlide = ({currentSlide}) => {
-    this.setState({ currentSlide })
     this.props.doAfterSlide({currentSlide})
   }
 
@@ -105,33 +102,8 @@ export default class ReactSlidySlider extends Component {
     ))
   }
 
-  _getShowArrows () {
-    const { showArrows } = this.props
-    if (showArrows !== true) { return {} }
-
-    if (this.sliderOptions.infinite === 1) {
-      return {
-        leftArrow: this.classes.classNamePrevCtrl,
-        rightArrow: this.classes.classNameNextCtrl
-      }
-    }
-
-    let showArrowsConfig = {}
-    if (this.state.currentSlide > 0 || this.sliderOptions.tailArrows === 'show') {
-      showArrowsConfig.leftArrow = this.classes.classNamePrevCtrl
-    } else if (this.sliderOptions.tailArrows === 'dim') {
-      showArrowsConfig.leftArrow = `${this.classes.classNamePrevCtrl} react-Slidy--dimmed-arrow`
-    }
-    if (this.state.currentSlide < (this.sliderOptions.items.length - 1) || this.sliderOptions.tailArrows === 'show') {
-      showArrowsConfig.rightArrow = this.classes.classNameNextCtrl
-    } else if (this.sliderOptions.tailArrows === 'dim') {
-      showArrowsConfig.rightArrow = `${this.classes.classNameNextCtrl} react-Slidy--dimmed-arrow`
-    }
-    return { showArrowsConfig }
-  }
-
   render () {
-    const { showArrowsConfig } = this._getShowArrows()
+    const { showArrows } = this.props
 
     return (
       <div ref={this.getSliderNode}>
@@ -139,8 +111,8 @@ export default class ReactSlidySlider extends Component {
           className={this.sliderOptions.classNameFrame}
           ref={this.getFrameNode}
         >
-          {!!showArrowsConfig.leftArrow && <span className={showArrowsConfig.leftArrow} onClick={this.prevSlider} />}
-          {!!showArrowsConfig.rightArrow && <span className={showArrowsConfig.rightArrow} onClick={this.nextSlider} />}
+          {showArrows && <span className={this.classes.classNamePrevCtrl} onClick={this.prevSlider} />}
+          {showArrows && <span className={this.classes.classNameNextCtrl} onClick={this.nextSlider} />}
           <ul className={this.sliderOptions.classNameSlideContainer}>
             {this.renderItems()}
           </ul>
@@ -158,7 +130,6 @@ ReactSlidySlider.propTypes = {
   classNameBase: PropTypes.string,
   doAfterSlide: PropTypes.func,
   ease: PropTypes.string,
-  tailArrows: PropTypes.string,
   infinite: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.number
@@ -170,7 +141,8 @@ ReactSlidySlider.propTypes = {
   showArrows: PropTypes.bool,
   slideSpeed: PropTypes.number,
   slidesToScroll: PropTypes.number,
-  snapBackSpeed: PropTypes.number
+  snapBackSpeed: PropTypes.number,
+  tailArrowClass: PropTypes.string
 }
 
 ReactSlidySlider.defaultProps = {
@@ -184,6 +156,5 @@ ReactSlidySlider.defaultProps = {
   showArrows: true,
   slideSpeed: 500,
   slidesToScroll: 1,
-  snapBackSpeed: 500,
-  tailArrows: DEFAULT_TAIL_ARROW_BEHAVIOR
+  snapBackSpeed: 500
 }
