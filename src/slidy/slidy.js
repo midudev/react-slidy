@@ -15,7 +15,8 @@ export function slidy (slider, options) {
     items,
     rewind,
     rewindSpeed,
-    slideSpeed
+    slideSpeed,
+    tailArrowClass
   } = options
 
   // if frameDOMEl is null, then we do nothing
@@ -25,6 +26,10 @@ export function slidy (slider, options) {
   const windowDOM = window
   // DOM elements
   const slideContainerDOMEl = frameDOMEl.getElementsByClassName(options.classNameSlideContainer)[0]
+
+  const prevArrow = frameDOMEl.getElementsByClassName(options.classNamePrevCtrl)[0]
+  const nextArrow = frameDOMEl.getElementsByClassName(options.classNameNextCtrl)[0]
+
   // initialize some variables
   let frameWidth = 0
   let index = 0
@@ -100,6 +105,18 @@ export function slidy (slider, options) {
     slideContainerDOMEl.style.cssText = cssText
   }
 
+  function _setTailArrowClasses () {
+    if (infinite) { return }
+    if (prevArrow && prevArrow.classList) {
+      let action = index < 1 ? 'add' : 'remove'
+      prevArrow.classList[action](tailArrowClass)
+    }
+    if (nextArrow && nextArrow.classList) {
+      let action = index > options.items.length - 2 ? 'add' : 'remove'
+      nextArrow.classList[action](tailArrowClass)
+    }
+  }
+
   /**
    * slidefunction called by prev, next & touchend
    *
@@ -160,6 +177,9 @@ export function slidy (slider, options) {
         loadedIndex[indexToLoad] = 1
       }
     }
+
+    // Checking wheter to paint or hide the arrows.
+    _setTailArrowClasses()
 
     options.doAfterSlide({ currentSlide: index })
   }
@@ -288,6 +308,7 @@ export function slidy (slider, options) {
 
     slides = infinite ? _setupInfinite(slidesArray) : slice.call(slidesArray)
 
+    _setTailArrowClasses()
     reset()
 
     slideContainerDOMEl.addEventListener(prefixes.transitionEnd, onTransitionEnd)

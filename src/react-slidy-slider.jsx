@@ -46,7 +46,8 @@ export default class ReactSlidySlider extends Component {
       // fix if the user try to use a `true` value for infinite
       infinite: props.infinite === true ? 1 : props.infinite,
       // if infinite, rewindOnResize is always true
-      rewindOnResize: props.rewindOnResize || props.infinite
+      rewindOnResize: props.rewindOnResize || props.infinite,
+      tailArrowClass: props.tailArrowClass
     }
   }
 
@@ -140,7 +141,8 @@ ReactSlidySlider.propTypes = {
   showArrows: PropTypes.bool,
   slideSpeed: PropTypes.number,
   slidesToScroll: PropTypes.number,
-  snapBackSpeed: PropTypes.number
+  snapBackSpeed: PropTypes.number,
+  tailArrowClass: PropTypes.string
 }
 
 ReactSlidySlider.defaultProps = {
