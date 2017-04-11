@@ -61,7 +61,7 @@ export default class App extends Component {
 
     return (
       <div>
-        <nav className='mt2'>
+        <nav className='pt2'>
           <h1 className='h1 mb0 mt0'>React Slidy</h1>
           <div
             className='nav-buttons mt1 mb2'

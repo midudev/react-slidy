@@ -4,7 +4,7 @@
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![npm version](https://badge.fury.io/js/react-slidy.svg)](https://badge.fury.io/js/react-slidy)
-[![npm](https://img.shields.io/npm/dm/react-lory.svg?maxAge=2592000)](https://www.npmjs.com/package/react-lory)
+[![npm](https://img.shields.io/npm/dm/react-lory.svg?maxAge=2592000)](https://www.npmjs.com/package/react-slidy)
 
 ## Overview
 
