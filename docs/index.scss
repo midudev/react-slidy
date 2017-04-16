@@ -1,9 +1,15 @@
 @import '../src/index';
 @import './styles/base';
 
+pre {
+  overflow-y: hidden;
+  text-align: left;
+}
+
 code {
+  display: block;
   font-size: 12px;
-  padding: 35px 25px 25px;
+  padding: 12px 25px;
   text-align: left;
 }
 
@@ -17,11 +23,11 @@ p {
 
 nav {
   border-right: 1px solid #ccc;
-  left: 0;
-  top: 0;
   height: 100%;
+  left: 0;
   position: fixed;
   text-align: center;
+  top: 0;
   width: 250px;
   @media only screen and (max-width: 500px) {
     height: auto;
@@ -30,7 +36,7 @@ nav {
   }
 }
 
-nav button {
+nav a {
   background: transparent;
   border: 0;
   color: #222;
@@ -41,25 +47,28 @@ nav button {
   text-align: left;
   text-transform: uppercase;
   width: 100%;
+  text-decoration: none;
 }
 
-nav button:hover {
+nav a:hover {
   background-color: #ccc;
   opacity: .85;
 }
 
-nav button.active {
+nav a.active {
   background-color: #eee;
   color: #555;
 }
 
-nav button:active,
-nav button:focus {
+nav a:active,
+nav a:focus {
   outline: 0;
 }
 
 .content {
+  margin: 16px;
   padding-left: 250px;
+  max-width: 900px;
   @media only screen and (max-width: 500px) {
     padding-left: 0
   }

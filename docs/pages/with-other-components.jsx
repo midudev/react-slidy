@@ -2,6 +2,8 @@ import React from 'react'
 import ReactSlidy from '../../src'
 import SuiMultimedia from '@schibstedspain/sui-multimedia'
 
+import { DisplayCode } from '../utils'
+
 const images = [{
   src: 'https://scontent-mad1-1.cdninstagram.com/t51.2885-15/e15/11189686_499366993548088_1592806536_n.jpg',
   alt: 'Bicing Old town Barcelona'
@@ -25,5 +27,14 @@ export const demo = (
     >
       {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
     </ReactSlidy>
+    <DisplayCode>
+      {`<ReactSlidy
+        infinite={false}
+        slidesToScroll={1}
+      >
+        {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
+      </ReactSlidy>`
+      }
+    </DisplayCode>
   </div>
 )

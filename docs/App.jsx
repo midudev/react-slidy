@@ -27,18 +27,12 @@ const pagesComponents = pages.reduce((acc, page) => {
 }, {})
 
 export default class App extends Component {
-  constructor (...args) {
-    super(...args)
-
-    this.state = {
-      pageToLoad: pages[0]
-    }
-  }
+  state = { activeSection: pages[0] }
 
   componentDidMount () {
-    const pageToLoad = window.localStorage.getItem('pageToLoad')
-    if (pageToLoad && pages.includes(pageToLoad)) {
-      this.setState({ pageToLoad })
+    const hash = window.location.hash
+    if (hash) {
+      this.setState({ activeSection: hash.replace('#', '') })
     }
 
     const script = document.createElement('script')
@@ -48,16 +42,14 @@ export default class App extends Component {
     document.body.appendChild(script)
   }
 
-  changeDemo (pageToLoad) {
-    return () => {
-      this.setState({ pageToLoad })
-      window.localStorage.setItem('pageToLoad', pageToLoad)
+  _changeActivatedSection (demo) {
+    return (e) => {
+      this.setState({ activeSection: demo })
     }
   }
 
   render () {
-    const {pageToLoad} = this.state
-    const pageComponent = pagesComponents[pageToLoad]
+    const {activeSection} = this.state
 
     return (
       <div>
@@ -68,29 +60,23 @@ export default class App extends Component {
             dangerouslySetInnerHTML={{ __html: navButtonsContent }}
           />
           {pages.map(demo => (
-            <button
-              className={pageToLoad === demo ? 'active' : ''}
+            <a
+              href={`#${demo}`}
+              className={activeSection === demo ? 'active' : ''}
+              onClick={this._changeActivatedSection(demo)}
               key={demo}
-              onClick={this.changeDemo(demo)}
             >
               {demo}
-            </button>
+            </a>
           ))}
         </nav>
 
         <section className='content'>
-          <section className='usage'>
-            <Tag inverted text='CODE' />
-            <Lowlight
-              language='js'
-              value={jsxToString(pageComponent)}
-            />
-          </section>
-
-          <section className='demo'>
-            <Tag text='RESULT' />
-            { pageComponent }
-          </section>
+          {pages.map(demo => (
+            <div key={demo} id={demo}>
+              {pagesComponents[demo]}
+            </div>
+          ))}
         </section>
 
       </div>
