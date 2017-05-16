@@ -9,7 +9,7 @@ let slidy = NO_OP
 let imagesLoaded = NO_OP
 
 // if window is present, then we get the needed library
-if (typeof (window) !== 'undefined' && window.document) {
+if (window !== undefined && window.document) {
   slidy = require('./slidy/slidy.js').slidy
   imagesLoaded = require('imagesloaded')
 }
@@ -42,9 +42,9 @@ export default class ReactSlidySlider extends Component {
     this.sliderOptions = {
       ...this.classes,
       items: sliderItems,
-      doAfterSlide: this.handleAfterSlide,
-      // fix if the user try to use a `true` value for infinite
-      infinite: props.infinite === true ? 1 : props.infinite,
+      doAfterSlide: props.doAfterSlide,
+      doBeforeSlide: props.doBeforeSlide,
+      infinite: props.infinite,
       // if infinite, rewindOnResize is always true
       rewindOnResize: props.rewindOnResize || props.infinite,
       tailArrowClass: props.tailArrowClass
@@ -69,6 +69,8 @@ export default class ReactSlidySlider extends Component {
   }
 
   shouldComponentUpdate (nextProps) {
+    // as we want to improve performance, we're not relying on life cycle
+    // to update our component
     return false
   }
 
@@ -78,10 +80,6 @@ export default class ReactSlidySlider extends Component {
 
   getSliderNode = (node) => {
     this.DOM['slider'] = node
-  }
-
-  handleAfterSlide = ({currentSlide}) => {
-    this.props.doAfterSlide({currentSlide})
   }
 
   nextSlider = (e) => {
@@ -111,8 +109,17 @@ export default class ReactSlidySlider extends Component {
           className={this.sliderOptions.classNameFrame}
           ref={this.getFrameNode}
         >
-          {showArrows && <span className={this.classes.classNamePrevCtrl} onClick={this.prevSlider} />}
-          {showArrows && <span className={this.classes.classNameNextCtrl} onClick={this.nextSlider} />}
+          {showArrows &&
+            <span
+              className={this.classes.classNamePrevCtrl}
+              onClick={this.prevSlider}
+            />
+          }
+          {showArrows &&
+            <span
+              className={this.classes.classNameNextCtrl}
+              onClick={this.nextSlider} />
+          }
           <ul className={this.sliderOptions.classNameSlideContainer}>
             {this.renderItems()}
           </ul>
@@ -129,11 +136,9 @@ ReactSlidySlider.propTypes = {
   ]).isRequired,
   classNameBase: PropTypes.string,
   doAfterSlide: PropTypes.func,
+  doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
-  infinite: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.number
-  ]),
+  infinite: PropTypes.bool,
   onReady: PropTypes.func,
   rewind: PropTypes.bool,
   rewindOnResize: PropTypes.bool,
@@ -147,8 +152,9 @@ ReactSlidySlider.propTypes = {
 
 ReactSlidySlider.defaultProps = {
   doAfterSlide: NO_OP,
+  doBeforeSlide: NO_OP,
   ease: 'ease',
-  infinite: 1,
+  infinite: false,
   onReady: NO_OP,
   rewind: false,
   rewindOnResize: false,
