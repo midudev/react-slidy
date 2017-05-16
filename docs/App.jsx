@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import jsxToString from 'jsx-to-string'
-import Tag from './Tag'
 
 import Lowlight from 'react-lowlight'
 import js from 'highlight.js/lib/languages/javascript'
@@ -12,7 +10,8 @@ Lowlight.registerLanguage('js', js)
 const pages = [
   'intro',
   'with-other-components',
-  'with-links'
+  'with-links',
+  'with-events'
 ]
 
 const navButtonsContent = `
