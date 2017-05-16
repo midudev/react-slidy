@@ -149,6 +149,9 @@ export function slidy (slider, options) {
       duration = rewindSpeed
     }
 
+    const needToSlide = nextIndex !== index
+    if (!needToSlide) return
+
     // translate to the nextOffset by a defined duration and ease function
     _translate(nextOffset, duration, ease)
 
@@ -157,6 +160,7 @@ export function slidy (slider, options) {
 
     // if the nextIndex is possible according to totalSlides, then use it
     if (nextIndex <= totalSlides) {
+      options.doBeforeSlide({ currentSlide: index, nextSlide: nextIndex })
       index = nextIndex
     }
 
