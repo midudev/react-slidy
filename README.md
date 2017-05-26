@@ -43,6 +43,5 @@ I haven't did a lot of testing on that but it's supposed to work on Firefox, Chr
 
 ## TODO
 
-* [ ] Improve demo page
 * [ ] Improve documentation
 * [ ] Improve server rendering compatibility
