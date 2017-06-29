@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -62,9 +62,9 @@
     "webpack-merge": "^1.1.0"
   },
   "dependencies": {
-    "@schibstedspain/sui-spinner": "1.0",
+    "@schibstedspain/sui-spinner": "1",
     "imagesloaded": "4.1.2",
-    "react-lazy-load": "3.0.10"
+    "react-lazyload": "2.2.7"
   },
   "pre-commit": [
     "lint",

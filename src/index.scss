@@ -24,6 +24,7 @@ $c-transparent: rgba(0, 0, 0, 0);
 .react-Slidy {
   -webkit-tap-highlight-color: $c-transparent;
   background: $c-background;
+  min-height: 50px;
   position: relative;
 
   &-next,
