@@ -5,20 +5,21 @@ $c-nav-background: rgba(255, 255, 255, .8);
 $c-nav-color: #aaaaaa;
 $c-transparent: rgba(0, 0, 0, 0);
 
-@mixin arrow($symbol) {
-  color: $c-nav-color;
-  content: $symbol;
-  font-size: 65px;
-  font-weight: 100;
-  height: 100%;
-  line-height: 45px;
-  margin: auto;
-  padding: 0 8px;
-  position: absolute;
-  text-align: center;
-  top: calc(50% - 29px);
-  width: 40px;
-  z-index: 2;
+@mixin arrow($direction) {
+  @if $direction == 'right' {
+    margin-right: 6px;
+    transform: rotate(45deg);
+  } @else if $direction == 'left' {
+    margin-left: 6px;
+    transform: rotate(-135deg);
+  }
+
+  border-right: 3px solid $c-nav-color;
+  border-top: 3px solid $c-nav-color;
+  content: '';
+  display: inline-block;
+  height: 24px;
+  width: 24px;
 }
 
 .react-Slidy {
@@ -29,10 +30,13 @@ $c-transparent: rgba(0, 0, 0, 0);
 
   &-next,
   &-prev {
+    align-items: center;
     background: $c-nav-background;
     bottom: 0;
     cursor: pointer;
+    display: flex;
     height: 20%;
+    justify-content: center;
     margin: auto 0;
     min-height: 56px;
     opacity: 0;
@@ -52,8 +56,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     right: 0;
 
     &::after {
-      @include arrow('›');
-      right: 0;
+      @include arrow('right');
     }
   }
 
@@ -62,8 +65,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     left: 0;
 
     &::after {
-      @include arrow('‹');
-      left: 0;
+      @include arrow('left');
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@schibstedspain/linting-rules": "1",
-    "@schibstedspain/sui-multimedia": "0.2",
+    "@schibstedspain/sui-multimedia": "0.4",
     "babel-cli": "6",
     "babel-core": "6",
     "babel-loader": "6",
@@ -52,8 +52,8 @@
     "opener": "1.4",
     "react": "15",
     "react-dom": "15",
-    "react-hot-loader": "^1.3.1",
-    "react-syntax-highlighter": "^5.1.2",
+    "react-hot-loader": "1.3.1",
+    "react-syntax-highlighter": "5.1",
     "rimraf": "2.5.4",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "@schibstedspain/sui-spinner": "1",
-    "imagesloaded": "4.1.2",
+    "imagesloaded": "4.1.3",
     "react-lazyload": "2.2.7"
   },
   "pre-commit": [
