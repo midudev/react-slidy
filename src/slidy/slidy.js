@@ -152,7 +152,7 @@ export function slidy (slider, options) {
     }
 
     const needToSlide = nextIndex !== index
-    if (!needToSlide) return
+    if (needToSlide === false) return
 
     // translate to the nextOffset by a defined duration and ease function
     _translate(nextOffset, duration, ease)
@@ -207,7 +207,7 @@ export function slidy (slider, options) {
   }
 
   function onTransitionEnd () {
-    if (transitionEndCallback) {
+    if (typeof transitionEndCallback === 'function') {
       transitionEndCallback()
       transitionEndCallback = undefined
     }
@@ -270,7 +270,7 @@ export function slidy (slider, options) {
     const isOutOfBounds = (!index && !direction) ||
         (index === slides.length - 1 && direction)
 
-    if (isValid === true && !isOutOfBounds) {
+    if (isValid === true && isOutOfBounds === false) {
       slide(direction)
     } else {
       _translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
