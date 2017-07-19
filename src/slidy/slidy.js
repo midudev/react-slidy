@@ -7,7 +7,6 @@ const LINEAR_ANIMATION = 'linear'
 const SLIDES_TO_SCROLL = 1
 const VALID_SWIPE_DISTANCE = 25
 const {abs, min, max, round} = Math
-const windowDOM = window
 
 export function slidy (slider, options) {
   const {
@@ -204,7 +203,7 @@ export function slidy (slider, options) {
   function _removeAllEventsListeners () {
     _removeTouchEventsListeners(true)
     slideContainerDOMEl.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
-    windowDOM.removeEventListener('resize', onResize)
+    window.removeEventListener('resize', onResize)
   }
 
   function onTransitionEnd () {
@@ -321,7 +320,7 @@ export function slidy (slider, options) {
 
     slideContainerDOMEl.addEventListener(prefixes.transitionEnd, onTransitionEnd)
     frameDOMEl.addEventListener('touchstart', onTouchstart)
-    windowDOM.addEventListener('resize', onResize)
+    window.addEventListener('resize', onResize)
   }
 
   /**
