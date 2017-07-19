@@ -6,6 +6,8 @@ const prefixes = detectPrefixes()
 const LINEAR_ANIMATION = 'linear'
 const SLIDES_TO_SCROLL = 1
 const VALID_SWIPE_DISTANCE = 25
+const {abs, min, max, round} = Math
+const windowDOM = window
 
 export function slidy (slider, options) {
   const {
@@ -13,6 +15,7 @@ export function slidy (slider, options) {
     frameDOMEl,
     infinite,
     items,
+    itemsPreloaded,
     rewind,
     rewindSpeed,
     slideSpeed,
@@ -21,9 +24,6 @@ export function slidy (slider, options) {
 
   // if frameDOMEl is null, then we do nothing
   if (frameDOMEl === null) return
-
-  const {abs, floor, min, max, round} = Math
-  const windowDOM = window
   // DOM elements
   const slideContainerDOMEl = frameDOMEl.getElementsByClassName(options.classNameSlideContainer)[0]
 
@@ -33,11 +33,14 @@ export function slidy (slider, options) {
   // initialize some variables
   let frameWidth = 0
   let index = 0
-  let loadedIndex = { 0: 1, 1: 1 }
+  let loadedIndex = []
   let maxOffset = 0
   let position = 0
   let slides = []
   let transitionEndCallback
+
+  let itemsPreloadedCount = itemsPreloaded
+  while (itemsPreloadedCount--) loadedIndex[itemsPreloadedCount] = 1
 
   // event handling
   let touchOffset = { pageX: 0, pageY: 0 }
@@ -106,12 +109,12 @@ export function slidy (slider, options) {
   }
 
   function _setTailArrowClasses () {
-    if (infinite) { return }
-    if (prevArrow && prevArrow.classList) {
+    if (infinite === true) { return }
+    if (prevArrow !== null && typeof prevArrow.classList === 'object') {
       let action = index < 1 ? 'add' : 'remove'
       prevArrow.classList[action](tailArrowClass)
     }
-    if (nextArrow && nextArrow.classList) {
+    if (nextArrow !== null && typeof nextArrow.classList !== 'object') {
       let action = index > options.items.length - 2 ? 'add' : 'remove'
       nextArrow.classList[action](tailArrowClass)
     }
@@ -128,7 +131,7 @@ export function slidy (slider, options) {
   function slide (direction) {
     let duration = slideSpeed
 
-    const movement = direction ? 1 : -1
+    const movement = direction === true ? 1 : -1
     const totalSlides = slides.length
 
     // calculate the nextIndex according to the movement
@@ -137,7 +140,7 @@ export function slidy (slider, options) {
     // nextIndex should be between 0 and totalSlides minus 1
     nextIndex = _clampNumber(nextIndex, 0, totalSlides - 1)
 
-    if (infinite && direction === undefined) {
+    if (infinite === true && direction === undefined) {
       nextIndex += infinite
     }
 
@@ -173,7 +176,8 @@ export function slidy (slider, options) {
         _translate(_getOffsetLeft(index) * -1, 0)
       }
     } else {
-      const indexToLoad = index + (SLIDES_TO_SCROLL * movement)
+      const indexToLoad = index + (SLIDES_TO_SCROLL * movement) - 1
+      // check if the slide has been loaded before
       const indexLoaded = !!loadedIndex[indexToLoad]
       if (indexToLoad < totalSlides && indexToLoad >= 0 && !indexLoaded) {
         // insert in the correct position
@@ -192,7 +196,7 @@ export function slidy (slider, options) {
     frameDOMEl.removeEventListener('touchmove', onTouchmove)
     frameDOMEl.removeEventListener('touchend', onTouchend)
     frameDOMEl.removeEventListener('touchcancel', onTouchend)
-    if (all) {
+    if (all === true) {
       frameDOMEl.removeEventListener('touchstart', onTouchstart)
     }
   }
@@ -240,9 +244,9 @@ export function slidy (slider, options) {
       event.preventDefault()
     }
 
-    if (!isScrolling && delta.x !== 0) {
+    if (isScrolling === false && delta.x !== 0) {
       _translate(Math.round(position + delta.x), 0)
-    } else if (isScrolling) {
+    } else if (isScrolling === true) {
       onTouchend(event)
     }
   }
@@ -267,7 +271,7 @@ export function slidy (slider, options) {
     const isOutOfBounds = (!index && !direction) ||
         (index === slides.length - 1 && direction)
 
-    if (isValid && !isOutOfBounds) {
+    if (isValid === true && !isOutOfBounds) {
       slide(direction)
     } else {
       _translate(position, options.snapBackSpeed, LINEAR_ANIMATION)
@@ -290,7 +294,7 @@ export function slidy (slider, options) {
       const container = document.createElement('ul')
       const fragment = document.createDocumentFragment()
       container.innerHTML = wrappedString
-      while (container.firstChild) {
+      while (container.firstChild !== null) {
         fragment.appendChild(container.firstChild)
       }
       return fragment
@@ -331,12 +335,7 @@ export function slidy (slider, options) {
     frameWidth = _getWidthFromDOMEl(frameDOMEl)
     maxOffset = round((frameWidth * slides.length) - frameWidth)
 
-    let slidesHeight = floor(slideContainerDOMEl.firstChild.getBoundingClientRect().height) + 'px'
-
-    slideContainerDOMEl.style.height = slidesHeight
-    frameDOMEl.style.height = slidesHeight
-
-    if (rewindOnResize) {
+    if (rewindOnResize === true) {
       index = 0
     } else {
       ease = null
@@ -345,7 +344,7 @@ export function slidy (slider, options) {
 
     const offsetIndex = infinite ? index + infinite : index
     const newX = _getOffsetLeft(offsetIndex) * -1
-    if (infinite) {
+    if (infinite === true) {
       _translate(newX, 0)
     } else {
       _translate(newX, rewindSpeed, ease)
@@ -386,7 +385,7 @@ export function slidy (slider, options) {
     const { infinite } = options
     _removeAllEventsListeners()
     // remove cloned slides if infinite is set
-    if (infinite) {
+    if (infinite === true) {
       const {firstChild, lastChild} = slideContainerDOMEl
       Array.apply(null, Array(infinite)).forEach(function () {
         slideContainerDOMEl.removeChild(firstChild)

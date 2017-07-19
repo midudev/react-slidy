@@ -6,12 +6,10 @@ const NO_OP = () => {}
 // in order to make react-slidy compatible with server-rendering
 // by default slidy and imagesLoaded are empty functions
 let slidy = NO_OP
-let imagesLoaded = NO_OP
 
 // if window is present, then we get the needed library
 if (window !== undefined && window.document) {
   slidy = require('./slidy/slidy.js').slidy
-  imagesLoaded = require('imagesloaded')
 }
 
 function getClassesName ({classNameBase}) {
@@ -42,6 +40,7 @@ export default class ReactSlidySlider extends Component {
     this.sliderOptions = {
       ...this.classes,
       items: sliderItems,
+      itemsPreloaded: props.itemsToPreload,
       doAfterSlide: props.doAfterSlide,
       doBeforeSlide: props.doBeforeSlide,
       infinite: props.infinite,
@@ -53,15 +52,13 @@ export default class ReactSlidySlider extends Component {
 
   componentDidMount () {
     // wait to load the images in order to start some stuff only when needed
-    imagesLoaded(this.DOM['slider'], () => {
-      const slidyOptions = {
-        ...this.props,
-        ...this.sliderOptions,
-        frameDOMEl: this.DOM['frame']
-      }
-      // start slidy slider instance
-      this.slidyInstance = slidy(this.DOM['slider'], slidyOptions)
-    })
+    const slidyOptions = {
+      ...this.props,
+      ...this.sliderOptions,
+      frameDOMEl: this.DOM['frame']
+    }
+    // start slidy slider instance
+    this.slidyInstance = slidy(this.DOM['slider'], slidyOptions)
   }
 
   componentWillUnmount () {
@@ -92,12 +89,16 @@ export default class ReactSlidySlider extends Component {
     this.slidyInstance.prev()
   }
 
-  renderItems () {
-    return this.listItems.slice(0, 2).map((item, index) => (
+  renderItem = (item, index) => {
+    return (
       <li key={index} className={this.sliderOptions.classNameItem}>
         {item}
       </li>
-    ))
+    )
+  }
+
+  renderItems () {
+    return this.listItems.slice(0, this.props.itemsToPreload).map(this.renderItem)
   }
 
   render () {
@@ -139,6 +140,7 @@ ReactSlidySlider.propTypes = {
   doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
   infinite: PropTypes.bool,
+  itemsToPreload: PropTypes.bool,
   onReady: PropTypes.func,
   rewind: PropTypes.bool,
   rewindOnResize: PropTypes.bool,
@@ -155,6 +157,7 @@ ReactSlidySlider.defaultProps = {
   doBeforeSlide: NO_OP,
   ease: 'ease',
   infinite: false,
+  itemsToPreload: 1,
   onReady: NO_OP,
   rewind: false,
   rewindOnResize: false,
