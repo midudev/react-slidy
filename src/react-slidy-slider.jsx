@@ -8,7 +8,7 @@ const NO_OP = () => {}
 let slidy = NO_OP
 
 // if window is present, then we get the needed library
-if (window !== undefined && window.document) {
+if (typeof window !== 'undefined' && window.document) {
   slidy = require('./slidy/slidy.js').slidy
 }
 
