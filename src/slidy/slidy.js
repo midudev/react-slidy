@@ -113,7 +113,7 @@ export function slidy (slider, options) {
       let action = index < 1 ? 'add' : 'remove'
       prevArrow.classList[action](tailArrowClass)
     }
-    if (nextArrow !== null && typeof nextArrow.classList !== 'object') {
+    if (nextArrow !== null && typeof nextArrow.classList === 'object') {
       let action = index > options.items.length - 2 ? 'add' : 'remove'
       nextArrow.classList[action](tailArrowClass)
     }
