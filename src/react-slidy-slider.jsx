@@ -33,13 +33,8 @@ export default class ReactSlidySlider extends Component {
     this.listItems = Array.isArray(children) ? children : [children]
     this.slidyInstance = null
 
-    const sliderItems = React.Children.map(this.listItems, child =>
-      ReactDOMServer.renderToStaticMarkup(child)
-    )
-
     this.sliderOptions = {
       ...this.classes,
-      items: sliderItems,
       itemsPreloaded: props.itemsToPreload,
       doAfterSlide: props.doAfterSlide,
       doBeforeSlide: props.doBeforeSlide,
@@ -51,10 +46,15 @@ export default class ReactSlidySlider extends Component {
   }
 
   componentDidMount () {
-    // wait to load the images in order to start some stuff only when needed
+    // create the static markup for the slider
+    const items = React.Children.map(this.listItems, child =>
+      ReactDOMServer.renderToStaticMarkup(child)
+    )
+    // create the options for the slider
     const slidyOptions = {
       ...this.props,
       ...this.sliderOptions,
+      items,
       frameDOMEl: this.DOM['frame']
     }
     // start slidy slider instance
