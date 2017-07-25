@@ -27,6 +27,7 @@ $c-transparent: rgba(0, 0, 0, 0);
   background: $c-background;
   min-height: 50px;
   position: relative;
+  user-select: none;
 
   &-next,
   &-prev {

@@ -140,7 +140,7 @@ ReactSlidySlider.propTypes = {
   doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
   infinite: PropTypes.bool,
-  itemsToPreload: PropTypes.bool,
+  itemsToPreload: PropTypes.number,
   onReady: PropTypes.func,
   rewind: PropTypes.bool,
   rewindOnResize: PropTypes.bool,

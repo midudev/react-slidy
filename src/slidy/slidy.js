@@ -213,16 +213,20 @@ export function slidy (slider, options) {
     }
   }
 
+  function getTouchCoordinatesFromEvent ({ event }) {
+    return event.targetTouches ? event.targetTouches[0] : event
+  }
+
   function onTouchstart (event) {
-    const { pageX, pageY } = event.targetTouches ? event.targetTouches[0] : event
+    const { pageX, pageY } = getTouchCoordinatesFromEvent({ event })
     touchOffset = currentTouchOffset = { pageX, pageY }
-    frameDOMEl.addEventListener('touchmove', onTouchmove)
-    frameDOMEl.addEventListener('touchend', onTouchend)
-    frameDOMEl.addEventListener('touchcancel', onTouchend)
+    frameDOMEl.addEventListener('touchmove', onTouchmove, { pasive: true })
+    frameDOMEl.addEventListener('touchend', onTouchend, { pasive: true })
+    frameDOMEl.addEventListener('touchcancel', onTouchend, { pasive: true })
   }
 
   function onTouchmove (event) {
-    const { pageX, pageY } = event.targetTouches ? event.targetTouches[0] : event
+    const { pageX, pageY } = getTouchCoordinatesFromEvent({ event })
 
     delta = {
       x: pageX - touchOffset.pageX,
@@ -239,7 +243,7 @@ export function slidy (slider, options) {
     const isScrollingNow = abs(deltaNow.x) < abs(deltaNow.y)
     isScrolling = !!(isScrolling || isScrollingNow)
 
-    if (navigator.userAgent.indexOf('Android 4.3') >= 0 && !isScrollingNow) {
+    if (navigator.userAgent.indexOf('Android 4.3') >= 0 && isScrollingNow === false) {
       event.preventDefault()
     }
 
@@ -286,7 +290,7 @@ export function slidy (slider, options) {
   function _convertItemToDOM (string) {
     const wrappedString = `<li class='${options.classNameItem}'>${string}</li>`
     const el = document.createElement('template')
-    if (el.content) {
+    if (typeof el.content === 'object') {
       el.innerHTML = wrappedString
       return el.content
     } else {
@@ -310,10 +314,10 @@ export function slidy (slider, options) {
    */
   function _setup () {
     const { infinite } = options
-    const slidesArray = slice.call(items.map(i => _convertItemToDOM(i)))
+    const slidesArray = slice.call(items.map(_convertItemToDOM))
     position = slideContainerDOMEl.offsetLeft
 
-    slides = infinite ? _setupInfinite(slidesArray) : slice.call(slidesArray)
+    slides = infinite === true ? _setupInfinite(slidesArray) : slice.call(slidesArray)
 
     _setTailArrowClasses()
     reset()
