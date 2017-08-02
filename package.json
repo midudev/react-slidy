@@ -14,6 +14,7 @@
     "clean:lib": "rimraf ./lib/*",
     "deploy": "NODE_ENV=production npm run dist && surge ./docs react-slidy.surge.sh",
     "dist": "webpack",
+    "flow": "flow",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
@@ -40,26 +41,29 @@
     "babel-cli": "6",
     "babel-core": "6",
     "babel-loader": "6",
+    "babel-preset-flow": "6.23.0",
     "babel-preset-schibsted-spain": "2",
-    "copyfiles": "^1.0.0",
-    "css-loader": "^0.26.1",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "js-beautify": "^1.6.12",
-    "jsx-to-string": "^1.1.0",
-    "highlight.js": "^9.10.0",
-    "react-lowlight": "^1.0.4",
+    "copyfiles": "1.0.0",
+    "css-loader": "0.26.1",
+    "eslint-plugin-flowtype": "2.35.0",
+    "extract-text-webpack-plugin": "1.0.1",
+    "flow-bin": "0.51.1",
+    "highlight.js": "9.10.0",
+    "js-beautify": "1.6.12",
+    "jsx-to-string": "1.1.0",
     "node-sass": "3.4.2",
     "opener": "1.4",
     "react": "15",
     "react-dom": "15",
     "react-hot-loader": "1.3.1",
+    "react-lowlight": "1.0.4",
     "react-syntax-highlighter": "5.1",
     "rimraf": "2.5.4",
-    "sass-loader": "^4.0.2",
-    "style-loader": "^0.13.1",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2",
-    "webpack-merge": "^1.1.0"
+    "sass-loader": "4.0.2",
+    "style-loader": "0.13.1",
+    "webpack": "1.14.0",
+    "webpack-dev-server": "1.16.2",
+    "webpack-merge": "1.1.0"
   },
   "dependencies": {
     "@schibstedspain/sui-spinner": "1",
@@ -72,13 +76,18 @@
   ],
   "eslintConfig": {
     "extends": [
-      "./node_modules/@schibstedspain/linting-rules/eslintrc.js"
+      "./node_modules/@schibstedspain/linting-rules/eslintrc.js",
+      "plugin:flowtype/recommended"
+    ],
+    "plugins": [
+      "flowtype"
     ]
   },
   "sasslintConfig": "./node_modules/@schibstedspain/linting-rules/sass-lint.yml",
   "babel": {
     "presets": [
-      "schibsted-spain"
+      "schibsted-spain",
+      "flow"
     ]
   }
 }

@@ -1,4 +1,5 @@
-import detectPrefixes from './detect-prefixes.js'
+// @flow
+import detectPrefixes from './detect-prefixes'
 
 const { slice } = Array.prototype
 const prefixes = detectPrefixes()
@@ -8,7 +9,32 @@ const SLIDES_TO_SCROLL = 1
 const VALID_SWIPE_DISTANCE = 25
 const {abs, min, max, round} = Math
 
-export function slidy (slider, options) {
+type Coordinates = {
+  pageX: number,
+  pageY: number
+}
+
+type Options = {
+  classNameItem: string,
+  classNameNextCtrl: string,
+  classNamePrevCtrl: string,
+  classNameSlideContainer: string,
+  doAfterSlide: Function,
+  doBeforeSlide: Function,
+  ease: string,
+  frameDOMEl: HTMLElement,
+  infinite: boolean,
+  items: any,
+  itemsPreloaded: any,
+  rewind: boolean,
+  rewindOnResize: boolean,
+  rewindSpeed: any,
+  slideSpeed: any,
+  snapBackSpeed: number,
+  tailArrowClass: any
+}
+
+export function slidy (slider: any, options: Options) {
   const {
     ease,
     frameDOMEl,
@@ -30,15 +56,16 @@ export function slidy (slider, options) {
   const nextArrow = frameDOMEl.getElementsByClassName(options.classNameNextCtrl)[0]
 
   // initialize some variables
-  let frameWidth = 0
-  let index = 0
-  let loadedIndex = []
-  let maxOffset = 0
-  let position = 0
-  let slides = []
-  let transitionEndCallback
+  let frameWidth: number = 0
+  let index: number = 0
+  let loadedIndex: Array<number> = []
+  let maxOffset: number = 0
+  let position: number = 0
+  let slides: Array<any> = []
+  let transitionEndCallback : Function
+  let transitionEndCallbackActivated : boolean = false
 
-  let itemsPreloadedCount = itemsPreloaded
+  let itemsPreloadedCount: number = itemsPreloaded
   while (itemsPreloadedCount--) loadedIndex[itemsPreloadedCount] = 1
 
   // event handling
@@ -48,17 +75,17 @@ export function slidy (slider, options) {
   let isScrolling = false
 
   // clamp a number between two min and max values
-  function _clampNumber (x, minValue, maxValue) {
+  function _clampNumber (x: number, minValue: number, maxValue: number) {
     return min(max(x, minValue), maxValue)
   }
 
   // get the width from a DOM element
-  function _getWidthFromDOMEl (el) {
+  function _getWidthFromDOMEl (el: HTMLElement) {
     return el.getBoundingClientRect().width
   }
 
   // calculate the offset with the width of the frame and the desired position
-  function _getOffsetLeft (slidePosition) {
+  function _getOffsetLeft (slidePosition: number) {
     return frameWidth * slidePosition
   }
 
@@ -69,21 +96,19 @@ export function slidy (slider, options) {
    * @param  {array} slideArray
    * @return {array} array of updated slideContainer elements
    */
-  function _setupInfinite (slideArray) {
-    const { infinite } = options
-
+  function _setupInfinite (slideArray: Array<HTMLElement>) {
     const totalSlides = slideArray.length
-    const front = slideArray.slice(0, infinite)
-    const back = slideArray.slice(totalSlides - infinite, totalSlides)
+    const front = slideArray.slice(0, 1)
+    const back = slideArray.slice(totalSlides - 1, totalSlides)
     const { firstChild } = slideContainerDOMEl
 
-    front.forEach(function (el) {
+    front.forEach(function (el: HTMLElement) {
       const cloned = el.cloneNode(true)
       slideContainerDOMEl.appendChild(cloned)
     })
 
     back.reverse()
-      .forEach(function (el) {
+      .forEach(function (el: HTMLElement) {
         const cloned = el.cloneNode(true)
         slideContainerDOMEl.insertBefore(cloned, firstChild)
       })
@@ -98,8 +123,8 @@ export function slidy (slider, options) {
    * @duration  {number} time in milliseconds for the transistion
    * @ease      {string} easing css property
    */
-  function _translate (to, duration, ease) {
-    const easeCssText = ease ? `${prefixes.transitionTiming}: ${ease};` : ''
+  function _translate (to: number, duration: number, ease: string = '') {
+    const easeCssText = ease !== '' ? `${prefixes.transitionTiming}: ${ease};` : ''
     const durationCssText = duration ? `${prefixes.transitionDuration}: ${duration}ms;` : ''
     const cssText = `${easeCssText}${durationCssText}
       ${prefixes.transform}: ${prefixes.translate(to)};`
@@ -110,11 +135,11 @@ export function slidy (slider, options) {
   function _setTailArrowClasses () {
     if (infinite === true) { return }
     if (prevArrow !== null && typeof prevArrow.classList === 'object') {
-      let action = index < 1 ? 'add' : 'remove'
+      const action = index < 1 ? 'add' : 'remove'
       prevArrow.classList[action](tailArrowClass)
     }
     if (nextArrow !== null && typeof nextArrow.classList === 'object') {
-      let action = index > options.items.length - 2 ? 'add' : 'remove'
+      const action = index > options.items.length - 2 ? 'add' : 'remove'
       nextArrow.classList[action](tailArrowClass)
     }
   }
@@ -127,10 +152,10 @@ export function slidy (slider, options) {
    *
    * @direction  {boolean} 'true' for right, 'false' for left
    */
-  function slide (direction) {
+  function slide (direction: boolean) {
     let duration = slideSpeed
 
-    const movement = direction === true ? 1 : -1
+    const movement : number = direction === true ? 1 : -1
     const totalSlides = slides.length
 
     // calculate the nextIndex according to the movement
@@ -145,7 +170,7 @@ export function slidy (slider, options) {
 
     let nextOffset = _clampNumber(_getOffsetLeft(nextIndex) * -1, maxOffset * -1, 0)
 
-    if (rewind && direction && abs(position) === maxOffset) {
+    if (rewind === true && direction && abs(position) === maxOffset) {
       nextOffset = 0
       nextIndex = 0
       duration = rewindSpeed
@@ -166,14 +191,15 @@ export function slidy (slider, options) {
       index = nextIndex
     }
 
-    if (infinite && (nextIndex === totalSlides - infinite || nextIndex === 0)) {
-      index = direction ? infinite : totalSlides - (infinite * 2)
+    if (infinite === true && (nextIndex === (totalSlides - 1) || nextIndex === 0)) {
+      index = direction === 1 ? 1 : totalSlides - 2
 
       position = _getOffsetLeft(index) * -1
 
       transitionEndCallback = function () {
         _translate(_getOffsetLeft(index) * -1, 0)
       }
+      transitionEndCallbackActivated = true
     } else {
       const indexToLoad = index + (SLIDES_TO_SCROLL * movement) - 1
       // check if the slide has been loaded before
@@ -191,7 +217,7 @@ export function slidy (slider, options) {
     options.doAfterSlide({ currentSlide: index })
   }
 
-  function _removeTouchEventsListeners (all = false) {
+  function _removeTouchEventsListeners (all: boolean = false) {
     frameDOMEl.removeEventListener('touchmove', onTouchmove)
     frameDOMEl.removeEventListener('touchend', onTouchend)
     frameDOMEl.removeEventListener('touchcancel', onTouchend)
@@ -207,26 +233,26 @@ export function slidy (slider, options) {
   }
 
   function onTransitionEnd () {
-    if (typeof transitionEndCallback === 'function') {
+    if (transitionEndCallbackActivated === true) {
       transitionEndCallback()
-      transitionEndCallback = undefined
+      transitionEndCallbackActivated = false
     }
   }
 
-  function getTouchCoordinatesFromEvent ({ event }) {
-    return event.targetTouches ? event.targetTouches[0] : event
+  function getTouchCoordinatesFromEvent (event: TouchEvent) {
+    return event.targetTouches ? event.targetTouches[0] : event.touches[0]
   }
 
-  function onTouchstart (event) {
-    const { pageX, pageY } = getTouchCoordinatesFromEvent({ event })
+  function onTouchstart (event: TouchEvent) {
+    const { pageX, pageY } : Coordinates = getTouchCoordinatesFromEvent(event)
     touchOffset = currentTouchOffset = { pageX, pageY }
     frameDOMEl.addEventListener('touchmove', onTouchmove, { pasive: true })
     frameDOMEl.addEventListener('touchend', onTouchend, { pasive: true })
     frameDOMEl.addEventListener('touchcancel', onTouchend, { pasive: true })
   }
 
-  function onTouchmove (event) {
-    const { pageX, pageY } = getTouchCoordinatesFromEvent({ event })
+  function onTouchmove (event: TouchEvent) {
+    const { pageX, pageY } : Coordinates = getTouchCoordinatesFromEvent(event)
 
     delta = {
       x: pageX - touchOffset.pageX,
@@ -248,13 +274,13 @@ export function slidy (slider, options) {
     }
 
     if (isScrolling === false && delta.x !== 0) {
-      _translate(Math.round(position + delta.x), 0)
+      _translate(round(position + delta.x), 0)
     } else if (isScrolling === true) {
       onTouchend(event)
     }
   }
 
-  function onTouchend (event) {
+  function onTouchend (event: TouchEvent) {
     /**
      * is valid if:
      * -> swipe distance is greater than the specified valid swipe distance
@@ -271,8 +297,8 @@ export function slidy (slider, options) {
      * @isOutOfBounds {Boolean}
      */
     const direction = delta.x < 0
-    const isOutOfBounds = (!index && !direction) ||
-        (index === slides.length - 1 && direction)
+    const isOutOfBounds = (index === 0 && direction === false) ||
+        (index === slides.length - 1 && direction === true)
 
     if (isValid === true && isOutOfBounds === false) {
       slide(direction)
@@ -287,8 +313,8 @@ export function slidy (slider, options) {
     _removeTouchEventsListeners()
   }
 
-  function _convertItemToDOM (string) {
-    const wrappedString = `<li class='${options.classNameItem}'>${string}</li>`
+  function _convertItemToDOM (itemString: string) {
+    const wrappedString = `<li class='${options.classNameItem}'>${itemString}</li>`
     const el = document.createElement('template')
     if (typeof el.content === 'object') {
       el.innerHTML = wrappedString
@@ -297,14 +323,14 @@ export function slidy (slider, options) {
       const container = document.createElement('ul')
       const fragment = document.createDocumentFragment()
       container.innerHTML = wrappedString
-      while (container.firstChild !== null) {
+      while (container.firstChild !== null && container.firstChild !== undefined) {
         fragment.appendChild(container.firstChild)
       }
       return fragment
     }
   }
 
-  function onResize (event) {
+  function onResize () {
     reset()
   }
 
@@ -323,7 +349,7 @@ export function slidy (slider, options) {
     reset()
 
     slideContainerDOMEl.addEventListener(prefixes.transitionEnd, onTransitionEnd)
-    frameDOMEl.addEventListener('touchstart', onTouchstart)
+    frameDOMEl.addEventListener('touchstart', onTouchstart, { passive: true })
     window.addEventListener('resize', onResize)
   }
 
@@ -341,19 +367,15 @@ export function slidy (slider, options) {
     if (rewindOnResize === true) {
       index = 0
     } else {
-      ease = null
+      ease = ''
       rewindSpeed = 0
     }
 
-    const offsetIndex = infinite ? index + infinite : index
-    const newX = _getOffsetLeft(offsetIndex) * -1
-    if (infinite === true) {
-      _translate(newX, 0)
-    } else {
-      _translate(newX, rewindSpeed, ease)
-    }
-    index = offsetIndex
-    position = newX
+    index = infinite === true ? index + 1 : index
+    position = _getOffsetLeft(index) * -1
+    return infinite === true
+            ? _translate(position, 0)
+            : _translate(position, rewindSpeed, ease)
   }
 
   /**
@@ -361,7 +383,7 @@ export function slidy (slider, options) {
    * returnIndex function: called on clickhandler
    */
   function returnIndex () {
-    return index - options.infinite || 0
+    return index
   }
 
   /**
@@ -385,16 +407,7 @@ export function slidy (slider, options) {
    * destroy function: called to gracefully destroy the slidy instance
    */
   function destroy () {
-    const { infinite } = options
     _removeAllEventsListeners()
-    // remove cloned slides if infinite is set
-    if (infinite === true) {
-      const {firstChild, lastChild} = slideContainerDOMEl
-      Array.apply(null, Array(infinite)).forEach(function () {
-        slideContainerDOMEl.removeChild(firstChild)
-        slideContainerDOMEl.removeChild(lastChild)
-      })
-    }
   }
 
   // trigger initial setup
