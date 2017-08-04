@@ -147,7 +147,6 @@ ReactSlidySlider.propTypes = {
   rewindSpeed: PropTypes.number,
   showArrows: PropTypes.bool,
   slideSpeed: PropTypes.number,
-  slidesToScroll: PropTypes.number,
   snapBackSpeed: PropTypes.number,
   tailArrowClass: PropTypes.string
 }
@@ -164,6 +163,5 @@ ReactSlidySlider.defaultProps = {
   rewindSpeed: 500,
   showArrows: true,
   slideSpeed: 500,
-  slidesToScroll: 1,
   snapBackSpeed: 500
 }
