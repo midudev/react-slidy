@@ -15,8 +15,7 @@ export const demo = (
         document.getElementById('demo-with-events').innerHTML += `
         doBeforeSlide currentSlide: ${currentSlide} nextSlide: ${nextSlide}<br />`
       }}
-      infinite={false}
-      slidesToScroll={1}>
+      infinite={false}>
       <a href='http://miduga.es'>
         <img src='../img/beautiful_landscapes.jpg' />
       </a>
@@ -27,8 +26,7 @@ export const demo = (
     <p id='demo-with-events' />
     <DisplayCode>
       {`<ReactSlidy
-      infinite={false}
-      slidesToScroll={1}>
+      infinite={false}>
       <a href='http://miduga.es'>
         <img src='../img/beautiful_landscapes.jpg' />
       </a>

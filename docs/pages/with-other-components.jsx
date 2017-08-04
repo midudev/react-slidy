@@ -23,14 +23,12 @@ export const demo = (
     <h4 className='h4'>you can use it with other components</h4>
     <ReactSlidy
       infinite={false}
-      slidesToScroll={1}
     >
       {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
     </ReactSlidy>
     <DisplayCode>
       {`<ReactSlidy
         infinite={false}
-        slidesToScroll={1}
       >
         {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
       </ReactSlidy>`

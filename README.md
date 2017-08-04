@@ -37,7 +37,6 @@ I haven't did a lot of testing on that but it's supposed to work on Firefox, Chr
   rewind: PropTypes.bool,
   rewindSpeed: PropTypes.number,
   slideSpeed: PropTypes.number,
-  slidesToScroll: PropTypes.number,
   snapBackSpeed: PropTypes.number
 ```
 
