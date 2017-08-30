@@ -26,12 +26,10 @@ export default class ReactSlidySlider extends Component {
   constructor (props) {
     super(props)
 
-    const { children } = props
-
     this.DOM = {}
     this.classes = getClassesName(props)
-    this.listItems = Array.isArray(children) ? children : [children]
     this.slidyInstance = null
+    this._setListItemsFromChildren()
 
     this.sliderOptions = {
       ...this.classes,
@@ -45,7 +43,7 @@ export default class ReactSlidySlider extends Component {
     }
   }
 
-  componentDidMount () {
+  _initializeSlider () {
     // create the static markup for the slider
     const items = React.Children.map(this.listItems, child =>
       ReactDOMServer.renderToStaticMarkup(child)
@@ -61,11 +59,33 @@ export default class ReactSlidySlider extends Component {
     this.slidyInstance = slidy(this.DOM['slider'], slidyOptions)
   }
 
-  componentWillUnmount () {
+  _setListItemsFromChildren () {
+    const { children } = this.props
+    this.listItems = Array.isArray(children) ? children : [children]
+  }
+
+  _destroySlider () {
     this.slidyInstance && this.slidyInstance.destroy()
   }
 
-  shouldComponentUpdate (nextProps) {
+  componentDidMount () {
+    this._initializeSlider()
+  }
+
+  componentWillReceiveProps () {
+    if (this.props.dynamicContent) {
+      this._destroySlider()
+      this._setListItemsFromChildren()
+      this._initializeSlider()
+      this.forceUpdate()
+    }
+  }
+
+  componentWillUnmount () {
+    this._destroySlider()
+  }
+
+  shouldComponentUpdate () {
     // as we want to improve performance, we're not relying on life cycle
     // to update our component
     return false
@@ -136,6 +156,7 @@ ReactSlidySlider.propTypes = {
     PropTypes.object
   ]).isRequired,
   classNameBase: PropTypes.string,
+  dynamicContent: PropTypes.bool,
   doAfterSlide: PropTypes.func,
   doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,

@@ -11,7 +11,8 @@ const pages = [
   'intro',
   'with-other-components',
   'with-links',
-  'with-events'
+  'with-events',
+  'with-dynamic-content'
 ]
 
 const navButtonsContent = `
