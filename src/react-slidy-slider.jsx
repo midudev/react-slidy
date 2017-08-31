@@ -29,7 +29,7 @@ export default class ReactSlidySlider extends Component {
     this.DOM = {}
     this.classes = getClassesName(props)
     this.slidyInstance = null
-    this._setListItemsFromChildren()
+    this._setListItemsFromProps(props)
 
     this.sliderOptions = {
       ...this.classes,
@@ -59,8 +59,7 @@ export default class ReactSlidySlider extends Component {
     this.slidyInstance = slidy(this.DOM['slider'], slidyOptions)
   }
 
-  _setListItemsFromChildren () {
-    const { children } = this.props
+  _setListItemsFromProps ({ children }) {
     this.listItems = Array.isArray(children) ? children : [children]
   }
 
@@ -72,10 +71,10 @@ export default class ReactSlidySlider extends Component {
     this._initializeSlider()
   }
 
-  componentWillReceiveProps () {
-    if (this.props.dynamicContent) {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.dynamicContent) {
       this._destroySlider()
-      this._setListItemsFromChildren()
+      this._setListItemsFromProps(nextProps)
       this._initializeSlider()
       this.forceUpdate()
     }
@@ -87,7 +86,8 @@ export default class ReactSlidySlider extends Component {
 
   shouldComponentUpdate () {
     // as we want to improve performance, we're not relying on life cycle
-    // to update our component
+    // to update our component, if we need, we rely on the dynamicContent prop
+    // to force update our component and avoid showing same slider for dynamic content
     return false
   }
 

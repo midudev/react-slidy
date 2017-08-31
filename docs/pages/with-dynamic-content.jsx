@@ -29,6 +29,16 @@ class DynamicReactSlidyContent extends Component {
 
   render () {
     const { images: imagesFromState } = this.state
+    const imagesToRender = imagesFromState
+                              .map((img, key) =>
+                                <SuiMultimedia
+                                  key={img.src}
+                                  lazyLoad={false}
+                                  images={img}
+                                />
+                              )
+
+    console.log({ imagesToRender, imagesFromState })
 
     return (
       <div>
@@ -37,7 +47,7 @@ class DynamicReactSlidyContent extends Component {
           Change content
         </button>
         <ReactSlidy dynamicContent infinite={false}>
-          {imagesFromState.map((img, key) => <SuiMultimedia key={img.src} lazyLoad={false} images={img} />)}
+          {imagesToRender}
         </ReactSlidy>
       </div>
     )
