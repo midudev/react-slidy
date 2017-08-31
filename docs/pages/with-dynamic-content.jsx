@@ -38,15 +38,18 @@ class DynamicReactSlidyContent extends Component {
                                 />
                               )
 
-    console.log({ imagesToRender, imagesFromState })
-
     return (
       <div>
         <button
           onClick={() => { this.setState({ images: this.state.other, other: this.state.images }) }}>
           Change content
         </button>
-        <ReactSlidy dynamicContent infinite={false}>
+        <ReactSlidy
+          dynamicContent
+          infinite={false}
+          doAfterSlide={() => {
+            this.setState({ oh: 'test new props dont re-render withe same content' })
+          }}>
           {imagesToRender}
         </ReactSlidy>
       </div>

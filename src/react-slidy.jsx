@@ -14,7 +14,6 @@ export default class ReactSlidy extends Component {
   // to add new childrens to it, so we don't want unexpected behaviour
   // expect if we specify we have dynamicContent on it
   shouldComponentUpdate () {
-    console.log('reactSlidy', this.props.dynamicContent)
     return this.props.dynamicContent
   }
 

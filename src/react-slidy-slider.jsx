@@ -33,12 +33,11 @@ export default class ReactSlidySlider extends Component {
 
     this.sliderOptions = {
       ...this.classes,
-      itemsPreloaded: props.itemsToPreload,
       doAfterSlide: props.doAfterSlide,
       doBeforeSlide: props.doBeforeSlide,
       infinite: props.infinite,
-      // if infinite, rewindOnResize is always true
-      rewindOnResize: props.rewindOnResize || props.infinite,
+      itemsPreloaded: props.itemsToPreload,
+      rewindOnResize: props.rewindOnResize || props.infinite, // if infinite, rewindOnResize is always true
       tailArrowClass: props.tailArrowClass
     }
   }
@@ -73,10 +72,15 @@ export default class ReactSlidySlider extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.dynamicContent) {
-      this._destroySlider()
+      const oldFirstItem = this.listItems[0].key
       this._setListItemsFromProps(nextProps)
-      this._initializeSlider()
-      this.forceUpdate()
+      const hasDifferentContent = oldFirstItem !== this.listItems[0].key
+
+      if (hasDifferentContent) {
+        this._destroySlider()
+        this._initializeSlider()
+        this.forceUpdate()
+      }
     }
   }
 
