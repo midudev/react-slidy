@@ -57,6 +57,7 @@
     "react-dom": "15",
     "react-hot-loader": "1.3.1",
     "react-lowlight": "1.0.4",
+    "react-router": "2",
     "react-syntax-highlighter": "5.1",
     "rimraf": "2.5.4",
     "sass-loader": "4.0.2",
@@ -66,7 +67,7 @@
     "webpack-merge": "1.1.0"
   },
   "dependencies": {
-    "@schibstedspain/sui-spinner": "1",
+    "@schibstedspain/sui-spinner-basic": "1",
     "react-lazyload": "2.2.7"
   },
   "pre-commit": [

@@ -1,4 +1,6 @@
-@import '~@schibstedspain/sui-spinner/dist/index';
+$c-spinner: #ffffff;
+
+@import '~@schibstedspain/sui-spinner-basic/lib/index';
 
 $c-background: #dcdcdc;
 $c-nav-background: rgba(255, 255, 255, .8);
@@ -117,7 +119,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     width: 100%;
   }
 
-  .sui-Spinner {
+  .sui-SpinnerBasic {
     bottom: 0;
     display: block;
     left: 0;

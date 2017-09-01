@@ -1,13 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ReactSlidySlider from './react-slidy-slider'
-import Spinner from '@schibstedspain/sui-spinner'
+import Spinner from '@schibstedspain/sui-spinner-basic'
 import LazyLoad from 'react-lazyload'
-
-const spinnerConfig = {
-  size: 20,
-  thickness: 2,
-  type: 'circle'
-}
 
 export default class ReactSlidy extends Component {
   // as it's a slider, we don't want to re-render it and don't expect
@@ -38,7 +32,7 @@ export default class ReactSlidy extends Component {
 
     return (
       <div className={this.props.classNameBase}>
-        <Spinner {...spinnerConfig} />
+        <Spinner size='small' />
         {
           lazyLoadSlider
           ? this.renderSliderWithLazyLoad()
