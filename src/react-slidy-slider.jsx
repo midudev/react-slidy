@@ -28,6 +28,8 @@ export default class ReactSlidySlider extends Component {
 
     this.DOM = {}
     this.classes = getClassesName(props)
+    // this variable is used to avoid using index as unique key for dynamic content
+    this.dynamicContentIndex = 0
     this.slidyInstance = null
     this._setListItemsFromProps(props)
 
@@ -78,9 +80,10 @@ export default class ReactSlidySlider extends Component {
       const hasDifferentContent = oldFirstItem !== this.listItems[0].key
 
       if (hasDifferentContent) {
+        this.dynamicContentIndex++
         this._destroySlider()
-        this._initializeSlider()
         this.forceUpdate()
+        this._initializeSlider()
       }
     }
   }
@@ -116,7 +119,9 @@ export default class ReactSlidySlider extends Component {
 
   renderItem = (item, index) => {
     return (
-      <li key={index} className={this.sliderOptions.classNameItem}>
+      <li
+        className={this.sliderOptions.classNameItem}
+        key={`${this.dynamicContentIndex}${index}`}>
         {item}
       </li>
     )

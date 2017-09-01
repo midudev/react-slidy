@@ -340,6 +340,12 @@ export function slidy (slider: any, options: Options) {
     position = slideContainerDOMEl.offsetLeft
 
     slides = infinite === true ? _setupInfinite(slidesArray) : slidesArray
+    // remove all the elements except the last one as it seems to be old data in the HTML
+    // that's specially useful for dynamic content
+    while (slideContainerDOMEl.childElementCount > 1)
+    {
+      slideContainerDOMEl !== null && slideContainerDOMEl.removeChild(slideContainerDOMEl.lastChild)
+    }
 
     _setTailArrowClasses()
     reset()
