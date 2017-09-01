@@ -47,6 +47,9 @@ class DynamicReactSlidyContent extends Component {
         <ReactSlidy
           dynamicContent
           infinite={false}
+          doAfterDestroy={() => {
+            console.log('slider destroyed!')
+          }}
           doAfterSlide={() => {
             this.setState({ oh: 'test new props dont re-render withe same content' })
           }}>

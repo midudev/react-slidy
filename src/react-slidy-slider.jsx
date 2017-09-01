@@ -64,6 +64,7 @@ export default class ReactSlidySlider extends Component {
 
   _destroySlider () {
     this.slidyInstance && this.slidyInstance.destroy()
+    this.props.doAfterDestroy()
   }
 
   componentDidMount () {
@@ -161,6 +162,7 @@ ReactSlidySlider.propTypes = {
   ]).isRequired,
   classNameBase: PropTypes.string,
   dynamicContent: PropTypes.bool,
+  doAfterDestroy: PropTypes.func,
   doAfterSlide: PropTypes.func,
   doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
@@ -177,6 +179,7 @@ ReactSlidySlider.propTypes = {
 }
 
 ReactSlidySlider.defaultProps = {
+  doAfterDestroy: NO_OP,
   doAfterSlide: NO_OP,
   doBeforeSlide: NO_OP,
   ease: 'ease',
