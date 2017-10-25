@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import ReactSlidySlider from './react-slidy-slider'
 import Spinner from '@schibstedspain/sui-spinner-basic'
 import LazyLoad from 'react-lazyload'

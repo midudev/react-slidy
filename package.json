@@ -33,7 +33,8 @@
     "url": "git@github.com:miduga/react-slidy.git"
   },
   "peerDependencies": {
-    "react": "0.14 || 15"
+    "prop-types": "15",
+    "react": "0.14 || 15 || 16"
   },
   "devDependencies": {
     "@schibstedspain/linting-rules": "1",
@@ -53,6 +54,7 @@
     "jsx-to-string": "1.1.0",
     "node-sass": "3.4.2",
     "opener": "1.4",
+    "prop-types": "15",
     "react": "15",
     "react-dom": "15",
     "react-hot-loader": "1.3.1",
