@@ -33,7 +33,7 @@ export default class ReactSlidy extends Component {
 
     return (
       <div className={this.props.classNameBase}>
-        <Spinner size='normal' />
+        <Spinner size='medium' />
         {
           lazyLoadSlider
           ? this.renderSliderWithLazyLoad()
