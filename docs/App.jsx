@@ -9,6 +9,7 @@ Lowlight.registerLanguage('js', js)
 
 const pages = [
   'intro',
+  'with-initial-index',
   'with-other-components',
   'with-links',
   'with-events',
