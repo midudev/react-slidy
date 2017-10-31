@@ -24,8 +24,9 @@ type Options = {
   ease: string,
   frameDOMEl: HTMLElement,
   infinite: boolean,
+  initialSlide: number,
   items: Array<string>,
-  itemsPreloaded: number,
+  itemsToPreload: number,
   rewind: boolean,
   rewindOnResize: boolean,
   rewindSpeed: number,
@@ -46,8 +47,9 @@ export function slidy (slider: any, options: Options) {
     ease,
     frameDOMEl,
     infinite,
+    initialSlide,
     items,
-    itemsPreloaded,
+    itemsToPreload,
     rewind,
     rewindOnResize,
     rewindSpeed,
@@ -65,7 +67,7 @@ export function slidy (slider: any, options: Options) {
 
   // initialize some variables
   let frameWidth: number = 0
-  let index: number = 0
+  let index: number = initialSlide
   let isScrolling = false
   let isScrollBlocked = false
   let loadedIndex: Array<number> = []
@@ -74,8 +76,8 @@ export function slidy (slider: any, options: Options) {
   let slides: Array<any> = []
   let transitionEndCallbackActivated : boolean = false
 
-  let itemsPreloadedCount: number = itemsPreloaded
-  while (itemsPreloadedCount--) loadedIndex[itemsPreloadedCount] = 1
+  let itemsPreloadedCount: number = itemsToPreload
+  while (itemsPreloadedCount--) loadedIndex[index + itemsPreloadedCount] = 1
 
   // event handling
   let touchOffset = { pageX: 0, pageY: 0 }
@@ -175,7 +177,7 @@ export function slidy (slider: any, options: Options) {
       nextIndex += infinite
     }
 
-    let nextOffset = _clampNumber(_getOffsetLeft(nextIndex) * -1, maxOffset * -1, 0)
+    let nextOffset = _getOffsetLeft(nextIndex) * -1
 
     if (rewind === true && direction && abs(position) === maxOffset) {
       nextOffset = 0
@@ -340,12 +342,6 @@ export function slidy (slider: any, options: Options) {
     position = slideContainerDOMEl.offsetLeft
 
     slides = infinite === true ? _setupInfinite(slidesArray) : slidesArray
-    // remove all the elements except the last one as it seems to be old data in the HTML
-    // that's specially useful for dynamic content
-    while (slideContainerDOMEl.childElementCount > 1)
-    {
-      slideContainerDOMEl !== null && slideContainerDOMEl.removeChild(slideContainerDOMEl.lastChild)
-    }
 
     _setTailArrowClasses()
     reset()
@@ -353,6 +349,18 @@ export function slidy (slider: any, options: Options) {
     slideContainerDOMEl.addEventListener(prefixes.transitionEnd, onTransitionEnd, { passive: true })
     frameDOMEl.addEventListener('touchstart', onTouchstart, { passive: true })
     window.addEventListener('resize', onResize, { passive: true })
+  }
+
+  /**
+   * public
+   * clean content of the slider
+   */
+  function clean () {
+    // remove all the elements except the last one as it seems to be old data in the HTML
+    // that's specially useful for dynamic content
+    while (slideContainerDOMEl.childElementCount > 1) {
+      slideContainerDOMEl !== null && slideContainerDOMEl.removeChild(slideContainerDOMEl.lastChild)
+    }
   }
 
   /**
@@ -364,6 +372,9 @@ export function slidy (slider: any, options: Options) {
     maxOffset = round((frameWidth * slides.length) - frameWidth)
 
     index = rewindOnResize === true ? 0 : index
+    // we have to extract the initialSlide from the index to calculate the offset
+    // so we make sure that we start the translations from point 0 no matter
+    // the initial index used
     position = _getOffsetLeft(index) * -1
 
     if (infinite === true) {
@@ -412,11 +423,12 @@ export function slidy (slider: any, options: Options) {
 
   // expose public api
   return {
-    reset,
-    slide,
-    returnIndex,
-    prev,
+    clean,
+    destroy,
     next,
-    destroy
+    prev,
+    reset,
+    returnIndex,
+    slide
   }
 }

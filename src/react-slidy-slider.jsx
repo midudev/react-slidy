@@ -33,16 +33,9 @@ export default class ReactSlidySlider extends Component {
     this.dynamicContentIndex = 0
     this.slidyInstance = null
     this._setListItemsFromProps(props)
-
-    this.sliderOptions = {
-      ...this.classes,
-      doAfterSlide: props.doAfterSlide,
-      doBeforeSlide: props.doBeforeSlide,
-      infinite: props.infinite,
-      itemsPreloaded: props.itemsToPreload,
-      rewindOnResize: props.rewindOnResize || props.infinite, // if infinite, rewindOnResize is always true
-      tailArrowClass: props.tailArrowClass
-    }
+    // initialize the sliderOptions with the classes and all the props
+    // we will use in the slidy file only the needed props
+    this.sliderOptions = { ...this.classes, ...props }
   }
 
   _initializeSlider () {
@@ -52,7 +45,6 @@ export default class ReactSlidySlider extends Component {
     )
     // create the options for the slider
     const slidyOptions = {
-      ...this.props,
       ...this.sliderOptions,
       items,
       frameDOMEl: this.DOM['frame']
@@ -66,7 +58,7 @@ export default class ReactSlidySlider extends Component {
   }
 
   _destroySlider () {
-    this.slidyInstance && this.slidyInstance.destroy()
+    this.slidyInstance && this.slidyInstance.clean() && this.slidyInstance.destroy()
     this.props.doAfterDestroy()
   }
 
@@ -129,7 +121,8 @@ export default class ReactSlidySlider extends Component {
   }
 
   renderItems () {
-    return this.listItems.slice(0, this.props.itemsToPreload).map(this.renderItem)
+    const { initialSlide, itemsToPreload } = this.props
+    return this.listItems.slice(0, initialSlide + itemsToPreload).map(this.renderItem)
   }
 
   render () {
@@ -173,6 +166,7 @@ ReactSlidySlider.propTypes = {
   doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
   infinite: PropTypes.bool,
+  initialSlide: PropTypes.number,
   itemsToPreload: PropTypes.number,
   onReady: PropTypes.func,
   rewind: PropTypes.bool,
@@ -190,6 +184,7 @@ ReactSlidySlider.defaultProps = {
   doBeforeSlide: NO_OP,
   ease: 'ease',
   infinite: false,
+  initialSlide: 0,
   itemsToPreload: 1,
   onReady: NO_OP,
   rewind: false,
