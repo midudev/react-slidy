@@ -17,10 +17,10 @@ export const demo = (
       }}
       infinite={false}>
       <a href='http://miduga.es'>
-        <img src='../img/beautiful_landscapes.jpg' />
+        <img src='./img/beautiful_landscapes.jpg' />
       </a>
       <a href='https://github.com/miduga/react-slidy'>
-        <img src='../img/beautiful_landscapes_02.jpg' />
+        <img src='./img/beautiful_landscapes_02.jpg' />
       </a>
     </ReactSlidy>
     <p id='demo-with-events' />
@@ -28,10 +28,10 @@ export const demo = (
       {`<ReactSlidy
       infinite={false}>
       <a href='http://miduga.es'>
-        <img src='../img/beautiful_landscapes.jpg' />
+        <img src='./img/beautiful_landscapes.jpg' />
       </a>
       <a href='https://github.com/miduga/react-slidy'>
-        <img src='../img/beautiful_landscapes_02.jpg' />
+        <img src='./img/beautiful_landscapes_02.jpg' />
       </a>
     </ReactSlidy>`
       }
