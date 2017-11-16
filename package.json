@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "@schibstedspain/sui-spinner-basic": "1",
-    "react-lazyload": "2.2.7"
+    "react-lazyload": "2.3.0"
   },
   "pre-commit": [
     "lint",
