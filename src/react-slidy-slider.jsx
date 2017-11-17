@@ -33,9 +33,6 @@ export default class ReactSlidySlider extends Component {
     this.dynamicContentIndex = 0
     this.slidyInstance = null
     this._setListItemsFromProps(props)
-    // initialize the sliderOptions with the classes and all the props
-    // we will use in the slidy file only the needed props
-    this.sliderOptions = { ...this.classes, ...props }
   }
 
   _initializeSlider () {
@@ -45,7 +42,8 @@ export default class ReactSlidySlider extends Component {
     )
     // create the options for the slider
     const slidyOptions = {
-      ...this.sliderOptions,
+      ...this.classes,
+      ...this.props,
       items,
       frameDOMEl: this.DOM['frame']
     }
@@ -58,7 +56,9 @@ export default class ReactSlidySlider extends Component {
   }
 
   _destroySlider () {
+    debugger
     this.slidyInstance && this.slidyInstance.clean() && this.slidyInstance.destroy()
+    this.slidyInstance = null
     this.props.doAfterDestroy()
   }
 
@@ -68,9 +68,9 @@ export default class ReactSlidySlider extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.dynamicContent) {
-      const oldFirstItem = this.listItems[0].key
+      const oldFirstItemKey = this.listItems[0].key
       this._setListItemsFromProps(nextProps)
-      const hasDifferentContent = oldFirstItem !== this.listItems[0].key
+      const hasDifferentContent = oldFirstItemKey !== this.listItems[0].key
 
       if (hasDifferentContent) {
         this.dynamicContentIndex++
@@ -113,7 +113,7 @@ export default class ReactSlidySlider extends Component {
   renderItem = (item, index) => {
     return (
       <li
-        className={this.sliderOptions.classNameItem}
+        className={this.classes.classNameItem}
         key={`${this.dynamicContentIndex}${index}`}>
         {item}
       </li>
@@ -131,7 +131,7 @@ export default class ReactSlidySlider extends Component {
     return (
       <div ref={this.getSliderNode}>
         <div
-          className={this.sliderOptions.classNameFrame}
+          className={this.classes.classNameFrame}
           ref={this.getFrameNode}
         >
           {showArrows &&
@@ -145,7 +145,7 @@ export default class ReactSlidySlider extends Component {
               className={this.classes.classNameNextCtrl}
               onClick={this.nextSlider} />
           }
-          <ul className={this.sliderOptions.classNameSlideContainer}>
+          <ul className={this.classes.classNameSlideContainer}>
             {this.renderItems()}
           </ul>
         </div>

@@ -217,6 +217,7 @@ export function slidy (slider: any, options: Options) {
 
     // Checking wheter to paint or hide the arrows.
     _setTailArrowClasses()
+
     // execute the callback from the options after sliding
     doAfterSlide({ currentSlide: index })
   }
@@ -225,6 +226,7 @@ export function slidy (slider: any, options: Options) {
     frameDOMEl.removeEventListener('touchmove', onTouchmove)
     frameDOMEl.removeEventListener('touchend', onTouchend)
     frameDOMEl.removeEventListener('touchcancel', onTouchend)
+
     if (all === true) {
       frameDOMEl.removeEventListener('touchstart', onTouchstart)
     }
@@ -361,6 +363,8 @@ export function slidy (slider: any, options: Options) {
     while (slideContainerDOMEl.childElementCount > 1) {
       slideContainerDOMEl !== null && slideContainerDOMEl.removeChild(slideContainerDOMEl.lastChild)
     }
+    // tell that the clean is done
+    return true
   }
 
   /**
