@@ -56,7 +56,6 @@ export default class ReactSlidySlider extends Component {
   }
 
   _destroySlider () {
-    debugger
     this.slidyInstance && this.slidyInstance.clean() && this.slidyInstance.destroy()
     this.slidyInstance = null
     this.props.doAfterDestroy()
