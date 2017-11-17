@@ -5,6 +5,9 @@ import Spinner from '@schibstedspain/sui-spinner-basic'
 import LazyLoad from 'react-lazyload'
 
 export default class ReactSlidy extends Component {
+  componentDidCatch (error, errorInfo) {
+    console.error({ error, errorInfo })
+  }
   // as it's a slider, we don't want to re-render it and don't expect
   // to add new childrens to it, so we don't want unexpected behaviour
   // expect if we specify we have dynamicContent on it
