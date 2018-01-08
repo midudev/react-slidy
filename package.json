@@ -19,8 +19,8 @@
     "lib:scripts": "babel src --out-dir lib",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
     "lint": "npm run lint:js && npm run lint:sass",
-    "lint:js": "linting-rules js",
-    "lint:sass": "linting-rules sass",
+    "lint:js": "sui-lint js",
+    "lint:sass": "sui-lint sass",
     "prelib": "npm run clean:lib -s",
     "prepublish": "npm run lib",
     "start": "npm run start:open && npm run start:server",
@@ -37,13 +37,13 @@
     "react": "0.14 || 15 || 16"
   },
   "devDependencies": {
-    "@schibstedspain/linting-rules": "1",
+    "@s-ui/lint": "2",
     "@schibstedspain/sui-multimedia": "0.4",
     "babel-cli": "6",
     "babel-core": "6",
     "babel-loader": "6",
     "babel-preset-flow": "6.23.0",
-    "babel-preset-schibsted-spain": "2",
+    "babel-preset-sui": "1",
     "copyfiles": "1.0.0",
     "css-loader": "0.26.1",
     "eslint-plugin-flowtype": "2.35.0",
@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "@schibstedspain/sui-spinner-basic": "1",
-    "react-lazyload": "2.3.0"
+    "intersection-observer": "0.5.0"
   },
   "pre-commit": [
     "lint",
@@ -79,17 +79,17 @@
   ],
   "eslintConfig": {
     "extends": [
-      "./node_modules/@schibstedspain/linting-rules/eslintrc.js",
+      "./node_modules/@s-ui/lint/eslintrc.js",
       "plugin:flowtype/recommended"
     ],
     "plugins": [
       "flowtype"
     ]
   },
-  "sasslintConfig": "./node_modules/@schibstedspain/linting-rules/sass-lint.yml",
+  "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml",
   "babel": {
     "presets": [
-      "schibsted-spain",
+      "sui",
       "flow"
     ]
   }

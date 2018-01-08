@@ -26,6 +26,7 @@ $c-transparent: rgba(0, 0, 0, 0);
 
 .react-Slidy {
   -webkit-tap-highlight-color: $c-transparent;
+  backface-visibility: hidden;
   background: $c-background;
   min-height: 50px;
   position: relative;
@@ -78,8 +79,6 @@ $c-transparent: rgba(0, 0, 0, 0);
   }
 
   &-frame {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
     font-size: 0;
     overflow: hidden;
     position: relative;
@@ -93,7 +92,6 @@ $c-transparent: rgba(0, 0, 0, 0);
   }
 
   &-slides {
-    backface-visibility: hidden;
     display: block;
     list-style: none;
     padding: 0;
@@ -104,10 +102,18 @@ $c-transparent: rgba(0, 0, 0, 0);
   &-item {
     display: inline-block;
     position: relative;
-    transform: translateZ(0);
     user-select: none;
     vertical-align: top;
     width: 100%;
+
+    &:first-child img {
+      opacity: 0;
+      transition: .75s all ease-out;
+
+      &.is-loaded {
+        opacity: 1;
+      }
+    }
   }
 
   img {

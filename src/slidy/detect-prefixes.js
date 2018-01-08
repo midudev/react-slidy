@@ -32,8 +32,8 @@ export default function detectPrefixes () {
   }
 
   const translate = typeof style.perspective !== 'undefined'
-                      ? function (to) { return 'translate3d(' + to + 'px, 0, 0)' }
-                      : function (to) { return 'translate(' + to + 'px, 0)' }
+    ? function (to) { return 'translate3d(' + to + 'px, 0, 0)' }
+    : function (to) { return 'translate(' + to + 'px, 0)' }
 
   return {
     transform,
