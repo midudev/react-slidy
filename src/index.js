@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactSlidySlider from './react-slidy-slider'
 import Spinner from '@schibstedspain/sui-spinner-basic'
-import 'intersection-observer'
+
+// if window is present, then we get the needed library
+if (typeof window !== 'undefined' && window.document) {
+  require('intersection-observer')
+}
 
 export default class ReactSlidy extends Component {
   constructor (props) {
