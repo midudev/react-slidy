@@ -22,7 +22,7 @@ export default class ReactSlidy extends Component {
         return
       }
       // if we support IntersectionObserver, let's use it
-      const { offset } = this.props.lazyLoadConfig
+      const { offset = 0 } = this.props.lazyLoadConfig
       this.observer = new window.IntersectionObserver(this._handleIntersection, {
         rootMargin: `${offset}px 0px 0px`
       })
