@@ -106,19 +106,22 @@ $c-transparent: rgba(0, 0, 0, 0);
     vertical-align: top;
     width: 100%;
 
+    &.is-loaded {
+      opacity: 1;
+    }
+
     /* Activate when ready
     &:first-child img {
       opacity: 0;
       transition: .75s all ease-out;
-
-      &.is-loaded {
-        opacity: 1;
-      }
     }
     */
   }
 
   img {
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+
     display: block;
     height: auto;
     pointer-events: none;
