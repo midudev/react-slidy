@@ -65,6 +65,10 @@ export default class ReactSlidySlider extends Component {
     this._initializeSlider()
   }
 
+  componentDidUpdate () {
+    this._initializeSlider()
+  }
+
   componentWillReceiveProps (nextProps) {
     if (nextProps.dynamicContent) {
       const oldFirstItemKey = this.listItems[0].key
@@ -75,7 +79,6 @@ export default class ReactSlidySlider extends Component {
         this.dynamicContentIndex++
         this._destroySlider()
         this.forceUpdate()
-        this._initializeSlider()
       }
     }
   }
