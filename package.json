@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "3.0.21",
+  "version": "3.0.22",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -52,7 +52,7 @@
     "highlight.js": "9.10.0",
     "js-beautify": "1.6.12",
     "jsx-to-string": "1.1.0",
-    "node-sass": "3.4.2",
+    "node-sass": "4.7.2",
     "opener": "1.4",
     "prop-types": "15",
     "react": "15",
