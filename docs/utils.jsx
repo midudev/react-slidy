@@ -2,7 +2,7 @@ import React from 'react'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { github } from 'react-syntax-highlighter/dist/styles'
 
-const prettifyHTML = require('js-beautify').html 
+const prettifyHTML = require('js-beautify').html
 
 export const DisplayCode = ({ children }) => {
   return (
