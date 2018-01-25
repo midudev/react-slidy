@@ -30,13 +30,13 @@ class DynamicReactSlidyContent extends Component {
   render () {
     const { images: imagesFromState } = this.state
     const imagesToRender = imagesFromState
-                              .map((img, key) =>
-                                <SuiMultimedia
-                                  key={img.src}
-                                  lazyLoad={false}
-                                  images={img}
-                                />
-                              )
+      .map((img, key) =>
+        <SuiMultimedia
+          key={img.src}
+          lazyLoad={false}
+          images={img}
+        />
+      )
 
     return (
       <div>

@@ -336,7 +336,7 @@ export function slidy (slider: any, options: Options) {
   }
 
   function isImageLoaded (img) {
-    if (!img || !img.complete) {
+    if (!img || !img.complete) {
       return false
     }
 
@@ -361,7 +361,7 @@ export function slidy (slider: any, options: Options) {
     reset()
 
     // detect when the first image of the slider is loaded
-    const img = slideContainerDOMEl.querySelector('img') || {}
+    const img = slideContainerDOMEl.querySelector('img') || {}
     if (isImageLoaded(img)) {
       img.classList.add('is-loaded')
     } else {
