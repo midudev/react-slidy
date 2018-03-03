@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactSlidy from '../../src'
-import SuiMultimedia from '@schibstedspain/sui-multimedia'
 
 import { DisplayCode } from '../utils'
 
@@ -18,13 +17,19 @@ const images = [{
   alt: 'Barcelona rain'
 }]
 
+const ImageComponent = ({ src }) => (
+  <div className='ImageComponent'>
+    <img src={src} />
+  </div>
+)
+
 export const demo = (
   <div className='text-center'>
     <h4 className='h4'>you can use it with other components</h4>
     <ReactSlidy
       infinite={false}
     >
-      {images.map((img, key) => <SuiMultimedia key={key} lazyLoad={false} images={img} />)}
+      {images.map((img, key) => <ImageComponent key={key} {...img} />)}
     </ReactSlidy>
     <DisplayCode>
       {`<ReactSlidy

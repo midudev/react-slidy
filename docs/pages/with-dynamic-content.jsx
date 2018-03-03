@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ReactSlidy from '../../src'
-import SuiMultimedia from '@schibstedspain/sui-multimedia'
 
 const images = [{
   src: 'https://scontent-mad1-1.cdninstagram.com/t51.2885-15/e15/11189686_499366993548088_1592806536_n.jpg',
@@ -30,13 +29,7 @@ class DynamicReactSlidyContent extends Component {
   render () {
     const { images: imagesFromState } = this.state
     const imagesToRender = imagesFromState
-      .map((img, key) =>
-        <SuiMultimedia
-          key={img.src}
-          lazyLoad={false}
-          images={img}
-        />
-      )
+      .map((img, key) => <img key={key} {...img} />)
 
     return (
       <div>
