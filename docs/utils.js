@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { github } from 'react-syntax-highlighter/dist/styles'
 
@@ -13,5 +15,5 @@ export const DisplayCode = ({ children }) => {
 }
 
 DisplayCode.propTypes = {
-  children: React.PropTypes.string
+  children: PropTypes.string
 }
