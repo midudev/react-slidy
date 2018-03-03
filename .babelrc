@@ -1,0 +1,4 @@
+{
+  "presets": ["stage-0"],
+  "plugins": ["transform-class-properties"]
+}
