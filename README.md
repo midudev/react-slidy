@@ -8,7 +8,7 @@
 
 ## Overview
 
-React Slidy is a simple and minimal slider component. It gives you
+React Slidy is a simple and minimal slider component. It gives you a simple and reliable component that works based on native APIs like Intersection Observer and Smooth Scroll.
 
 ## Browser compatibility
 
