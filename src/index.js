@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import debounce from 'just-debounce-it'
+
+import { Arrow } from './Arrow'
+import { Frame } from './Frame'
 
 const NO_OP = () => {}
 
@@ -16,13 +19,14 @@ export default class ReactSlidy extends Component {
     super(props)
     this.observer = null
     this.state = {
+      currentIndex: 0,
       showSlider: !this.props.lazyLoadSlider
     }
 
-    this._currentIndex = 0
     this._frameDOMEl = undefined
     this._sliderDOMEl = undefined
     this._sliderWidth = 0
+    this._slidesKey = 0
     this._slides = React.Children.toArray(this.props.children)
 
     this._getSliderWidth = this._getSliderWidth.bind(this)
@@ -32,7 +36,7 @@ export default class ReactSlidy extends Component {
     this._handleResize = debounce(this._handleResize.bind(this), 200)
     this._handleSlide = this._handleSlide.bind(this)
     this._handleTouchEnd = this._handleTouchEnd.bind(this)
-    this._renderItem = this._renderItem.bind(this)
+    this._setFrameRef = this._setFrameRef.bind(this)
   }
 
   componentDidMount () {
@@ -49,6 +53,7 @@ export default class ReactSlidy extends Component {
       this.observer.observe(this._sliderDOMEl)
     }
 
+    this._handleResize()
     window.addEventListener('resize', this._handleResize)
   }
 
@@ -64,12 +69,19 @@ export default class ReactSlidy extends Component {
     // return this.props.dynamicContent || nextState.showSlider !== this.state.showSlider
   }
 
+  componentWillReceiveProps ({ children, dynamicContent }) {
+    if (dynamicContent) {
+      this._slides = React.Children.toArray(this.props.children)
+      this._slidesKey++
+    }
+  }
+
   componentWillUnmount () {
     this.observer && this.observer.disconnect()
     window.removeEventListener('resize', this._handleResize)
   }
 
-  _getSliderWidth ({ force = false }) {
+  _getSliderWidth ({ force = false } = {}) {
     if (this._sliderWidth === 0 || force) {
       this._sliderWidth = this._sliderDOMEl.clientWidth
     }
@@ -93,13 +105,17 @@ export default class ReactSlidy extends Component {
   }
 
   _handleTouchEnd (e) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const { currentIndex } = this.state
     const scrollLeft = this._frameDOMEl.scrollLeft
-    const actualPosition = this._currentIndex * this._sliderWidth
+    const actualPosition = currentIndex * this._sliderWidth
     const direction = actualPosition < scrollLeft ? 1 : -1
 
     const pointForMovement = actualPosition + ((this._sliderWidth) / 3 * direction)
-    const newIndex = this._currentIndex + direction
-    const newPosition = actualPosition + (this._sliderWidth * direction)
+    const newIndex = currentIndex + direction
+    const newPosition = newIndex * this._sliderWidth
 
     let left = actualPosition
 
@@ -108,46 +124,49 @@ export default class ReactSlidy extends Component {
       (direction === -1 && scrollLeft < pointForMovement)
     ) {
       left = newPosition
-      this._currentIndex = newIndex
+      this._updateCurrentIndex({ index: newIndex })
     }
 
-    moveScroll(this._frameDOMEl, left)
+    // nasty trick in order to handle the momentum scroll on Android
+    if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
+      setTimeout(() => moveScroll(this._frameDOMEl, left), 400)
+    } else {
+      moveScroll(this._frameDOMEl, left)
+    }
   }
 
   _handleSlide ({direction}) {
-    const newIndex = this._currentIndex + direction
+    const { currentIndex } = this.state
+    const newIndex = currentIndex + direction
     if (newIndex >= this._slides.length || newIndex < 0) return
 
     const left = newIndex * this._sliderWidth
     moveScroll(this._frameDOMEl, left)
-    this._currentIndex = newIndex
+    this._updateCurrentIndex({ index: newIndex })
   }
 
   _handleResize () {
-    this._getSliderWidth({ force: true })
-    moveScroll(this._frameDOMEl, this._currentIndex * this._sliderWidth)
+    const { currentIndex, showSlider } = this.state
+    // handle resize only if we're showing the slider and we already have the frame DOM element
+    if (showSlider && this._frameDOMEl) {
+      this._getSliderWidth({ force: true })
+      moveScroll(this._frameDOMEl, currentIndex * this._sliderWidth)
+    }
   }
 
-  _renderItem (item, index) {
-    const { classNameBase } = this.props
-    return (
-      <li
-        className={`${classNameBase}-slide`}
-        key={`${this.dynamicContentIndex}${index}`}>
-        {item}
-      </li>
-    )
+  _updateCurrentIndex ({ index }) {
+    this.setState({ currentIndex: index })
   }
 
-  _renderItems () {
-    const { initialSlide, itemsToPreload } = this.props
-    // return slides.slice(0, initialSlide + itemsToPreload).map(this._renderItem)
-    return this._slides.map(this._renderItem)
+  _setFrameRef (node) {
+    this._frameDOMEl = node
   }
 
   render () {
-    const { showSlider } = this.state
-    const { classNameBase, showArrows } = this.props
+    const { currentIndex, showSlider } = this.state
+    const { classNameBase, lazyLoadConfig, lazyLoadSlides, showArrows } = this.props
+    const { itemsToPreload } = lazyLoadConfig
+    const numOfItems = this._slides.length
 
     return (
       <div
@@ -156,17 +175,29 @@ export default class ReactSlidy extends Component {
         onTouchEnd={this._handleTouchEnd}
         onTouchStart={this._getSliderWidth}
         ref={node => { this._sliderDOMEl = node }}>
-        {showArrows &&
-          <button className={`${classNameBase}-prev`} onClick={this._handlePrev} />
+        {showSlider && showArrows &&
+          <Fragment>
+            <Arrow
+              className={`${classNameBase}-prev`}
+              disabled={currentIndex === 0}
+              onClick={this._handlePrev} />
+            <Arrow
+              className={`${classNameBase}-next`}
+              disabled={currentIndex === numOfItems - 1}
+              onClick={this._handleNext} />
+          </Fragment>
         }
-        {showArrows &&
-          <button className={`${classNameBase}-next`} onClick={this._handleNext} />
+        {showSlider &&
+          <Frame
+            className={classNameBase}
+            currentIndex={currentIndex}
+            items={this._slides}
+            itemsToPreload={itemsToPreload}
+            lazyLoadSlides={lazyLoadSlides}
+            setRef={this._setFrameRef}
+            slidesKey={this._slidesKey}
+          />
         }
-        <ul
-          className={`${classNameBase}-frame`}
-          ref={node => { this._frameDOMEl = node }}>
-          {this._renderItems()}
-        </ul>
       </div>
     )
   }
@@ -183,16 +214,20 @@ ReactSlidy.propTypes = {
   doAfterSlide: PropTypes.func,
   doBeforeSlide: PropTypes.func,
 
+  initialSlide: PropTypes.number,
+
   lazyLoadSlider: PropTypes.bool,
+  lazyLoadSlides: PropTypes.bool,
   // Shape from https://github.com/jasonslyvia/react-lazyload/blob/master/src/index.jsx#L295
   lazyLoadConfig: PropTypes.shape({
+    /* If lazyLoadSlides is true, then define the number of items that we will preload */
+    itemsToPreload: PropTypes.number,
     /* Say if you want to preload a component even if it's 100px below the viewport (user have to scroll 100px more to see this component), you can set offset props to 100. On the other hand, if you want to delay loading a component even if it's top edge has already appeared at viewport, set offset to negative number. */
     offset: PropTypes.number,
     /* If lazy loading components inside a overflow container, set this to true. Also make sure a position property other than static has been set to your overflow container. */
     overflow: PropTypes.bool
   }),
-  showArrows: PropTypes.bool,
-  tailArrowClass: PropTypes.string
+  showArrows: PropTypes.bool
 }
 
 ReactSlidy.defaultProps = {
@@ -202,10 +237,13 @@ ReactSlidy.defaultProps = {
   doAfterSlide: NO_OP,
   doBeforeSlide: NO_OP,
 
+  initialSlide: 0,
+
   lazyLoadSlider: true,
+  lazyLoadSlides: true,
   lazyLoadConfig: {
+    itemsToPreload: 2,
     offset: 150
   },
-  showArrows: true,
-  tailArrowClass: 'react-Slidy-arrow--disabled'
+  showArrows: true
 }
