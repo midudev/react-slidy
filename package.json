@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "clean:lib": "rimraf ./lib/*",
-    "deploy": "NODE_ENV=production npm run dist && surge ./docs react-slidy.surge.sh",
+    "deploy": "parcel build docs/index.html --public-url ./ && surge ./dist react-slidy-demo.surge.sh",
     "dev": "parcel docs/index.html",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
@@ -51,7 +51,8 @@
     "react-lowlight": "2.0.0",
     "react-router": "3",
     "react-syntax-highlighter": "5.1",
-    "rimraf": "2.5.4"
+    "rimraf": "2.5.4",
+    "surge": "^0.20.1"
   },
   "dependencies": {
     "intersection-observer": "0.5.0",
