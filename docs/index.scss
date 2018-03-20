@@ -21,57 +21,73 @@ p {
   color: rgba(51, 48, 48, 0.6);
 }
 
-nav {
-  border-right: 1px solid #ccc;
-  height: 100%;
-  left: 0;
-  position: fixed;
-  text-align: center;
-  top: 0;
-  width: 250px;
-  @media only screen and (max-width: 500px) {
-    height: auto;
-    position: relative;
-    width: 100%;
+h1 {
+  color: #333;
+  font-size: 48px;
+  font-weight: 200;
+  margin: 0;
+  padding: 32px 0 4px;
+}
+
+h2 {
+  color: #555;
+  font-size: 24px;
+  font-weight: 200;
+  margin: 0;
+  padding: 8px 0 16px;
+  position: relative;
+  &:after {
+    background: #eee;
+    bottom: 0;
+    content: '';
+    height: 1px;
+    left: 0;
+    margin: auto;
+    min-width: 250px;
+    position: absolute;
+    position: absolute;
+    right: 0;
+    width: 50%;
   }
 }
 
-nav a {
-  background: transparent;
-  border: 0;
-  color: #222;
-  cursor: pointer;
+nav {
   display: block;
-  font-size: 10px;
-  padding: 10px 20px 10px 10px;
-  text-align: left;
-  text-transform: uppercase;
-  width: 100%;
-  text-decoration: none;
+  text-align: center;
+  a {
+    border-bottom: 1px solid #ccc;
+    color: #ccc;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 100;
+    margin: 0px 4px;
+    text-decoration: none;
+    text-transform: uppercase;
+    &:hover {
+      border-bottom-color: #999;
+      color: #999;
+    }
+  }
 }
 
-nav a:hover {
-  background-color: #ccc;
-  opacity: .85;
+.github {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+
+  & > * {
+    margin: 0 4px;
+  }
 }
 
-nav a.active {
-  background-color: #eee;
-  color: #555;
-}
-
-nav a:active,
-nav a:focus {
-  outline: 0;
+.text-center {
+  text-align: center;
 }
 
 .content {
-  margin: 16px;
-  padding-left: 250px;
+  margin: 16px auto;
   max-width: 900px;
-  @media only screen and (max-width: 500px) {
-    padding-left: 0
-  }
+  padding: 16px;
 }
 
 .demo {

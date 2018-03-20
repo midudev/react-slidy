@@ -39,7 +39,6 @@ class DynamicReactSlidyContent extends Component {
         </button>
         <ReactSlidy
           dynamicContent
-          infinite={false}
           doAfterDestroy={() => {
             console.log('slider destroyed!')
           }}
