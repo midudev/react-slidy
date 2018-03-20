@@ -22,7 +22,6 @@ $c-transparent: rgba(0, 0, 0, 0);
 
 .react-Slidy {
   -webkit-tap-highlight-color: $c-transparent;
-  backface-visibility: hidden;
   background: $c-background;
   min-height: 50px;
   position: relative;
@@ -32,6 +31,7 @@ $c-transparent: rgba(0, 0, 0, 0);
   &-prev {
     align-items: center;
     background: $c-nav-background;
+    border: 0;
     bottom: 0;
     cursor: pointer;
     display: flex;
@@ -47,7 +47,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     width: 40px;
     z-index: 1;
 
-    @media screen and (max-width: 850px) {
+    @media (pointer: coarse) and (max-width: 850px) {
       display: none;
     }
   }
@@ -73,30 +73,31 @@ $c-transparent: rgba(0, 0, 0, 0);
   &:hover &-next,
   &:hover &-prev {
     opacity: 1;
+    &:disabled {
+      cursor: default;
+      opacity: .2;
+    }
   }
 
   &-frame {
-    -webkit-overflow-scrolling: auto;
     list-style: none;
-    overflow-x: scroll;
+    overflow-x: hidden;
     padding: 0;
     position: relative;
+    user-select: none;
     white-space: nowrap;
     width: 100%;
 
-    &:hover > .react-Slidy-arrow--disabled {
-      opacity: .2;
-    }
-
     -ms-overflow-style: none;
-    @supports (-moz-appearance: none) {
-      padding-bottom: -24px;
-    }
 
     &::-webkit-scrollbar {
       display: none;
     }
 
+    @media (pointer: coarse) {
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: auto;
+    }
   }
 
   &-slide {
@@ -109,13 +110,6 @@ $c-transparent: rgba(0, 0, 0, 0);
     &.is-loaded {
       opacity: 1;
     }
-
-    /* Activate when ready
-    &:first-child img {
-      opacity: 0;
-      transition: .75s all ease-out;
-    }
-    */
   }
 
   img {
