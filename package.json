@@ -68,5 +68,14 @@
       "./node_modules/@s-ui/lint/eslintrc.js"
     ]
   },
-  "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml"
+  "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml",
+  "babel": {
+    "presets": [
+      "stage-0",
+      "react"
+    ],
+    "plugins": [
+      "transform-class-properties"
+    ]
+  }
 }
