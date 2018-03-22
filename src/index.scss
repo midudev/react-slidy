@@ -82,6 +82,7 @@ $c-transparent: rgba(0, 0, 0, 0);
   &-frame {
     list-style: none;
     overflow-x: hidden;
+    overflow-y: hidden;
     padding: 0;
     position: relative;
     user-select: none;
