@@ -1,13 +1,19 @@
 // @flow
-import detectPrefixes from './detect-prefixes'
-
 const { slice } = Array.prototype
-const prefixes = detectPrefixes()
 
 const LINEAR_ANIMATION = 'linear'
 const SLIDES_TO_SCROLL = 1
 const VALID_SWIPE_DISTANCE = 25
 const {abs, min, max, round} = Math
+
+const PREFIXES = {
+  transform: 'transform',
+  transition: 'transition',
+  transitionDuration: 'transition-duration',
+  transitionEnd: 'transitionend',
+  transitionTiming: 'transition-timing-function',
+  translate: function (to) { return 'translate3d(' + to + 'px, 0, 0)' },
+}
 
 type Coordinates = {
   pageX: number,
@@ -134,10 +140,10 @@ export function slidy (slider: any, options: Options) {
   * @ease      {string} easing css property
   */
   function _translate (to: number, duration: number, ease: string = '') {
-    const easeCssText = ease !== '' ? `${prefixes.transitionTiming}: ${ease};` : ''
-    const durationCssText = duration ? `${prefixes.transitionDuration}: ${duration}ms;` : ''
+    const easeCssText = ease !== '' ? `${PREFIXES.transitionTiming}: ${ease};` : ''
+    const durationCssText = duration ? `${PREFIXES.transitionDuration}: ${duration}ms;` : ''
     const cssText = `${easeCssText}${durationCssText}
-      ${prefixes.transform}: ${prefixes.translate(to)};`
+      ${PREFIXES.transform}: ${PREFIXES.translate(to)};`
 
     slideContainerDOMEl.style.cssText = cssText
   }
@@ -234,7 +240,7 @@ export function slidy (slider: any, options: Options) {
 
   function _removeAllEventsListeners () {
     _removeTouchEventsListeners(true)
-    slideContainerDOMEl.removeEventListener(prefixes.transitionEnd, onTransitionEnd)
+    slideContainerDOMEl.removeEventListener(PREFIXES.transitionEnd, onTransitionEnd)
     window.removeEventListener('resize', onResize)
   }
 
@@ -370,7 +376,7 @@ export function slidy (slider: any, options: Options) {
       }
     }
 
-    slideContainerDOMEl.addEventListener(prefixes.transitionEnd, onTransitionEnd, { passive: true })
+    slideContainerDOMEl.addEventListener(PREFIXES.transitionEnd, onTransitionEnd, { passive: true })
     frameDOMEl.addEventListener('touchstart', onTouchstart, { passive: true })
     window.addEventListener('resize', onResize, { passive: true })
   }
@@ -444,8 +450,8 @@ export function slidy (slider: any, options: Options) {
     _removeAllEventsListeners()
   }
 
-  // trigger initial setup
-  _setup()
+  // trigger initial setup, wait 100MS in order to avoid problems with width
+  setTimeout(_setup, 100)
 
   // expose public api
   return {
