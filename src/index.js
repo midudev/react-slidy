@@ -29,13 +29,24 @@ export default class ReactSlidy extends Component {
     this._slidesKey = 0
     this._slides = React.Children.toArray(this.props.children)
 
+    /**
+     * 0 - not in an elastic state.
+     * -1 - elastic scrolling (back) to the left of scrollLeft 0.
+     * 1 - elastic scrolling (fwd) to the right of the max scrollLeft possible.
+     * @private {number}
+     */
+    this._elasticScrollState = 0
+
     this._getSliderWidth = this._getSliderWidth.bind(this)
     this._handleIntersection = this._handleIntersection.bind(this)
     this._handleNext = this._handleNext.bind(this)
     this._handlePrev = this._handlePrev.bind(this)
     this._handleResize = debounce(this._handleResize.bind(this), 200)
+    this._handleAndroidScroll = this._handleAndroidScroll.bind(this)
+    this._handleEndAndroidScroll = debounce(this._handleEndAndroidScroll.bind(this), 100)
     this._handleSlide = this._handleSlide.bind(this)
     this._handleTouchEnd = this._handleTouchEnd.bind(this)
+    this._handleTouchStart = this._handleTouchStart.bind(this)
     this._setFrameRef = this._setFrameRef.bind(this)
   }
 
@@ -104,6 +115,13 @@ export default class ReactSlidy extends Component {
     this._handleSlide({ direction: -1 })
   }
 
+  _handleTouchStart (e) {
+    if (this._isAndroid()) {
+      this._frameDOMEl.removeEventListener('scroll', this._handleAndroidScroll)
+    }
+    this._getSliderWidth()
+  }
+
   _handleTouchEnd (e) {
     e.preventDefault()
     e.stopPropagation()
@@ -128,11 +146,17 @@ export default class ReactSlidy extends Component {
     }
 
     // nasty trick in order to handle the momentum scroll on Android
-    if (navigator.userAgent.toLowerCase().indexOf('android') > -1) {
-      setTimeout(() => moveScroll(this._frameDOMEl, left), 400)
+    if (this._isAndroid()) {
+      this._ANDROID_lastScroll = scrollLeft
+      this._ANDROID_nextScroll = left
+      this._frameDOMEl.addEventListener('scroll', this._handleAndroidScroll)
     } else {
       moveScroll(this._frameDOMEl, left)
     }
+  }
+
+  _isAndroid () {
+    return navigator.userAgent.toLowerCase().indexOf('android') > -1
   }
 
   _handleSlide ({direction}) {
@@ -143,6 +167,7 @@ export default class ReactSlidy extends Component {
     const left = newIndex * this._sliderWidth
     moveScroll(this._frameDOMEl, left)
     this._updateCurrentIndex({ index: newIndex })
+    this.props.doAfterSlide({currentSlide: newIndex})
   }
 
   _handleResize () {
@@ -152,6 +177,32 @@ export default class ReactSlidy extends Component {
       this._getSliderWidth({ force: true })
       moveScroll(this._frameDOMEl, currentIndex * this._sliderWidth)
     }
+  }
+
+  _handleAndroidScroll (e) {
+    const lastScroll = this._ANDROID_lastScroll
+    const actualScroll = this._frameDOMEl.scrollLeft
+    // check if that makes sense
+    if (lastScroll > actualScroll) {
+      this._elasticScrollState = -1
+    } else if (lastScroll < actualScroll) {
+      this._elasticScrollState = 1
+    } else {
+      this._elasticScrollState = 0
+    }
+    console.log(this._elasticScrollState)
+    // this._frameDOMEl.scrollLeft = this._ANDROID_lastScroll
+    // this._handleEndAndroidScroll()
+    // console.log('scroll')
+    // console.log(this._ANDROID_lastScroll)
+    // console.log(this._frameDOMEl.scrollLeft)
+  }
+
+  _handleEndAndroidScroll () {
+    this._frameDOMEl.removeEventListener('scroll', this._handleAndroidScroll)
+    console.log('end scroll')
+    console.log(this._ANDROID_nextScroll)
+    moveScroll(this._frameDOMEl, this._ANDROID_nextScroll)
   }
 
   _updateCurrentIndex ({ index }) {
@@ -173,7 +224,7 @@ export default class ReactSlidy extends Component {
         className={this.props.classNameBase}
         onMouseEnter={this._getSliderWidth}
         onTouchEnd={this._handleTouchEnd}
-        onTouchStart={this._getSliderWidth}
+        onTouchStart={this._handleTouchStart}
         ref={node => { this._sliderDOMEl = node }}>
         {showSlider && showArrows &&
           <Fragment>
