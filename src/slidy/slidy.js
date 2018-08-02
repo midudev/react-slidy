@@ -102,6 +102,7 @@ export function slidy (slider: any, options: Options) {
 
   // calculate the offset with the width of the frame and the desired position
   function _getOffsetLeft (slidePosition: number) {
+    if (frameWidth === 0) frameWidth = _getWidthFromDOMEl(frameDOMEl)
     return frameWidth * slidePosition
   }
 
@@ -451,7 +452,7 @@ export function slidy (slider: any, options: Options) {
   }
 
   // trigger initial setup, wait 100MS in order to avoid problems with width
-  setTimeout(_setup, 100)
+  _setup()
 
   // expose public api
   return {
