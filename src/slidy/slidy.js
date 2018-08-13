@@ -342,18 +342,6 @@ export function slidy (slider: any, options: Options) {
     reset()
   }
 
-  function isImageLoaded (img) {
-    if (!img || !img.complete) {
-      return false
-    }
-
-    if (typeof img.naturalWidth !== 'undefined' && img.naturalWidth === 0) {
-      return false
-    }
-
-    return true
-  }
-
   /**
   * public
   * setup function
@@ -366,16 +354,6 @@ export function slidy (slider: any, options: Options) {
 
     _setTailArrowClasses()
     reset()
-
-    // detect when the first image of the slider is loaded
-    const img = slideContainerDOMEl.querySelector('img') || {}
-    if (isImageLoaded(img)) {
-      img.classList.add('is-loaded')
-    } else {
-      img.onload = function () {
-        img.classList.add('is-loaded')
-      }
-    }
 
     slideContainerDOMEl.addEventListener(PREFIXES.transitionEnd, onTransitionEnd, { passive: true })
     frameDOMEl.addEventListener('touchstart', onTouchstart, { passive: true })

@@ -1,7 +1,3 @@
-$c-spinner: #ffffff;
-
-@import '~@schibstedspain/sui-spinner-basic/lib/index';
-
 $c-background: #dcdcdc;
 $c-nav-background: rgba(255, 255, 255, .8);
 $c-nav-color: #aaaaaa;
@@ -38,7 +34,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     background: $c-nav-background;
     bottom: 0;
     cursor: pointer;
-    display: flex;
+    display: none;
     height: 20%;
     justify-content: center;
     margin: auto 0;
@@ -79,11 +75,25 @@ $c-transparent: rgba(0, 0, 0, 0);
   }
 
   &-frame {
+    filter: grayscale(100%);
     font-size: 0;
+    opacity: 0;
     overflow: hidden;
     position: relative;
+    transition: all 1s ease-in-out;
     white-space: nowrap;
     width: 100%;
+
+    &.is-ready {
+      filter: grayscale(0%);
+      max-height: 100%;
+      opacity: 1;
+
+      .react-Slidy-next,
+      .react-Slidy-prev {
+        display: flex;
+      }
+    }
 
     &:hover > .react-Slidy-arrow--disabled {
       opacity: .2;
@@ -105,17 +115,6 @@ $c-transparent: rgba(0, 0, 0, 0);
     user-select: none;
     vertical-align: top;
     width: 100%;
-
-    &.is-loaded {
-      opacity: 1;
-    }
-
-    /* Activate when ready
-    &:first-child img {
-      opacity: 0;
-      transition: .75s all ease-out;
-    }
-    */
   }
 
   img {
@@ -128,16 +127,5 @@ $c-transparent: rgba(0, 0, 0, 0);
     touch-action: none;
     user-select: none;
     width: 100%;
-  }
-
-  .sui-SpinnerBasic {
-    bottom: 0;
-    display: block;
-    left: 0;
-    margin: auto;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 0;
   }
 }

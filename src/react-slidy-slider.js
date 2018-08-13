@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ReactDOMServer from 'react-dom/server'
+import imagesLoaded from 'imagesloaded'
 
 const NO_OP = () => {}
 
@@ -13,7 +14,7 @@ if (typeof window !== 'undefined' && window.document) {
   slidy = require('./slidy/slidy.js').slidy
 }
 
-function getClassesName ({classNameBase}) {
+function getClassesName({classNameBase}) {
   return {
     classNameFrame: `${classNameBase}-frame`,
     classNameItem: `${classNameBase}-item`,
@@ -24,10 +25,11 @@ function getClassesName ({classNameBase}) {
 }
 
 export default class ReactSlidySlider extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.DOM = {}
+    this.isDOMReady = false
     this.classes = getClassesName(props)
     // this variable is used to avoid using index as unique key for dynamic content
     this.dynamicContentIndex = 0
@@ -35,7 +37,7 @@ export default class ReactSlidySlider extends Component {
     this._setListItemsFromProps(props)
   }
 
-  _initializeSlider () {
+  _initializeSlider() {
     // create the static markup for the slider
     const items = React.Children.map(this.listItems, child =>
       ReactDOMServer.renderToStaticMarkup(child)
@@ -51,25 +53,31 @@ export default class ReactSlidySlider extends Component {
     this.slidyInstance = slidy(this.DOM['slider'], slidyOptions)
   }
 
-  _setListItemsFromProps ({ children }) {
+  _setListItemsFromProps({children}) {
     this.listItems = Array.isArray(children) ? children : [children]
   }
 
-  _destroySlider () {
-    this.slidyInstance && this.slidyInstance.clean() && this.slidyInstance.destroy()
+  _destroySlider() {
+    this.slidyInstance &&
+      this.slidyInstance.clean() &&
+      this.slidyInstance.destroy()
     this.slidyInstance = null
     this.props.doAfterDestroy()
   }
 
-  componentDidMount () {
+  componentDidMount() {
+    this.isDOMReady = true
+    imagesLoaded(this.DOM['frame'], () => {
+      this.isDOMReady && this._initializeSlider()
+      this.DOM['frame'].classList.add('is-ready')
+    })
+  }
+
+  componentDidUpdate() {
     this._initializeSlider()
   }
 
-  componentDidUpdate () {
-    this._initializeSlider()
-  }
-
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.dynamicContent) {
       const oldFirstItemKey = this.listItems[0].key
       this._setListItemsFromProps(nextProps)
@@ -83,70 +91,72 @@ export default class ReactSlidySlider extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
+    this.isDOMReady = false
     this._destroySlider()
   }
 
-  shouldComponentUpdate () {
+  shouldComponentUpdate() {
     // as we want to improve performance, we're not relying on life cycle
     // to update our component, if we need, we rely on the dynamicContent prop
     // to force update our component and avoid showing same slider for dynamic content
     return false
   }
 
-  getFrameNode = (node) => {
+  getFrameNode = node => {
     this.DOM['frame'] = node
   }
 
-  getSliderNode = (node) => {
+  getSliderNode = node => {
     this.DOM['slider'] = node
   }
 
-  nextSlider = (e) => {
+  nextSlider = e => {
     e.preventDefault()
-    this.slidyInstance.next()
+    this.slidyInstance && this.slidyInstance.next()
   }
 
-  prevSlider = (e) => {
+  prevSlider = e => {
     e.preventDefault()
-    this.slidyInstance.prev()
+    this.slidyInstance && this.slidyInstance.prev()
   }
 
   renderItem = (item, index) => {
     return (
       <li
         className={this.classes.classNameItem}
-        key={`${this.dynamicContentIndex}${index}`}>
+        key={`${this.dynamicContentIndex}${index}`}
+      >
         {item}
       </li>
     )
   }
 
-  renderItems () {
-    const { initialSlide, itemsToPreload } = this.props
-    return this.listItems.slice(0, initialSlide + itemsToPreload).map(this.renderItem)
+  renderItems() {
+    const {initialSlide, itemsToPreload} = this.props
+    return this.listItems
+      .slice(0, initialSlide + itemsToPreload)
+      .map(this.renderItem)
   }
 
-  render () {
-    const { showArrows } = this.props
+  render() {
+    const {showArrows} = this.props
 
     return (
       <div ref={this.getSliderNode}>
-        <div
-          className={this.classes.classNameFrame}
-          ref={this.getFrameNode}
-        >
-          {showArrows &&
+        <div className={this.classes.classNameFrame} ref={this.getFrameNode}>
+          {showArrows && (
             <span
               className={this.classes.classNamePrevCtrl}
               onClick={this.prevSlider}
             />
-          }
-          {showArrows &&
+          )}
+          {showArrows && (
             <span
               className={this.classes.classNameNextCtrl}
-              onClick={this.nextSlider} />
-          }
+              onClick={this.nextSlider}
+            />
+          )}
           <ul className={this.classes.classNameSlideContainer}>
             {this.renderItems()}
           </ul>
@@ -157,10 +167,7 @@ export default class ReactSlidySlider extends Component {
 }
 
 ReactSlidySlider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.object
-  ]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   classNameBase: PropTypes.string,
   dynamicContent: PropTypes.bool,
   doAfterDestroy: PropTypes.func,
