@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "3.0.25",
+  "version": "3.0.26",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -24,7 +24,7 @@
     "prelib": "npm run clean:lib -s",
     "prepublish": "npm run lib",
     "start": "npm run start:open && npm run start:server",
-    "start:open": "opener http://localhost:3000",
+    "start:open": "opener http://localhost:4000",
     "start:server": "webpack-dev-server"
   },
   "license": "MIT",
@@ -34,7 +34,7 @@
   },
   "peerDependencies": {
     "prop-types": "15",
-    "react": "0.14 || 15 || 16"
+    "react": "15 || 16"
   },
   "devDependencies": {
     "@s-ui/lint": "2",
@@ -69,7 +69,7 @@
     "webpack-merge": "1.1.0"
   },
   "dependencies": {
-    "@schibstedspain/sui-spinner-basic": "1",
+    "imagesloaded": "4.1.4",
     "intersection-observer": "0.5.0"
   },
   "pre-commit": [
