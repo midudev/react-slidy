@@ -65,3 +65,4 @@ Temporary Items
 .tmp/
 lib/
 .vscode
+.cache
