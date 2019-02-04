@@ -34,7 +34,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     background: $c-nav-background;
     bottom: 0;
     cursor: pointer;
-    display: none;
+    display: flex;
     height: 20%;
     justify-content: center;
     margin: auto 0;
@@ -75,25 +75,13 @@ $c-transparent: rgba(0, 0, 0, 0);
   }
 
   &-frame {
-    filter: grayscale(100%);
     font-size: 0;
-    opacity: 0;
+    max-height: 100%;
     overflow: hidden;
     position: relative;
     transition: all 1s ease-in-out;
     white-space: nowrap;
     width: 100%;
-
-    &.is-ready {
-      filter: grayscale(0%);
-      max-height: 100%;
-      opacity: 1;
-
-      .react-Slidy-next,
-      .react-Slidy-prev {
-        display: flex;
-      }
-    }
 
     &:hover > .react-Slidy-arrow--disabled {
       opacity: .2;

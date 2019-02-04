@@ -69,7 +69,6 @@ export default class ReactSlidySlider extends Component {
     this.isDOMReady = true
     imagesLoaded(this.DOM['frame'], () => {
       this.isDOMReady && this._initializeSlider()
-      this.DOM['frame'] && this.DOM['frame'].classList.add('is-ready')
     })
   }
 
