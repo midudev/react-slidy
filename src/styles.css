@@ -1,0 +1,114 @@
+.react-Slidy {
+  --slidy-background-color: #dcdcdc;
+  --slidy-arrow-background: rgba(255, 255, 255, .8);
+  --slidy-arrow-color: #aaa;
+  --slidy-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: var(--slidy-tap-highlight-color);
+
+  backface-visibility: hidden;
+  background: var(--slidy-background-color);
+  background: #dcdcdc;
+
+  min-height: 50px;
+  position: relative;
+  user-select: none;
+
+  overflow: hidden;
+}
+
+.react-Slidy-arrow {
+  align-items: center;
+  background: rgba(255, 255, 255, .8);
+  background: var(--slidy-arrow-background);
+  border-radius: 0 10px 10px 0;
+  bottom: 0;
+  cursor: pointer;
+  display: flex;
+  height: 20%;
+  justify-content: center;
+  left: 0;
+  margin: auto 0;
+  min-height: 56px;
+  opacity: .1;
+  position: absolute;
+  top: 0;
+  transition: opacity .3s ease;
+  width: 40px;
+  z-index: 1;
+}
+
+.react-Slidy-arrow::after {
+  border-color: var(--slidy-arrow-background);
+  border-right: 3px solid #aaa;
+  border-top: 3px solid #aaa;
+  content: '';
+  display: inline-block;
+  margin-left: 6px;
+  height: 24px;
+  transform: rotate(-135deg);
+  width: 24px;
+}
+
+.react-Slidy-arrow.is-next-arrow {
+  border-radius: 10px 0 0 10px;
+  left: auto;
+  right: 0;
+}
+
+.react-Slidy-arrow.is-next-arrow::after {
+  margin-right: 6px;
+  transform: rotate(45deg);
+}
+
+.react-Slidy-frame {
+  position: relative;
+  width: 100%;
+}
+
+.react-Slidy-slides {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: flex;
+  scroll-snap-type: x mandatory;
+}
+
+.react-Slidy-slides.is-scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.react-Slidy-slides.is-scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.react-Slidy-frame:hover .react-Slidy-arrow {
+  opacity: .75;
+}
+
+.react-Slidy-frame .react-Slidy-arrow:hover {
+  opacity: 1;
+}
+
+.react-Slidy-item {
+  display: inline-block;
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  user-select: none;
+  vertical-align: top;
+  width: 100%;
+}
+
+.react-Slidy img {
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+
+  display: block;
+  height: auto;
+  object-fit: cover;
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
+  width: 100%;
+}
