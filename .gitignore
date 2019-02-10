@@ -66,3 +66,4 @@ Temporary Items
 lib/
 .vscode
 .cache
+dist/
