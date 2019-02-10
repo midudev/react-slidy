@@ -13,11 +13,11 @@
     "react-lory",
     "react-slidy"
   ],
-
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --jsx React.createElement",
     "clean": "rm dist/*",
-    "dev": "microbundle watch && open docs/index.html",
+    "dev:lib": "microbundle --jsx React.createElement -w",
+    "dev:demo": "parcel docs/index.html",
     "lint": "sui-lint js"
   },
   "license": "MIT",
@@ -27,12 +27,21 @@
   },
   "peerDependencies": {
     "prop-types": "15",
-    "react": "15 || 16"
+    "react": "16"
   },
   "devDependencies": {
+    "@babel/core": "7.2.2",
+    "@babel/plugin-proposal-class-properties": "7.3.0",
+    "@babel/plugin-syntax-dynamic-import": "7.2.0",
+    "@babel/preset-env": "7.3.1",
+    "@babel/preset-react": "7.0.0",
     "@s-ui/lint": "2",
     "microbundle": "0.9.0",
-    "react": "16.7.0"
+    "parcel-bundler": "1.11.0",
+    "prop-types": "15",
+    "react": "16.8.1",
+    "react-dom": "16.8.1",
+    "sass": "1.17.0"
   },
   "dependencies": {
     "intersection-observer": "0.5.1"
@@ -44,18 +53,8 @@
   ],
   "eslintConfig": {
     "extends": [
-      "./node_modules/@s-ui/lint/eslintrc.js",
-      "plugin:flowtype/recommended"
-    ],
-    "plugins": [
-      "flowtype"
+      "./node_modules/@s-ui/lint/eslintrc.js"
     ]
   },
-  "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml",
-  "babel": {
-    "presets": [
-      "sui",
-      "flow"
-    ]
-  }
+  "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml"
 }
