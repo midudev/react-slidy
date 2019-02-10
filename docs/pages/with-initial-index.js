@@ -1,23 +1,23 @@
 import React from 'react'
-import ReactSlidy from '../../src'
+import ReactSlidy from '../../dist/react-slidy'
 
-import { DisplayCode } from '../utils'
+import {DisplayCode} from '../utils'
 
 export const demo = (
-  <div className='text-center'>
+  <div className="text-center">
     <p>You can initialize the slider with any index.</p>
     <ReactSlidy initialSlide={1}>
-      <a href='http://miduga.es'>
-        <img src='./img/beautiful_landscapes.jpg' />
+      <a href="https://midudev.com">
+        <img src={require('../img/beautiful_landscapes.jpg')} />
       </a>
-      <a href='https://github.com/miduga/react-slidy'>
-        <img src='./img/beautiful_landscapes_02.jpg' />
+      <a href="https://midudev.com">
+        <img src={require('../img/beautiful_landscapes_02.jpg')} />
       </a>
-      <a href='https://github.com/miduga/react-slidy'>
-        <img src='./img/beautiful_landscapes_03.jpg' />
+      <a href="https://midudev.com">
+        <img src={require('../img/beautiful_landscapes_03.jpg')} />
       </a>
     </ReactSlidy>
-    <p id='demo-with-initial-index' />
+    <p id="demo-with-initial-index" />
     <DisplayCode>
       {`<ReactSlidy initialSlide={1}>
       <a href='http://miduga.es'>
@@ -26,8 +26,7 @@ export const demo = (
       <a href='https://github.com/miduga/react-slidy'>
         <img src='./img/beautiful_landscapes_02.jpg' />
       </a>
-    </ReactSlidy>`
-      }
+    </ReactSlidy>`}
     </DisplayCode>
   </div>
 )
