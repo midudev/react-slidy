@@ -10,6 +10,17 @@ export default class ReactSlidySlider extends Component {
     this.props.doAfterDestroy()
   }
 
+  _handleResize = entries => {
+    console.log(entries)
+  }
+
+  componentDidMount() {
+    if ('ResizeObserver' in window) {
+      this.observer = new window.ResizeObserver(this._handleResize)
+      this.observer.observe(this.containerEl.current)
+    }
+  }
+
   componentWillUnmount() {
     this._destroySlider()
   }

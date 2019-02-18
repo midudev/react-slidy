@@ -11,21 +11,22 @@ export default class ReactSlidy extends Component {
 
   componentDidMount() {
     if (this.props.lazyLoadSlider) {
-      import('intersection-observer').then(_ => {
-        const {offset = 0} = this.props.lazyLoadConfig
-        this.observer = new window.IntersectionObserver(
-          this._handleIntersection,
-          {
-            rootMargin: `${offset}px 0px 0px`
-          }
-        )
-        this.observer.observe(this.sliderEl.current)
-      })
+      'IntersectionObserver' in window
+        ? this._startIntersectionObserver()
+        : import('intersection-observer').then(this._startIntersectionObserver)
     }
   }
 
   componentDidCatch(error, errorInfo) {
     console.error({error, errorInfo})
+  }
+
+  _startIntersectionObserver = () => {
+    const {offset = 0} = this.props.lazyLoadConfig
+    this.observer = new window.IntersectionObserver(this._handleIntersection, {
+      rootMargin: `${offset}px 0px 0px`
+    })
+    this.observer.observe(this.sliderEl.current)
   }
 
   // as it's a slider, we don't want to re-render it and don't expect
