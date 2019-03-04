@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ReactDOMServer from 'react-dom/server'
-import imagesLoaded from 'imagesloaded'
 
 const NO_OP = () => {}
 
@@ -29,7 +28,6 @@ export default class ReactSlidySlider extends Component {
     super(props)
 
     this.DOM = {}
-    this.isDOMReady = false
     this.classes = getClassesName(props)
     // this variable is used to avoid using index as unique key for dynamic content
     this.dynamicContentIndex = 0
@@ -66,10 +64,7 @@ export default class ReactSlidySlider extends Component {
   }
 
   componentDidMount() {
-    this.isDOMReady = true
-    imagesLoaded(this.DOM['frame'], () => {
-      this.isDOMReady && this._initializeSlider()
-    })
+    this._initializeSlider()
   }
 
   componentDidUpdate() {
@@ -173,12 +168,9 @@ ReactSlidySlider.propTypes = {
   doAfterSlide: PropTypes.func,
   doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
-  infinite: PropTypes.bool,
   initialSlide: PropTypes.number,
   itemsToPreload: PropTypes.number,
   onReady: PropTypes.func,
-  rewind: PropTypes.bool,
-  rewindOnResize: PropTypes.bool,
   rewindSpeed: PropTypes.number,
   showArrows: PropTypes.bool,
   slideSpeed: PropTypes.number,
@@ -191,12 +183,9 @@ ReactSlidySlider.defaultProps = {
   doAfterSlide: NO_OP,
   doBeforeSlide: NO_OP,
   ease: 'ease',
-  infinite: false,
   initialSlide: 0,
   itemsToPreload: 1,
   onReady: NO_OP,
-  rewind: false,
-  rewindOnResize: false,
   rewindSpeed: 500,
   showArrows: true,
   slideSpeed: 500,
