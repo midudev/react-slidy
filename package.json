@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "3.0.30",
+  "version": "3.0.31-beta.0",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -14,7 +14,6 @@
     "clean:lib": "rimraf ./lib/*",
     "deploy": "NODE_ENV=production npm run dist && surge ./docs react-slidy.surge.sh",
     "dist": "webpack",
-    "flow": "flow",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
@@ -42,13 +41,10 @@
     "babel-cli": "6",
     "babel-core": "6",
     "babel-loader": "6",
-    "babel-preset-flow": "6.23.0",
     "babel-preset-sui": "1",
     "copyfiles": "1.0.0",
     "css-loader": "0.26.1",
-    "eslint-plugin-flowtype": "2.35.0",
     "extract-text-webpack-plugin": "1.0.1",
-    "flow-bin": "0.51.1",
     "highlight.js": "9.10.0",
     "js-beautify": "1.6.12",
     "jsx-to-string": "1.1.0",
@@ -69,7 +65,6 @@
     "webpack-merge": "1.1.0"
   },
   "dependencies": {
-    "imagesloaded": "4.1.4",
     "intersection-observer": "0.5.1"
   },
   "pre-commit": [
@@ -79,18 +74,13 @@
   ],
   "eslintConfig": {
     "extends": [
-      "./node_modules/@s-ui/lint/eslintrc.js",
-      "plugin:flowtype/recommended"
-    ],
-    "plugins": [
-      "flowtype"
+      "./node_modules/@s-ui/lint/eslintrc.js"
     ]
   },
   "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml",
   "babel": {
     "presets": [
-      "sui",
-      "flow"
+      "sui"
     ]
   }
 }
