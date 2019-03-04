@@ -207,7 +207,7 @@ export function slidy(slider, options) {
       _translate(0, LINEAR_ANIMATION, deltaX * -1)
     }
 
-    if (isScrollBlocked === true) {
+    if (isScrollBlocked === true && event.cancelable) {
       event.preventDefault()
     }
   }
