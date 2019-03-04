@@ -10,22 +10,26 @@ var base = {
     extensions: ['', '.js', '.jsx']
   },
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      loaders: ['babel-loader'],
-      exclude: path.join(__dirname, 'node_modules')
-    }, {
-      test: /\.s?css$/,
-      loader: ExtractTextPlugin.extract('css!sass')
-    }, {
-      test: /\.svg$/,
-      loader: 'svg-inline'
-    }]
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        loaders: ['babel-loader'],
+        exclude: path.join(__dirname, 'node_modules')
+      },
+      {
+        test: /\.s?css$/,
+        loader: ExtractTextPlugin.extract('css!sass')
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline'
+      }
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
       }
     })
   ]
@@ -63,7 +67,7 @@ if (TARGET === 'start:server' || !TARGET) {
     },
     devServer: {
       port: 4000,
-      stats: { colors: true },
+      stats: {colors: true},
       inline: true,
       contentBase: 'docs'
     },
