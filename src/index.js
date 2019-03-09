@@ -1,85 +1,55 @@
-import React, {Component} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import ReactSlidySlider from './react-slidy-slider'
 
-// if window is present, then we get the needed library
-if (typeof window !== 'undefined' && window.document) {
-  require('intersection-observer')
-}
+const ReactSlidy = props => {
+  const [showSlider, setShowSlider] = useState(!props.lazyLoadSlider)
+  const nodeEl = useRef(null)
 
-export default class ReactSlidy extends Component {
-  observer = null
-  state = {showSlider: !this.props.lazyLoadSlider}
+  useEffect(function() {
+    let observer
 
-  componentDidMount() {
-    if (this.props.lazyLoadSlider) {
-      if (!('IntersectionObserver' in window)) {
-        // check we support IntersectionObserver
-        this.setState({showSlider: true})
-        return
-      }
-      // if we support IntersectionObserver, let's use it
-      const {offset = 0} = this.props.lazyLoadConfig
-      this.observer = new window.IntersectionObserver(
-        this._handleIntersection,
-        {
+    if (props.lazyLoadSlider) {
+      const initLazyLoadSlider = () => {
+        // if we support IntersectionObserver, let's use it
+        const {offset = 0} = props.lazyLoadConfig
+        observer = new window.IntersectionObserver(handleIntersection, {
           rootMargin: `${offset}px 0px 0px`
-        }
-      )
-      this.observer.observe(this.node)
+        })
+        observer.observe(nodeEl.current)
+      }
+
+      if (!('IntersectionObserver' in window)) {
+        import('intersection-observer').then(initLazyLoadSlider)
+      } else {
+        initLazyLoadSlider()
+      }
     }
-  }
 
-  componentDidCatch(error, errorInfo) {
-    console.error({error, errorInfo})
-  }
+    return () => observer && observer.disconnect()
+  }, [])
 
-  // as it's a slider, we don't want to re-render it and don't expect
-  // to add new childrens to it, so we don't want unexpected behaviour
-  // expect if we specify we have dynamicContent on it
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      this.props.dynamicContent ||
-      nextState.showSlider !== this.state.showSlider
-    )
-  }
-
-  componentWillUnmount() {
-    this.observer && this.observer.disconnect()
-  }
-  renderSlider() {
-    return (
-      <ReactSlidySlider {...this.props}>{this.props.children}</ReactSlidySlider>
-    )
-  }
-
-  _handleIntersection = ([entry], observer) => {
+  const handleIntersection = ([entry], observer) => {
     if (entry.isIntersecting || entry.intersectionRatio > 0) {
       observer.unobserve(entry.target)
-      this.setState({showSlider: true})
+      setShowSlider(true)
     }
   }
 
-  render() {
-    const {showSlider} = this.state
-
-    return (
-      <div
-        className={this.props.classNameBase}
-        ref={node => {
-          this.node = node
-        }}
-      >
-        {showSlider && this.renderSlider()}
-      </div>
-    )
-  }
+  return (
+    <div className={props.classNameBase} ref={nodeEl}>
+      {showSlider && (
+        <ReactSlidySlider parentRef={nodeEl} {...props}>
+          {props.children}
+        </ReactSlidySlider>
+      )}
+    </div>
+  )
 }
 
 ReactSlidy.propTypes = {
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   classNameBase: PropTypes.string,
-  dynamicContent: PropTypes.bool,
   lazyLoadSlider: PropTypes.bool,
   // Shape from https://github.com/jasonslyvia/react-lazyload/blob/master/src/index.jsx#L295
   lazyLoadConfig: PropTypes.shape({
@@ -93,10 +63,11 @@ ReactSlidy.propTypes = {
 
 ReactSlidy.defaultProps = {
   classNameBase: 'react-Slidy',
-  dynamicContent: false,
   lazyLoadSlider: true,
   lazyLoadConfig: {
     offset: 150
   },
   tailArrowClass: 'react-Slidy-arrow--disabled'
 }
+
+export default ReactSlidy
