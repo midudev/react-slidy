@@ -13,13 +13,13 @@
   "scripts": {
     "clean:lib": "rimraf ./lib/*",
     "dev": "sui-bundler dev",
-    "deploy": "NODE_ENV=production sui-bundler build -C && surge ./docs react-slidy.surge.sh",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "sui-lint js",
     "lint:sass": "sui-lint sass",
+    "now-build": "sui-bundler build -C",
     "prelib": "npm run clean:lib -s",
     "prepublish": "npm run lib"
   },
