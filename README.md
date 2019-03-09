@@ -12,7 +12,7 @@ React Slidy is a simple and minimal slider component. It was based on the fabulo
 
 ## Browser compatibility
 
-I haven't did a lot of testing on that but it's supposed to work on Firefox, Chrome, Edge, Safari and IE 10+. If not, please, fill a issue.
+I haven't did a lot of testing on that but it's supposed to work on Firefox, Chrome, Edge, Safari, Edge and IE 11. If not, please, fill an issue.
 
 ## Features
 * 1:1 slide movement
@@ -28,10 +28,6 @@ I haven't did a lot of testing on that but it's supposed to work on Firefox, Chr
   doAfterSlide: PropTypes.func,
   doBeforeSlide: PropTypes.func,
   ease: PropTypes.string,
-  infinite: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.number
-  ]),
   lazyLoadConfig: PropTypes.object,
   onReady: PropTypes.func,
   rewind: PropTypes.bool,
@@ -39,8 +35,3 @@ I haven't did a lot of testing on that but it's supposed to work on Firefox, Chr
   slideSpeed: PropTypes.number,
   snapBackSpeed: PropTypes.number
 ```
-
-## TODO
-
-* [ ] Improve documentation
-* [ ] Improve server rendering compatibility
