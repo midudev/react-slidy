@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "clean:lib": "rimraf ./lib/*",
-    "deploy": "NODE_ENV=production npm run dist && surge ./docs react-slidy.surge.sh",
-    "dist": "webpack",
+    "dev": "sui-bundler dev",
+    "deploy": "NODE_ENV=production sui-bundler build -C && surge ./docs react-slidy.surge.sh",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
@@ -21,10 +21,7 @@
     "lint:js": "sui-lint js",
     "lint:sass": "sui-lint sass",
     "prelib": "npm run clean:lib -s",
-    "prepublish": "npm run lib",
-    "start": "npm run start:open && npm run start:server",
-    "start:open": "opener http://localhost:4000",
-    "start:server": "webpack-dev-server"
+    "prepublish": "npm run lib"
   },
   "license": "MIT",
   "repository": {
@@ -36,15 +33,11 @@
     "react": "16"
   },
   "devDependencies": {
+    "@s-ui/bundler": "4",
     "@s-ui/lint": "2",
-    "@schibstedspain/sui-multimedia": "0.4",
-    "babel-cli": "6",
-    "babel-core": "6",
-    "babel-loader": "6",
-    "babel-preset-sui": "1",
+    "@babel/cli": "7",
+    "babel-preset-sui": "2",
     "copyfiles": "1.0.0",
-    "css-loader": "0.26.1",
-    "extract-text-webpack-plugin": "1.0.1",
     "highlight.js": "9.10.0",
     "js-beautify": "1.6.12",
     "jsx-to-string": "1.1.0",
@@ -53,15 +46,10 @@
     "prop-types": "15",
     "react": "16",
     "react-dom": "16",
-    "react-lowlight": "1.0.4",
-    "react-router": "2",
+    "react-lowlight": "2.0.0",
+    "react-router": "3",
     "react-syntax-highlighter": "5.1",
-    "rimraf": "2.5.4",
-    "sass-loader": "4.0.2",
-    "style-loader": "0.13.1",
-    "webpack": "1.14.0",
-    "webpack-dev-server": "1.16.2",
-    "webpack-merge": "1.1.0"
+    "rimraf": "2.5.4"
   },
   "dependencies": {
     "intersection-observer": "0.5.1"
