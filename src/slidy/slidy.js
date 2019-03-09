@@ -1,42 +1,47 @@
-const {slice} = Array.prototype
-
 const LINEAR_ANIMATION = 'linear'
-const SLIDES_TO_SCROLL = 1
 const VALID_SWIPE_DISTANCE = 50
-const {abs, min, max} = Math
+const TRANSITION_END = 'transitionend'
+const {abs} = Math
 
-const PREFIXES = {
-  transform: 'transform',
-  transition: 'transition',
-  transitionDuration: 'transition-duration',
-  transitionEnd: 'transitionend',
-  transitionTiming: 'transition-timing-function',
-  translate: function(to, x) {
-    return x
-      ? `translate3d(calc(-${to * 100}% - ${x}px), 0, 0)`
-      : `translate3d(-${to * 100}%, 0, 0)`
-  }
+function translate(to, moveX) {
+  return moveX
+    ? `translate3d(calc(-${to * 100}% - ${moveX}px), 0, 0)`
+    : `translate3d(-${to * 100}%, 0, 0)`
 }
 
-export function slidy(slider, options) {
+function checkIsScrolling(isScrolling, isScrollBlocked, deltaX, deltaY) {
+  const absDeltaY = abs(deltaY)
+  return (
+    isScrolling === true ||
+    (isScrollBlocked === false && absDeltaY >= 0 && absDeltaY >= abs(deltaX))
+  )
+}
+
+function clampNumber(x, minValue, maxValue) {
+  return Math.min(Math.max(x, minValue), maxValue)
+}
+
+function getTouchCoordinatesFromEvent(e) {
+  const {pageX, pageY} = e.targetTouches ? e.targetTouches[0] : e.touches[0]
+  return {pageX, pageY}
+}
+
+export default function slidy(slider, options) {
   const {
-    classNameItem,
-    classNameNextCtrl,
-    classNamePrevCtrl,
     classNameSlideContainer,
     doAfterSlide,
     doBeforeSlide,
     ease,
     frameDOMEl,
     initialSlide,
-    items,
-    itemsToPreload,
+    onNext,
+    onPrev,
     rewind,
     rewindSpeed,
     slideSpeed,
-    snapBackSpeed,
-    tailArrowClass
+    snapBackSpeed
   } = options
+  let {items} = options
 
   // if frameDOMEl is null, then we do nothing
   if (frameDOMEl === null) return
@@ -44,29 +49,18 @@ export function slidy(slider, options) {
   const slideContainerDOMEl = frameDOMEl.getElementsByClassName(
     classNameSlideContainer
   )[0]
-  const nextArrow = frameDOMEl.getElementsByClassName(classNameNextCtrl)[0]
-  const prevArrow = frameDOMEl.getElementsByClassName(classNamePrevCtrl)[0]
 
   // initialize some variables
   let index = initialSlide
   let isScrolling = false
   let isScrollBlocked = false
-  let loadedIndex = []
-  let slides = []
   let transitionEndCallbackActivated = false
 
-  let itemsPreloadedCount = itemsToPreload
-  while (itemsPreloadedCount--) loadedIndex[index + itemsPreloadedCount] = 1
-
   // event handling
-  let touchOffset = {pageX: 0, pageY: 0}
   let deltaX = 0
   let deltaY = 0
-
-  // clamp a number between two min and max values
-  function _clampNumber(x, minValue, maxValue) {
-    return min(max(x, minValue), maxValue)
-  }
+  let touchOffsetX = 0
+  let touchOffsetY = 0
 
   /**
    * translates to a given position in a given time in milliseconds
@@ -77,30 +71,20 @@ export function slidy(slider, options) {
    */
   function _translate(duration, ease = '', x = false) {
     const easeCssText =
-      ease !== '' ? `${PREFIXES.transitionTiming}: ${ease};` : ''
+      ease !== '' ? `transition-timing-function: ${ease};` : ''
+
     const durationCssText = duration
-      ? `${PREFIXES.transitionDuration}: ${duration}ms;`
+      ? `transition-duration: ${duration}ms;`
       : ''
+
     const cssText = `${easeCssText}${durationCssText}
-      ${PREFIXES.transform}: ${PREFIXES.translate(index, x)};`
+      transform: ${translate(index, x)};`
 
     slideContainerDOMEl.style.cssText = cssText
   }
 
-  function _setTailArrowClasses() {
-    if (prevArrow !== null && typeof prevArrow.classList === 'object') {
-      const action = index < 1 ? 'add' : 'remove'
-      prevArrow.classList[action](tailArrowClass)
-    }
-
-    if (nextArrow !== null && typeof nextArrow.classList === 'object') {
-      const action = index > items.length - 2 ? 'add' : 'remove'
-      nextArrow.classList[action](tailArrowClass)
-    }
-  }
-
   /**
-   * slidefunction called by prev, next & touchend
+   * slide function called by prev, next & touchend
    *
    * determine nextIndex and slide to next postion
    * under restrictions of the defined options
@@ -109,14 +93,13 @@ export function slidy(slider, options) {
    */
   function slide(direction) {
     const movement = direction === true ? 1 : -1
-    const totalSlides = slides.length
     let duration = slideSpeed
 
     // calculate the nextIndex according to the movement
-    let nextIndex = index + SLIDES_TO_SCROLL * movement
+    let nextIndex = index + 1 * movement
 
-    // nextIndex should be between 0 and totalSlides minus 1
-    nextIndex = _clampNumber(nextIndex, 0, totalSlides - 1)
+    // nextIndex should be between 0 and items minus 1
+    nextIndex = clampNumber(nextIndex, 0, items - 1)
 
     if (rewind === true && direction) {
       nextIndex = 0
@@ -126,30 +109,17 @@ export function slidy(slider, options) {
     // if the nextIndex and the current is the same, we don't need to do the slide
     if (nextIndex === index) return
 
-    // if the nextIndex is possible according to totalSlides, then use it
-    if (nextIndex <= totalSlides) {
+    // if the nextIndex is possible according to number of items, then use it
+    if (nextIndex <= items) {
       // execute the callback from the options before sliding
       doBeforeSlide({currentSlide: index, nextSlide: nextIndex})
+      // execute the internal callback
+      direction ? onNext(nextIndex) : onPrev(nextIndex)
       index = nextIndex
     }
 
     // translate to the next index by a defined duration and ease function
     _translate(duration, ease)
-
-    const indexToLoad = index + SLIDES_TO_SCROLL * movement - 1
-    // check if the slide has been loaded before and if the index to load is correct
-    if (
-      indexToLoad < totalSlides &&
-      indexToLoad >= 0 &&
-      !loadedIndex[indexToLoad]
-    ) {
-      // insert in the correct position
-      slideContainerDOMEl.appendChild(slides[indexToLoad])
-      loadedIndex[indexToLoad] = 1
-    }
-
-    // Checking wheter to paint or hide the arrows.
-    _setTailArrowClasses()
 
     // execute the callback from the options after sliding
     doAfterSlide({currentSlide: index})
@@ -167,10 +137,7 @@ export function slidy(slider, options) {
 
   function _removeAllEventsListeners() {
     _removeTouchEventsListeners(true)
-    slideContainerDOMEl.removeEventListener(
-      PREFIXES.transitionEnd,
-      onTransitionEnd
-    )
+    slideContainerDOMEl.removeEventListener(TRANSITION_END, onTransitionEnd)
   }
 
   function onTransitionEnd() {
@@ -180,35 +147,28 @@ export function slidy(slider, options) {
     }
   }
 
-  function getTouchCoordinatesFromEvent(event) {
-    return event.targetTouches ? event.targetTouches[0] : event.touches[0]
-  }
-
-  function onTouchstart(event) {
-    const {pageX, pageY} = getTouchCoordinatesFromEvent(event)
-    touchOffset = {pageX, pageY}
+  function onTouchstart(e) {
+    const coords = getTouchCoordinatesFromEvent(e)
+    touchOffsetX = coords.pageX
+    touchOffsetY = coords.pageY
     frameDOMEl.addEventListener('touchmove', onTouchmove)
     frameDOMEl.addEventListener('touchend', onTouchend, {passive: true})
     frameDOMEl.addEventListener('touchcancel', onTouchend, {passive: true})
   }
 
-  function onTouchmove(event) {
-    const {pageX, pageY} = getTouchCoordinatesFromEvent(event)
-    deltaX = pageX - touchOffset.pageX
-    deltaY = pageY - touchOffset.pageY
-
-    const absDeltaY = abs(deltaY)
-    isScrolling =
-      isScrolling === true ||
-      (isScrollBlocked === false && absDeltaY >= 0 && absDeltaY >= abs(deltaX))
+  function onTouchmove(e) {
+    const coords = getTouchCoordinatesFromEvent(e)
+    deltaX = coords.pageX - touchOffsetX
+    deltaY = coords.pageY - touchOffsetY
+    isScrolling = checkIsScrolling(isScrolling, isScrollBlocked, deltaX, deltaY)
 
     if (isScrolling === false && deltaX !== 0) {
       isScrollBlocked = true
       _translate(0, LINEAR_ANIMATION, deltaX * -1)
     }
 
-    if (isScrollBlocked === true && event.cancelable) {
-      event.preventDefault()
+    if (isScrollBlocked === true && e.cancelable) {
+      e.preventDefault()
     }
   }
 
@@ -220,8 +180,7 @@ export function slidy(slider, options) {
        * -> swipe distance is more then a third of the swipe area
        * @isValidSlide {Boolean}
        */
-      const absoluteX = abs(deltaX)
-      const isValid = absoluteX > VALID_SWIPE_DISTANCE
+      const isValid = abs(deltaX) > VALID_SWIPE_DISTANCE
 
       /**
        * is out of bounds if:
@@ -232,7 +191,7 @@ export function slidy(slider, options) {
       const direction = deltaX < 0
       const isOutOfBounds =
         (direction === false && index === 0) ||
-        (direction === true && index === slides.length - 1)
+        (direction === true && index === items - 1)
 
       if (isValid === true && isOutOfBounds === false) {
         slide(direction)
@@ -242,33 +201,10 @@ export function slidy(slider, options) {
     }
 
     // reset variables with the initial values
-    deltaX = 0
-    deltaY = 0
-    isScrolling = false
-    isScrollBlocked = false
-    touchOffset = {}
+    deltaX = deltaY = touchOffsetX = touchOffsetY = 0
+    isScrolling = isScrollBlocked = false
 
     _removeTouchEventsListeners()
-  }
-
-  function _convertItemToDOM(itemString) {
-    const wrappedString = `<li class='${classNameItem}'>${itemString}</li>`
-    const el = document.createElement('template')
-    if (typeof el.content === 'object') {
-      el.innerHTML = wrappedString
-      return el.content
-    } else {
-      const container = document.createElement('ul')
-      const fragment = document.createDocumentFragment()
-      container.innerHTML = wrappedString
-      while (
-        container.firstChild !== null &&
-        container.firstChild !== undefined
-      ) {
-        fragment.appendChild(container.firstChild)
-      }
-      return fragment
-    }
   }
 
   /**
@@ -276,15 +212,9 @@ export function slidy(slider, options) {
    * setup function
    */
   function _setup() {
-    slides = slice.call(items.map(_convertItemToDOM))
-
-    _setTailArrowClasses()
-
-    slideContainerDOMEl.addEventListener(
-      PREFIXES.transitionEnd,
-      onTransitionEnd,
-      {passive: true}
-    )
+    slideContainerDOMEl.addEventListener(TRANSITION_END, onTransitionEnd, {
+      passive: true
+    })
     frameDOMEl.addEventListener('touchstart', onTouchstart, {passive: true})
 
     if (index !== 0) {
@@ -309,14 +239,6 @@ export function slidy(slider, options) {
 
   /**
    * public
-   * returnIndex function: called on clickhandler
-   */
-  function returnIndex() {
-    return index
-  }
-
-  /**
-   * public
    * prev function: called on clickhandler
    */
   function prev() {
@@ -329,6 +251,14 @@ export function slidy(slider, options) {
    */
   function next() {
     slide(true)
+  }
+
+  /**
+   * public
+   * @param {number} newItems Number of items in the slider for dynamic content
+   */
+  function updateItems(newItems) {
+    items = newItems
   }
 
   /**
@@ -348,7 +278,7 @@ export function slidy(slider, options) {
     destroy,
     next,
     prev,
-    returnIndex,
-    slide
+    slide,
+    updateItems
   }
 }
