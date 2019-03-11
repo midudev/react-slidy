@@ -42,25 +42,21 @@ function cleanContainer(container) {
   return true
 }
 
-export default function slidy(sliderDOMEl, options) {
+export default function slidy(containerDOMEl, options) {
   const {
-    classNameSlideContainer,
     doAfterSlide,
     doBeforeSlide,
     ease,
     initialSlide,
     onNext,
     onPrev,
+    slidesDOMEl,
     slideSpeed
   } = options
   let {items} = options
 
   // if frameDOMEl is null, then we do nothing
-  if (sliderDOMEl === null) return
-  // DOM elements
-  const slideContainerDOMEl = sliderDOMEl.getElementsByClassName(
-    classNameSlideContainer
-  )[0]
+  if (containerDOMEl === null) return
 
   // initialize some variables
   let index = initialSlide
@@ -83,7 +79,7 @@ export default function slidy(sliderDOMEl, options) {
    */
   function _translate(duration, ease = '', x = false) {
     const cssText = getTranslationCSS(duration, ease, index, x)
-    slideContainerDOMEl.style.cssText = cssText
+    slidesDOMEl.style.cssText = cssText
   }
 
   /**
@@ -120,25 +116,25 @@ export default function slidy(sliderDOMEl, options) {
     _translate(duration, ease)
 
     // execute the callback from the options after sliding
-    slideContainerDOMEl.addEventListener(TRANSITION_END, function cb(e) {
+    slidesDOMEl.addEventListener(TRANSITION_END, function cb(e) {
       doAfterSlide({currentSlide: index})
       e.currentTarget.removeEventListener(e.type, cb)
     })
   }
 
   function _removeTouchEventsListeners(all = false) {
-    sliderDOMEl.removeEventListener('touchmove', onTouchmove)
-    sliderDOMEl.removeEventListener('touchend', onTouchend)
-    sliderDOMEl.removeEventListener('touchcancel', onTouchend)
+    containerDOMEl.removeEventListener('touchmove', onTouchmove)
+    containerDOMEl.removeEventListener('touchend', onTouchend)
+    containerDOMEl.removeEventListener('touchcancel', onTouchend)
 
     if (all === true) {
-      sliderDOMEl.removeEventListener('touchstart', onTouchstart)
+      containerDOMEl.removeEventListener('touchstart', onTouchstart)
     }
   }
 
   function _removeAllEventsListeners() {
     _removeTouchEventsListeners(true)
-    slideContainerDOMEl.removeEventListener(TRANSITION_END, onTransitionEnd)
+    slidesDOMEl.removeEventListener(TRANSITION_END, onTransitionEnd)
   }
 
   function onTransitionEnd() {
@@ -152,9 +148,9 @@ export default function slidy(sliderDOMEl, options) {
     const coords = getTouchCoordinatesFromEvent(e)
     touchOffsetX = coords.pageX
     touchOffsetY = coords.pageY
-    sliderDOMEl.addEventListener('touchmove', onTouchmove)
-    sliderDOMEl.addEventListener('touchend', onTouchend, {passive: true})
-    sliderDOMEl.addEventListener('touchcancel', onTouchend, {passive: true})
+    containerDOMEl.addEventListener('touchmove', onTouchmove)
+    containerDOMEl.addEventListener('touchend', onTouchend, {passive: true})
+    containerDOMEl.addEventListener('touchcancel', onTouchend, {passive: true})
   }
 
   function onTouchmove(e) {
@@ -196,6 +192,8 @@ export default function slidy(sliderDOMEl, options) {
 
       if (isValid === true && isOutOfBounds === false) {
         slide(direction)
+      } else {
+        _translate(slideSpeed, LINEAR_ANIMATION)
       }
     }
 
@@ -211,10 +209,10 @@ export default function slidy(sliderDOMEl, options) {
    * setup function
    */
   function _setup() {
-    slideContainerDOMEl.addEventListener(TRANSITION_END, onTransitionEnd, {
+    slidesDOMEl.addEventListener(TRANSITION_END, onTransitionEnd, {
       passive: true
     })
-    sliderDOMEl.addEventListener('touchstart', onTouchstart, {passive: true})
+    containerDOMEl.addEventListener('touchstart', onTouchstart, {passive: true})
 
     if (index !== 0) {
       _translate(0)
@@ -226,7 +224,7 @@ export default function slidy(sliderDOMEl, options) {
    * clean content of the slider
    */
   function clean() {
-    return cleanContainer(slideContainerDOMEl)
+    return cleanContainer(slidesDOMEl)
   }
 
   /**
