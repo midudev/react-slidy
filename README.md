@@ -19,19 +19,3 @@ I haven't did a lot of testing on that but it's supposed to work on Firefox, Chr
 * Optimized for smoothness and performance
 * Lazy Loading for slider and for every slide
 * Server rendering compatible
-
-## Available Props
-
-```
-  classNameBase: PropTypes.string,
-  doAfterDestroy: PropTypes.func,
-  doAfterSlide: PropTypes.func,
-  doBeforeSlide: PropTypes.func,
-  ease: PropTypes.string,
-  lazyLoadConfig: PropTypes.object,
-  onReady: PropTypes.func,
-  rewind: PropTypes.bool,
-  rewindSpeed: PropTypes.number,
-  slideSpeed: PropTypes.number,
-  snapBackSpeed: PropTypes.number
-```
