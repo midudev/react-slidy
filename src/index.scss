@@ -28,8 +28,7 @@ $c-transparent: rgba(0, 0, 0, 0);
   position: relative;
   user-select: none;
 
-  &-next,
-  &-prev {
+  > span {
     align-items: center;
     background: $c-nav-background;
     bottom: 0;
@@ -51,7 +50,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     }
   }
 
-  &-next {
+  > span:nth-child(2) {
     border-radius: 10px 0 0 10px;
     right: 0;
 
@@ -60,7 +59,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     }
   }
 
-  &-prev {
+  > span:first-child {
     border-radius: 0 10px 10px 0;
     left: 0;
 
@@ -69,12 +68,15 @@ $c-transparent: rgba(0, 0, 0, 0);
     }
   }
 
-  &:hover &-next,
-  &:hover &-prev {
+  &:hover > span {
     opacity: 1;
   }
 
-  &-frame {
+  &:hover > span[disabled] {
+    opacity: .2;
+  }
+
+  > div {
     font-size: 0;
     max-height: 100%;
     overflow: hidden;
@@ -83,37 +85,32 @@ $c-transparent: rgba(0, 0, 0, 0);
     white-space: nowrap;
     width: 100%;
 
-    &:hover > .react-Slidy-arrow--disabled {
-      opacity: .2;
+    > ul {
+      display: block;
+      list-style: none;
+      padding: 0;
+      width: 100%;
+      will-change: transform, transition-timing, transition-duration;
+
+      & > li {
+        display: inline-block;
+        position: relative;
+        user-select: none;
+        vertical-align: top;
+        width: 100%;
+
+        img {
+          -webkit-backface-visibility: hidden;
+          -webkit-perspective: 1000;
+      
+          display: block;
+          height: auto;
+          pointer-events: none;
+          touch-action: none;
+          user-select: none;
+          width: 100%;
+        }
+      }
     }
-
-  }
-
-  &-slides {
-    display: block;
-    list-style: none;
-    padding: 0;
-    width: 100%;
-    will-change: transform, transition-timing, transition-duration;
-  }
-
-  &-item {
-    display: inline-block;
-    position: relative;
-    user-select: none;
-    vertical-align: top;
-    width: 100%;
-  }
-
-  img {
-    -webkit-backface-visibility: hidden;
-    -webkit-perspective: 1000;
-
-    display: block;
-    height: auto;
-    pointer-events: none;
-    touch-action: none;
-    user-select: none;
-    width: 100%;
   }
 }
