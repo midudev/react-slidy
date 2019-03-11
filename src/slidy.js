@@ -26,27 +26,39 @@ function getTouchCoordinatesFromEvent(e) {
   return {pageX, pageY}
 }
 
-export default function slidy(slider, options) {
+function getTranslationCSS(duration, ease, index, x) {
+  const easeCssText = ease !== '' ? `transition-timing-function: ${ease};` : ''
+  const durationCssText = duration ? `transition-duration: ${duration}ms;` : ''
+  return `${easeCssText}${durationCssText}transform: ${translate(index, x)};`
+}
+
+function cleanContainer(container) {
+  // remove all the elements except the last one as it seems to be old data in the HTML
+  // that's specially useful for dynamic content
+  while (container.childElementCount > 1) {
+    container !== null && container.removeChild(container.lastChild)
+  }
+  // tell that the clean is done
+  return true
+}
+
+export default function slidy(sliderDOMEl, options) {
   const {
     classNameSlideContainer,
     doAfterSlide,
     doBeforeSlide,
     ease,
-    frameDOMEl,
     initialSlide,
     onNext,
     onPrev,
-    rewind,
-    rewindSpeed,
-    slideSpeed,
-    snapBackSpeed
+    slideSpeed
   } = options
   let {items} = options
 
   // if frameDOMEl is null, then we do nothing
-  if (frameDOMEl === null) return
+  if (sliderDOMEl === null) return
   // DOM elements
-  const slideContainerDOMEl = frameDOMEl.getElementsByClassName(
+  const slideContainerDOMEl = sliderDOMEl.getElementsByClassName(
     classNameSlideContainer
   )[0]
 
@@ -70,16 +82,7 @@ export default function slidy(slider, options) {
    * @x         {number} Number of pixels to fine tuning translation
    */
   function _translate(duration, ease = '', x = false) {
-    const easeCssText =
-      ease !== '' ? `transition-timing-function: ${ease};` : ''
-
-    const durationCssText = duration
-      ? `transition-duration: ${duration}ms;`
-      : ''
-
-    const cssText = `${easeCssText}${durationCssText}
-      transform: ${translate(index, x)};`
-
+    const cssText = getTranslationCSS(duration, ease, index, x)
     slideContainerDOMEl.style.cssText = cssText
   }
 
@@ -101,11 +104,6 @@ export default function slidy(slider, options) {
     // nextIndex should be between 0 and items minus 1
     nextIndex = clampNumber(nextIndex, 0, items - 1)
 
-    if (rewind === true && direction) {
-      nextIndex = 0
-      duration = rewindSpeed
-    }
-
     // if the nextIndex and the current is the same, we don't need to do the slide
     if (nextIndex === index) return
 
@@ -122,16 +120,19 @@ export default function slidy(slider, options) {
     _translate(duration, ease)
 
     // execute the callback from the options after sliding
-    doAfterSlide({currentSlide: index})
+    slideContainerDOMEl.addEventListener(TRANSITION_END, function cb(e) {
+      doAfterSlide({currentSlide: index})
+      e.currentTarget.removeEventListener(e.type, cb)
+    })
   }
 
   function _removeTouchEventsListeners(all = false) {
-    frameDOMEl.removeEventListener('touchmove', onTouchmove)
-    frameDOMEl.removeEventListener('touchend', onTouchend)
-    frameDOMEl.removeEventListener('touchcancel', onTouchend)
+    sliderDOMEl.removeEventListener('touchmove', onTouchmove)
+    sliderDOMEl.removeEventListener('touchend', onTouchend)
+    sliderDOMEl.removeEventListener('touchcancel', onTouchend)
 
     if (all === true) {
-      frameDOMEl.removeEventListener('touchstart', onTouchstart)
+      sliderDOMEl.removeEventListener('touchstart', onTouchstart)
     }
   }
 
@@ -151,9 +152,9 @@ export default function slidy(slider, options) {
     const coords = getTouchCoordinatesFromEvent(e)
     touchOffsetX = coords.pageX
     touchOffsetY = coords.pageY
-    frameDOMEl.addEventListener('touchmove', onTouchmove)
-    frameDOMEl.addEventListener('touchend', onTouchend, {passive: true})
-    frameDOMEl.addEventListener('touchcancel', onTouchend, {passive: true})
+    sliderDOMEl.addEventListener('touchmove', onTouchmove)
+    sliderDOMEl.addEventListener('touchend', onTouchend, {passive: true})
+    sliderDOMEl.addEventListener('touchcancel', onTouchend, {passive: true})
   }
 
   function onTouchmove(e) {
@@ -195,8 +196,6 @@ export default function slidy(slider, options) {
 
       if (isValid === true && isOutOfBounds === false) {
         slide(direction)
-      } else {
-        _translate(snapBackSpeed, LINEAR_ANIMATION)
       }
     }
 
@@ -215,7 +214,7 @@ export default function slidy(slider, options) {
     slideContainerDOMEl.addEventListener(TRANSITION_END, onTransitionEnd, {
       passive: true
     })
-    frameDOMEl.addEventListener('touchstart', onTouchstart, {passive: true})
+    sliderDOMEl.addEventListener('touchstart', onTouchstart, {passive: true})
 
     if (index !== 0) {
       _translate(0)
@@ -227,14 +226,7 @@ export default function slidy(slider, options) {
    * clean content of the slider
    */
   function clean() {
-    // remove all the elements except the last one as it seems to be old data in the HTML
-    // that's specially useful for dynamic content
-    while (slideContainerDOMEl.childElementCount > 1) {
-      slideContainerDOMEl !== null &&
-        slideContainerDOMEl.removeChild(slideContainerDOMEl.lastChild)
-    }
-    // tell that the clean is done
-    return true
+    return cleanContainer(slideContainerDOMEl)
   }
 
   /**
