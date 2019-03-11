@@ -1,0 +1,40 @@
+---
+name: React Slidy 🍃
+---
+
+# React Slidy
+
+This component aims to fullfil a basic need for a carousel in React. 1:1 slide, basic transition, mobile first experience and basic stuff for adding and controlling events. It's not meant to be full of options but to achieve 60fps.
+
+**It only has one dependency**: an intersection observer polyfill that will be loaded only if your browser doesn't support it, or if you haven't polyfilled it yet.
+
+**tl;dr: a simple and minimal slider component for React**
+
+import { Playground, PropsTable } from 'docz'
+import ReactSlidy from './index.js'
+import Number from './examples/Number'
+import './index.scss'
+
+<Playground>
+  <ReactSlidy>
+    <Number num={1} />
+    <Number num={2} />
+    <Number num={3} />
+    <Number num={4} />
+  </ReactSlidy>
+</Playground>
+
+```
+npm install react-slidy
+```
+
+Do you want to use images 🖼️? Just put them inside!
+<Playground>
+  <ReactSlidy itemsToPreload={3}>
+    <img src="https://loremflickr.com/640/360" />
+    <img src="https://loremflickr.com/641/361" />
+    <img src="https://loremflickr.com/642/362" />
+  </ReactSlidy>
+</Playground>
+
+Created and mantained by [midudev](https://midu.dev)

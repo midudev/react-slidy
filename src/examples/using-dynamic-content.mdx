@@ -1,0 +1,34 @@
+---
+name: with Dynamic Content
+---
+
+# Examples with Dynamic Content
+
+### Adding more content dynamically
+You could easily add more content to the slider and it will adapt automatically for you.
+
+import {Fragment, useState} from 'react'
+import { Playground, PropsTable } from 'docz'
+import ReactSlidy from '../index.js'
+import Number from '../examples/Number'
+import '../index.scss'
+
+<Playground>
+  {() => {
+    const [slides, setSlides] = useState([0])
+    const slidesToRender = slides.map((_, index) => <Number key={index} num={index} />)
+    
+    return (
+      <Fragment>
+        <button onClick={() => setSlides([...slides, 0])}>
+          Add one slide!
+        </button>
+        <ReactSlidy>
+          {slidesToRender}
+        </ReactSlidy>
+      </Fragment>
+    )
+  }}
+</Playground>
+
+Created and mantained by [midudev](https://midu.dev)
