@@ -2,6 +2,8 @@ import React, {useEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import ReactSlidySlider from './react-slidy-slider'
 
+function noop() {}
+
 const ReactSlidy = props => {
   const [showSlider, setShowSlider] = useState(!props.lazyLoadSlider)
   const nodeEl = useRef(null)
@@ -48,25 +50,51 @@ const ReactSlidy = props => {
 }
 
 ReactSlidy.propTypes = {
+  /** Children to be used as slides for the slider */
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  /** Class base to create all clases for elements. Styles might break if you modify it. */
   classNameBase: PropTypes.string,
+  /** Function that will be executed AFTER destroying the slider. Useful for clean up stuff */
+  doAfterDestroy: PropTypes.func,
+  /** Function that will be executed AFTER slide transition has ended */
+  doAfterSlide: PropTypes.func,
+  /** Function that will be executed BEFORE slide is happening */
+  doBeforeSlide: PropTypes.func,
+  /** Ease mode to use on translations */
+  ease: PropTypes.string,
+  /** Determine the number of items that will be preloaded */
+  itemsToPreload: PropTypes.number,
+  /** Determine the first slide to start with */
+  initialSlide: PropTypes.number,
+  /** Determine if the slider will be lazy loaded using Intersection Observer */
   lazyLoadSlider: PropTypes.bool,
-  // Shape from https://github.com/jasonslyvia/react-lazyload/blob/master/src/index.jsx#L295
+  /** Configuration for lazy loading. Only needed if lazyLoadSlider is true */
   lazyLoadConfig: PropTypes.shape({
-    /* Say if you want to preload a component even if it's 100px below the viewport (user have to scroll 100px more to see this component), you can set offset props to 100. On the other hand, if you want to delay loading a component even if it's top edge has already appeared at viewport, set offset to negative number. */
-    offset: PropTypes.number,
-    /* If lazy loading components inside a overflow container, set this to true. Also make sure a position property other than static has been set to your overflow container. */
-    overflow: PropTypes.bool
+    /** Distance which the slider will be loaded */
+    offset: PropTypes.number
   }),
+  /** Determine if arrows should be shown */
+  showArrows: PropTypes.bool,
+  /** Determine the speed of the sliding animation */
+  slideSpeed: PropTypes.number,
+  /** Configure arrow class for determin that arrow is the last one */
   tailArrowClass: PropTypes.string
 }
 
 ReactSlidy.defaultProps = {
   classNameBase: 'react-Slidy',
+  doAfterDestroy: noop,
+  doAfterSlide: noop,
+  doBeforeSlide: noop,
+  itemsToPreload: 1,
+  initialSlide: 0,
+  ease: 'ease',
   lazyLoadSlider: true,
   lazyLoadConfig: {
     offset: 150
   },
+  slideSpeed: 500,
+  showArrows: true,
   tailArrowClass: 'react-Slidy-arrow--disabled'
 }
 
