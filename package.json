@@ -11,22 +11,24 @@
     "react-slidy"
   ],
   "scripts": {
+    "dev": "npm run docz:dev",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
     "clean:lib": "rimraf ./lib/*",
-    "dev": "sui-bundler dev",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "sui-lint js",
     "lint:sass": "sui-lint sass",
-    "now-build": "sui-bundler build -C",
+    "now-build": "npm run docz:build",
     "prelib": "npm run clean:lib -s",
     "prepublish": "npm run lib"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:miduga/react-slidy.git"
+    "url": "git@github.com:midudev/react-slidy.git"
   },
   "peerDependencies": {
     "prop-types": "15",
@@ -34,22 +36,16 @@
     "react-dom": ">= 16.8.0 < 17"
   },
   "devDependencies": {
-    "@s-ui/bundler": "4",
-    "@s-ui/lint": "2",
     "@babel/cli": "7",
+    "@s-ui/lint": "2",
     "babel-preset-sui": "2",
     "copyfiles": "1.0.0",
-    "highlight.js": "9.10.0",
-    "js-beautify": "1.6.12",
-    "jsx-to-string": "1.1.0",
-    "node-sass": "4.7.2",
-    "opener": "1.4",
+    "docz": "^0.13.7",
+    "docz-plugin-css": "^0.11.0",
+    "docz-theme-default": "^0.13.7",
     "prop-types": "15",
     "react": ">= 16.8.0 < 17",
     "react-dom": ">= 16.8.0 < 17",
-    "react-lowlight": "2.0.0",
-    "react-router": "3",
-    "react-syntax-highlighter": "5.1",
     "rimraf": "2.5.4"
   },
   "dependencies": {
