@@ -231,7 +231,9 @@ export default function slidy(containerDOMEl, options) {
    * public
    * prev function: called on clickhandler
    */
-  function prev() {
+  function prev(e) {
+    e.preventDefault()
+    e.stopPropagation()
     slide(false)
   }
 
@@ -239,7 +241,9 @@ export default function slidy(containerDOMEl, options) {
    * public
    * next function: called on clickhandler
    */
-  function next() {
+  function next(e) {
+    e.preventDefault()
+    e.stopPropagation()
     slide(true)
   }
 
