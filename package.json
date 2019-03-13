@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "3.2.0",
+  "version": "4.0.0-beta.3",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "npm run docz:dev",
     "docz:dev": "docz dev",
-    "docz:build": "docz build",
+    "docz:build": "NODE_ENV=production docz build",
     "clean:lib": "rimraf ./lib/*",
     "lib": "npm run lib:scripts && npm run lib:styles",
     "lib:scripts": "babel src --out-dir lib",
