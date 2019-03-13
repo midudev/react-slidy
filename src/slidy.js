@@ -9,14 +9,6 @@ function translate(to, moveX) {
     : `translate3d(-${to * 100}%, 0, 0)`
 }
 
-function checkIsScrolling(isScrolling, isScrollBlocked, deltaX, deltaY) {
-  const absDeltaY = abs(deltaY)
-  return (
-    isScrolling === true ||
-    (isScrollBlocked === false && absDeltaY >= 0 && absDeltaY >= abs(deltaX))
-  )
-}
-
 function clampNumber(x, minValue, maxValue) {
   return Math.min(Math.max(x, minValue), maxValue)
 }
@@ -61,7 +53,6 @@ export default function slidy(containerDOMEl, options) {
   // initialize some variables
   let index = initialSlide
   let isScrolling = false
-  let isScrollBlocked = false
   let transitionEndCallbackActivated = false
 
   // event handling
@@ -78,8 +69,7 @@ export default function slidy(containerDOMEl, options) {
    * @x         {number} Number of pixels to fine tuning translation
    */
   function _translate(duration, ease = '', x = false) {
-    const cssText = getTranslationCSS(duration, ease, index, x)
-    slidesDOMEl.style.cssText = cssText
+    slidesDOMEl.style.cssText = getTranslationCSS(duration, ease, index, x)
   }
 
   /**
@@ -123,12 +113,11 @@ export default function slidy(containerDOMEl, options) {
   }
 
   function _removeTouchEventsListeners(all = false) {
-    containerDOMEl.removeEventListener('touchmove', onTouchmove)
-    containerDOMEl.removeEventListener('touchend', onTouchend)
-    containerDOMEl.removeEventListener('touchcancel', onTouchend)
+    containerDOMEl.removeEventListener('touchmove', onTouchmove, false)
+    containerDOMEl.removeEventListener('touchend', onTouchend, false)
 
     if (all === true) {
-      containerDOMEl.removeEventListener('touchstart', onTouchstart)
+      containerDOMEl.removeEventListener('touchstart', onTouchstart, false)
     }
   }
 
@@ -146,31 +135,33 @@ export default function slidy(containerDOMEl, options) {
 
   function onTouchstart(e) {
     const coords = getTouchCoordinatesFromEvent(e)
+    isScrolling = undefined
     touchOffsetX = coords.pageX
     touchOffsetY = coords.pageY
-    containerDOMEl.addEventListener('touchmove', onTouchmove)
-    containerDOMEl.addEventListener('touchend', onTouchend, {passive: true})
-    containerDOMEl.addEventListener('touchcancel', onTouchend, {passive: true})
+    containerDOMEl.addEventListener('touchmove', onTouchmove, false)
+    containerDOMEl.addEventListener('touchend', onTouchend, false)
   }
 
   function onTouchmove(e) {
+    // ensure swiping with one touch and not pinching
+    if (e.touches.length > 1 || (e.scale && e.scale !== 1)) return
+
     const coords = getTouchCoordinatesFromEvent(e)
     deltaX = coords.pageX - touchOffsetX
     deltaY = coords.pageY - touchOffsetY
-    isScrolling = checkIsScrolling(isScrolling, isScrollBlocked, deltaX, deltaY)
 
-    if (isScrolling === false && deltaX !== 0) {
-      isScrollBlocked = true
-      _translate(0, LINEAR_ANIMATION, deltaX * -1)
+    if (typeof isScrolling === 'undefined') {
+      isScrolling = abs(deltaX) < abs(deltaY)
     }
 
-    if (isScrollBlocked === true && e.cancelable) {
+    if (!isScrolling) {
       e.preventDefault()
+      _translate(0, LINEAR_ANIMATION, deltaX * -1)
     }
   }
 
   function onTouchend(event) {
-    if (isScrolling === false) {
+    if (!isScrolling) {
       /**
        * is valid if:
        * -> swipe distance is greater than the specified valid swipe distance
@@ -199,7 +190,6 @@ export default function slidy(containerDOMEl, options) {
 
     // reset variables with the initial values
     deltaX = deltaY = touchOffsetX = touchOffsetY = 0
-    isScrolling = isScrollBlocked = false
 
     _removeTouchEventsListeners()
   }
@@ -209,10 +199,8 @@ export default function slidy(containerDOMEl, options) {
    * setup function
    */
   function _setup() {
-    slidesDOMEl.addEventListener(TRANSITION_END, onTransitionEnd, {
-      passive: true
-    })
-    containerDOMEl.addEventListener('touchstart', onTouchstart, {passive: true})
+    slidesDOMEl.addEventListener(TRANSITION_END, onTransitionEnd)
+    containerDOMEl.addEventListener('touchstart', onTouchstart, false)
 
     if (index !== 0) {
       _translate(0)
