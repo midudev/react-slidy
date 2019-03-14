@@ -113,7 +113,9 @@ export default function slidy(containerDOMEl, options) {
   }
 
   function _removeTouchEventsListeners(all = false) {
-    containerDOMEl.removeEventListener('touchmove', onTouchmove, false)
+    containerDOMEl.removeEventListener('touchmove', onTouchmove, {
+      passive: false
+    })
     containerDOMEl.removeEventListener('touchend', onTouchend, false)
 
     if (all === true) {
@@ -138,7 +140,9 @@ export default function slidy(containerDOMEl, options) {
     isScrolling = undefined
     touchOffsetX = coords.pageX
     touchOffsetY = coords.pageY
-    containerDOMEl.addEventListener('touchmove', onTouchmove, false)
+    containerDOMEl.addEventListener('touchmove', onTouchmove, {
+      passive: false
+    })
     containerDOMEl.addEventListener('touchend', onTouchend, false)
   }
 
