@@ -156,6 +156,7 @@ export default function slidy(containerDOMEl, options) {
 
     if (typeof isScrolling === 'undefined') {
       isScrolling = abs(deltaX) < abs(deltaY)
+      if (!isScrolling) document.ontouchmove = e => e.preventDefault()
     }
 
     if (!isScrolling) {
@@ -165,6 +166,7 @@ export default function slidy(containerDOMEl, options) {
   }
 
   function onTouchend(event) {
+    document.ontouchmove = () => true
     if (!isScrolling) {
       /**
        * is valid if:
