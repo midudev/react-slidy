@@ -8,7 +8,9 @@
     "lory",
     "slidy",
     "react-lory",
-    "react-slidy"
+    "react-slidy",
+    "slider react",
+    "react slider"
   ],
   "scripts": {
     "dev": "npm run docz:dev",
