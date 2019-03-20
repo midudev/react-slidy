@@ -28,7 +28,8 @@ $c-transparent: rgba(0, 0, 0, 0);
   position: relative;
   user-select: none;
 
-  > span {
+  &-prev,
+  &-next {
     align-items: center;
     background: $c-nav-background;
     bottom: 0;
@@ -50,7 +51,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     }
   }
 
-  > span:nth-child(2) {
+  &-next {
     border-radius: 10px 0 0 10px;
     right: 0;
 
@@ -59,7 +60,7 @@ $c-transparent: rgba(0, 0, 0, 0);
     }
   }
 
-  > span:first-child {
+  &-prev {
     border-radius: 0 10px 10px 0;
     left: 0;
 

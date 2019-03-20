@@ -80,8 +80,13 @@ export default function ReactSlidySlider({
     <Fragment>
       {showArrows && (
         <Fragment>
-          <span disabled={index === 0} onClick={slidyInstance.prev} />
           <span
+            className={`${classNameBase}-prev`}
+            disabled={index === 0}
+            onClick={slidyInstance.prev}
+          />
+          <span
+            className={`${classNameBase}-next`}
             disabled={index === items.length - 1}
             onClick={slidyInstance.next}
           />
