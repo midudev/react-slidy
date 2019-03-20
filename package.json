@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -40,7 +40,7 @@
   "devDependencies": {
     "@babel/cli": "7",
     "@s-ui/lint": "2",
-    "babel-preset-sui": "2",
+    "babel-preset-sui": "3",
     "copyfiles": "1.0.0",
     "docz": "0.13.7",
     "docz-plugin-css": "0.11.0",
