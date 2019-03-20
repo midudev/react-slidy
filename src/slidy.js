@@ -2,6 +2,7 @@ const LINEAR_ANIMATION = 'linear'
 const VALID_SWIPE_DISTANCE = 50
 const TRANSITION_END = 'transitionend'
 const {abs} = Math
+const EVENT_OPTIONS = {passive: false}
 
 function translate(to, moveX) {
   return moveX
@@ -113,13 +114,15 @@ export default function slidy(containerDOMEl, options) {
   }
 
   function _removeTouchEventsListeners(all = false) {
-    containerDOMEl.removeEventListener('touchmove', onTouchmove, {
-      passive: false
-    })
-    containerDOMEl.removeEventListener('touchend', onTouchend, false)
+    containerDOMEl.removeEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
+    containerDOMEl.removeEventListener('touchend', onTouchend, EVENT_OPTIONS)
 
     if (all === true) {
-      containerDOMEl.removeEventListener('touchstart', onTouchstart, false)
+      containerDOMEl.removeEventListener(
+        'touchstart',
+        onTouchstart,
+        EVENT_OPTIONS
+      )
     }
   }
 
@@ -140,9 +143,7 @@ export default function slidy(containerDOMEl, options) {
     isScrolling = undefined
     touchOffsetX = coords.pageX
     touchOffsetY = coords.pageY
-    containerDOMEl.addEventListener('touchmove', onTouchmove, {
-      passive: false
-    })
+    containerDOMEl.addEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
     containerDOMEl.addEventListener('touchend', onTouchend, false)
   }
 
@@ -157,6 +158,7 @@ export default function slidy(containerDOMEl, options) {
     if (typeof isScrolling === 'undefined') {
       isScrolling = abs(deltaX) < abs(deltaY)
       if (!isScrolling) document.ontouchmove = e => e.preventDefault()
+      return
     }
 
     if (!isScrolling) {
@@ -206,7 +208,7 @@ export default function slidy(containerDOMEl, options) {
    */
   function _setup() {
     slidesDOMEl.addEventListener(TRANSITION_END, onTransitionEnd)
-    containerDOMEl.addEventListener('touchstart', onTouchstart, false)
+    containerDOMEl.addEventListener('touchstart', onTouchstart, EVENT_OPTIONS)
 
     if (index !== 0) {
       _translate(0)
