@@ -114,16 +114,13 @@ export default function slidy(containerDOMEl, options) {
   }
 
   function _removeTouchEventsListeners(all = false) {
+    containerDOMEl.removeEventListener(
+      'touchstart',
+      onTouchstart,
+      EVENT_OPTIONS
+    )
     containerDOMEl.removeEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
     containerDOMEl.removeEventListener('touchend', onTouchend, EVENT_OPTIONS)
-
-    if (all === true) {
-      containerDOMEl.removeEventListener(
-        'touchstart',
-        onTouchstart,
-        EVENT_OPTIONS
-      )
-    }
   }
 
   function _removeAllEventsListeners() {
@@ -143,8 +140,6 @@ export default function slidy(containerDOMEl, options) {
     isScrolling = undefined
     touchOffsetX = coords.pageX
     touchOffsetY = coords.pageY
-    containerDOMEl.addEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
-    containerDOMEl.addEventListener('touchend', onTouchend, false)
   }
 
   function onTouchmove(e) {
@@ -198,8 +193,6 @@ export default function slidy(containerDOMEl, options) {
 
     // reset variables with the initial values
     deltaX = deltaY = touchOffsetX = touchOffsetY = 0
-
-    _removeTouchEventsListeners()
   }
 
   /**
@@ -209,6 +202,8 @@ export default function slidy(containerDOMEl, options) {
   function _setup() {
     slidesDOMEl.addEventListener(TRANSITION_END, onTransitionEnd)
     containerDOMEl.addEventListener('touchstart', onTouchstart, EVENT_OPTIONS)
+    containerDOMEl.addEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
+    containerDOMEl.addEventListener('touchend', onTouchend, EVENT_OPTIONS)
 
     if (index !== 0) {
       _translate(0)
