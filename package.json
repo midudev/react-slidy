@@ -18,7 +18,7 @@
     "docz:build": "NODE_ENV=production docz build",
     "clean:lib": "rimraf ./lib/*",
     "lib": "npm run lib:scripts && npm run lib:styles",
-    "lib:scripts": "babel src --out-dir lib",
+    "lib:scripts": "babel src --out-dir lib --presets=babel-preset-sui",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "sui-lint js",
@@ -40,11 +40,12 @@
   "devDependencies": {
     "@babel/cli": "7",
     "@s-ui/lint": "2",
+    "acorn": "6.1.1",
     "babel-preset-sui": "3",
     "copyfiles": "1.0.0",
-    "docz": "0.13.7",
+    "docz": "1.0.4",
     "docz-plugin-css": "0.11.0",
-    "docz-theme-default": "0.13.7",
+    "docz-theme-default": "1.0.4",
     "prop-types": "15",
     "react": ">= 16.8.0 < 17",
     "react-dom": ">= 16.8.0 < 17",
@@ -64,9 +65,7 @@
     ]
   },
   "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml",
-  "babel": {
-    "presets": [
-      "sui"
-    ]
+  "resolutions": {
+    "webpack/acorn": "6.1.1"
   }
 }
