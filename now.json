@@ -8,5 +8,9 @@
       "use": "@now/static-build",
       "config": {"distDir": ".docz/dist"}
     }
+  ],
+  "routes": [
+    {"src": "/static/(.*)", "dest": "/static/$1"},
+    {"src": "/(.*)", "dest": "/index.html"}
   ]
 }
