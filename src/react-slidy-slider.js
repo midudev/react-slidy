@@ -69,7 +69,7 @@ export default function ReactSlidySlider({
       })
 
       setSlidyInstance(slidyInstance)
-      // doAfterInit()
+      doAfterInit()
 
       return () => destroySlider(slidyInstance, doAfterDestroy)
     },
