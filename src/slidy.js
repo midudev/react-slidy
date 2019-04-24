@@ -1,6 +1,5 @@
 const LINEAR_ANIMATION = 'linear'
 const VALID_SWIPE_DISTANCE = 50
-const TRANSITION_END = 'transitionend'
 const {abs} = Math
 const EVENT_OPTIONS = {passive: false}
 
@@ -54,7 +53,6 @@ export default function slidy(containerDOMEl, options) {
   // initialize some variables
   let index = initialSlide
   let isScrolling = false
-  let transitionEndCallbackActivated = false
 
   // event handling
   let deltaX = 0
@@ -107,10 +105,10 @@ export default function slidy(containerDOMEl, options) {
     _translate(duration, ease)
 
     // execute the callback from the options after sliding
-    slidesDOMEl.addEventListener(TRANSITION_END, function cb(e) {
-      doAfterSlide({currentSlide: index})
-      e.currentTarget.removeEventListener(e.type, cb)
-    })
+    // slidesDOMEl.addEventListener(TRANSITION_END, function cb(e) {
+    //   doAfterSlide({currentSlide: index})
+    //   e.currentTarget.removeEventListener(e.type, cb)
+    // })
   }
 
   function _removeTouchEventsListeners(all = false) {
@@ -125,14 +123,6 @@ export default function slidy(containerDOMEl, options) {
 
   function _removeAllEventsListeners() {
     _removeTouchEventsListeners(true)
-    slidesDOMEl.removeEventListener(TRANSITION_END, onTransitionEnd)
-  }
-
-  function onTransitionEnd() {
-    if (transitionEndCallbackActivated === true) {
-      _translate(0)
-      transitionEndCallbackActivated = false
-    }
   }
 
   function onTouchstart(e) {
@@ -200,7 +190,6 @@ export default function slidy(containerDOMEl, options) {
    * setup function
    */
   function _setup() {
-    slidesDOMEl.addEventListener(TRANSITION_END, onTransitionEnd)
     containerDOMEl.addEventListener('touchstart', onTouchstart, EVENT_OPTIONS)
     containerDOMEl.addEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
     containerDOMEl.addEventListener('touchend', onTouchend, EVENT_OPTIONS)

@@ -8,28 +8,31 @@ const ReactSlidy = props => {
   const [showSlider, setShowSlider] = useState(!props.lazyLoadSlider)
   const nodeEl = useRef(null)
 
-  useEffect(function() {
-    let observer
+  useEffect(
+    function() {
+      let observer
 
-    if (props.lazyLoadSlider) {
-      const initLazyLoadSlider = () => {
-        // if we support IntersectionObserver, let's use it
-        const {offset = 0} = props.lazyLoadConfig
-        observer = new window.IntersectionObserver(handleIntersection, {
-          rootMargin: `${offset}px 0px 0px`
-        })
-        observer.observe(nodeEl.current)
+      if (props.lazyLoadSlider) {
+        const initLazyLoadSlider = () => {
+          // if we support IntersectionObserver, let's use it
+          const {offset = 0} = props.lazyLoadConfig
+          observer = new window.IntersectionObserver(handleIntersection, {
+            rootMargin: `${offset}px 0px 0px`
+          })
+          observer.observe(nodeEl.current)
+        }
+
+        if (!('IntersectionObserver' in window)) {
+          import('intersection-observer').then(initLazyLoadSlider)
+        } else {
+          initLazyLoadSlider()
+        }
       }
 
-      if (!('IntersectionObserver' in window)) {
-        import('intersection-observer').then(initLazyLoadSlider)
-      } else {
-        initLazyLoadSlider()
-      }
-    }
-
-    return () => observer && observer.disconnect()
-  }, [])
+      return () => observer && observer.disconnect()
+    },
+    [props.lazyLoadConfig, props.lazyLoadSlider]
+  )
 
   const handleIntersection = ([entry], observer) => {
     if (entry.isIntersecting || entry.intersectionRatio > 0) {
@@ -62,8 +65,9 @@ ReactSlidy.propTypes = {
   doBeforeSlide: PropTypes.func,
   /** Ease mode to use on translations */
   ease: PropTypes.string,
-  /** Determine the number of items that will be preloaded */
-  itemsToPreload: PropTypes.number,
+  /** Determine if the slider should be infinite */
+  infinite: PropTypes.bool,
+  /** */
   /** Determine the first slide to start with */
   initialSlide: PropTypes.number,
   /** Determine if the slider will be lazy loaded using Intersection Observer */
@@ -86,7 +90,7 @@ ReactSlidy.defaultProps = {
   doAfterDestroy: noop,
   doAfterSlide: noop,
   doBeforeSlide: noop,
-  itemsToPreload: 1,
+  infinite: false,
   initialSlide: 0,
   ease: 'ease',
   lazyLoadSlider: true,

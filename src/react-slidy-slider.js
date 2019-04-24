@@ -7,9 +7,17 @@ function convertToArrayFrom(children) {
   return Array.isArray(children) ? children : [children]
 }
 
-function getItemsToRender(index, maxIndex, items, itemsToPreload) {
-  const preload = index > 0 ? itemsToPreload + 1 : itemsToPreload
-  return items.slice(0, maxIndex + preload)
+function getItemsToRender(index, items) {
+  if (index === 0) {
+    return [
+      ...items.slice(items.length - 1, items.length),
+      ...items.slice(index, index + 2)
+    ]
+  } else if (index === items.length - 1) {
+    return [...items.slice(index - 1, items.length), ...items.slice(0, 1)]
+  } else {
+    return items.slice(index - 1, index + 2)
+  }
 }
 
 function destroySlider(slidyInstance, doAfterDestroy) {
@@ -28,8 +36,8 @@ export default function ReactSlidySlider({
   doAfterDestroy,
   doAfterSlide,
   doBeforeSlide,
+  infinite,
   initialSlide,
-  itemsToPreload,
   slideSpeed,
   showArrows,
   tailArrowClass
@@ -46,35 +54,50 @@ export default function ReactSlidySlider({
 
   const items = convertToArrayFrom(children)
 
-  useEffect(function() {
-    const slidyInstance = slidy(sliderContainerDOMEl.current, {
-      ease,
+  useEffect(
+    function() {
+      const slidyInstance = slidy(sliderContainerDOMEl.current, {
+        ease,
+        doAfterSlide,
+        doBeforeSlide,
+        slideSpeed,
+        slidesDOMEl: slidesDOMEl.current,
+        initialSlide: index,
+        items: items.length,
+        onNext: nextIndex => {
+          setIndex(nextIndex)
+          nextIndex > maxIndex && setMaxIndex(nextIndex)
+          return nextIndex
+        },
+        onPrev: nextIndex => {
+          setIndex(nextIndex)
+          return nextIndex
+        }
+      })
+
+      setSlidyInstance(slidyInstance)
+      return () => destroySlider(slidyInstance, doAfterDestroy)
+    },
+    [
+      doAfterDestroy,
       doAfterSlide,
       doBeforeSlide,
-      slideSpeed,
-      slidesDOMEl: slidesDOMEl.current,
-      initialSlide: index,
-      items: items.length,
-      onNext: nextIndex => {
-        setIndex(nextIndex)
-        nextIndex > maxIndex && setMaxIndex(nextIndex)
-        return nextIndex
-      },
-      onPrev: nextIndex => {
-        setIndex(nextIndex)
-        return nextIndex
-      }
-    })
+      ease,
+      index,
+      items.length,
+      maxIndex,
+      slideSpeed
+    ]
+  )
 
-    setSlidyInstance(slidyInstance)
-    return () => destroySlider(slidyInstance, doAfterDestroy)
-  }, [])
+  useEffect(
+    function() {
+      slidyInstance && slidyInstance.updateItems(items.length)
+    },
+    [items, slidyInstance]
+  )
 
-  useEffect(function() {
-    slidyInstance && slidyInstance.updateItems(items.length)
-  })
-
-  const itemsToRender = getItemsToRender(index, maxIndex, items, itemsToPreload)
+  const itemsToRender = getItemsToRender(index, items)
 
   return (
     <Fragment>
@@ -93,7 +116,14 @@ export default function ReactSlidySlider({
         </Fragment>
       )}
       <div ref={sliderContainerDOMEl}>
-        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem)}</ul>
+        <ul
+          ref={slidesDOMEl}
+          onTransitionEnd={() => {
+            console.log('yei')
+          }}
+        >
+          {itemsToRender.map(renderItem)}
+        </ul>
       </div>
     </Fragment>
   )
