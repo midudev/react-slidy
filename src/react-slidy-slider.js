@@ -69,21 +69,11 @@ export default function ReactSlidySlider({
       })
 
       setSlidyInstance(slidyInstance)
-      doAfterInit()
+      // doAfterInit()
 
       return () => destroySlider(slidyInstance, doAfterDestroy)
     },
-    [
-      doAfterDestroy,
-      doAfterInit,
-      doAfterSlide,
-      doBeforeSlide,
-      ease,
-      index,
-      items.length,
-      maxIndex,
-      slideSpeed
-    ]
+    [] // eslint-disable-line
   )
 
   useEffect(function() {

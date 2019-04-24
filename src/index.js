@@ -31,7 +31,7 @@ const ReactSlidy = props => {
 
       return () => observer && observer.disconnect()
     },
-    [props.lazyLoadConfig, props.lazyLoadSlider]
+    [] // eslint-disable-line
   )
 
   const handleIntersection = ([entry], observer) => {
