@@ -12,6 +12,19 @@ import '../index.scss'
 
 You could use `doBeforeSlide`, `doAfterSlide` and `doAfterDestroy` events to execute callbacks when some events are ocurring with the slider.
 
+## doAfterInit
+
+Callback that will be executed after initializing the slider
+
+<Playground>
+  <ReactSlidy doAfterInit={() => alert(`The slider is initialized`)}>
+    <Number num={1} />
+    <Number num={2} />
+    <Number num={3} />
+    <Number num={4} />
+  </ReactSlidy>
+</Playground>
+
 ## doBeforeSlide
 
 Callback that will be executed BEFORE the slide transition has been completed.

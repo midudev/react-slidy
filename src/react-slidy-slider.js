@@ -26,6 +26,7 @@ export default function ReactSlidySlider({
   children,
   ease,
   doAfterDestroy,
+  doAfterInit,
   doAfterSlide,
   doBeforeSlide,
   initialSlide,
@@ -46,29 +47,44 @@ export default function ReactSlidySlider({
 
   const items = convertToArrayFrom(children)
 
-  useEffect(function() {
-    const slidyInstance = slidy(sliderContainerDOMEl.current, {
-      ease,
+  useEffect(
+    function() {
+      const slidyInstance = slidy(sliderContainerDOMEl.current, {
+        ease,
+        doAfterSlide,
+        doBeforeSlide,
+        slideSpeed,
+        slidesDOMEl: slidesDOMEl.current,
+        initialSlide: index,
+        items: items.length,
+        onNext: nextIndex => {
+          setIndex(nextIndex)
+          nextIndex > maxIndex && setMaxIndex(nextIndex)
+          return nextIndex
+        },
+        onPrev: nextIndex => {
+          setIndex(nextIndex)
+          return nextIndex
+        }
+      })
+
+      setSlidyInstance(slidyInstance)
+      doAfterInit()
+
+      return () => destroySlider(slidyInstance, doAfterDestroy)
+    },
+    [
+      doAfterDestroy,
+      doAfterInit,
       doAfterSlide,
       doBeforeSlide,
-      slideSpeed,
-      slidesDOMEl: slidesDOMEl.current,
-      initialSlide: index,
-      items: items.length,
-      onNext: nextIndex => {
-        setIndex(nextIndex)
-        nextIndex > maxIndex && setMaxIndex(nextIndex)
-        return nextIndex
-      },
-      onPrev: nextIndex => {
-        setIndex(nextIndex)
-        return nextIndex
-      }
-    })
-
-    setSlidyInstance(slidyInstance)
-    return () => destroySlider(slidyInstance, doAfterDestroy)
-  }, [])
+      ease,
+      index,
+      items.length,
+      maxIndex,
+      slideSpeed
+    ]
+  )
 
   useEffect(function() {
     slidyInstance && slidyInstance.updateItems(items.length)

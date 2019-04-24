@@ -8,28 +8,31 @@ const ReactSlidy = props => {
   const [showSlider, setShowSlider] = useState(!props.lazyLoadSlider)
   const nodeEl = useRef(null)
 
-  useEffect(function() {
-    let observer
+  useEffect(
+    function() {
+      let observer
 
-    if (props.lazyLoadSlider) {
-      const initLazyLoadSlider = () => {
-        // if we support IntersectionObserver, let's use it
-        const {offset = 0} = props.lazyLoadConfig
-        observer = new window.IntersectionObserver(handleIntersection, {
-          rootMargin: `${offset}px 0px 0px`
-        })
-        observer.observe(nodeEl.current)
+      if (props.lazyLoadSlider) {
+        const initLazyLoadSlider = () => {
+          // if we support IntersectionObserver, let's use it
+          const {offset = 0} = props.lazyLoadConfig
+          observer = new window.IntersectionObserver(handleIntersection, {
+            rootMargin: `${offset}px 0px 0px`
+          })
+          observer.observe(nodeEl.current)
+        }
+
+        if (!('IntersectionObserver' in window)) {
+          import('intersection-observer').then(initLazyLoadSlider)
+        } else {
+          initLazyLoadSlider()
+        }
       }
 
-      if (!('IntersectionObserver' in window)) {
-        import('intersection-observer').then(initLazyLoadSlider)
-      } else {
-        initLazyLoadSlider()
-      }
-    }
-
-    return () => observer && observer.disconnect()
-  }, [])
+      return () => observer && observer.disconnect()
+    },
+    [props.lazyLoadConfig, props.lazyLoadSlider]
+  )
 
   const handleIntersection = ([entry], observer) => {
     if (entry.isIntersecting || entry.intersectionRatio > 0) {
@@ -56,6 +59,8 @@ ReactSlidy.propTypes = {
   classNameBase: PropTypes.string,
   /** Function that will be executed AFTER destroying the slider. Useful for clean up stuff */
   doAfterDestroy: PropTypes.func,
+  /** Function that will be executed AFTER initializing  the slider */
+  doAfterInit: PropTypes.func,
   /** Function that will be executed AFTER slide transition has ended */
   doAfterSlide: PropTypes.func,
   /** Function that will be executed BEFORE slide is happening */
@@ -84,6 +89,7 @@ ReactSlidy.propTypes = {
 ReactSlidy.defaultProps = {
   classNameBase: 'react-Slidy',
   doAfterDestroy: noop,
+  doAfterInit: noop,
   doAfterSlide: noop,
   doBeforeSlide: noop,
   itemsToPreload: 1,
