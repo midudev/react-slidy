@@ -71,6 +71,8 @@ ReactSlidy.propTypes = {
   itemsToPreload: PropTypes.number,
   /** Determine the first slide to start with */
   initialSlide: PropTypes.number,
+  /** Activate navigation by keyboard */
+  keyboardNavigation: PropTypes.bool,
   /** Determine if the slider will be lazy loaded using Intersection Observer */
   lazyLoadSlider: PropTypes.bool,
   /** Configuration for lazy loading. Only needed if lazyLoadSlider is true */
@@ -99,6 +101,7 @@ ReactSlidy.defaultProps = {
   lazyLoadConfig: {
     offset: 150
   },
+  navigateByKeyboard: false,
   slideSpeed: 500,
   showArrows: true,
   tailArrowClass: 'react-Slidy-arrow--disabled'

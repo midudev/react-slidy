@@ -31,6 +31,7 @@ export default function ReactSlidySlider({
   doBeforeSlide,
   initialSlide,
   itemsToPreload,
+  keyboardNavigation,
   slideSpeed,
   showArrows,
   tailArrowClass
@@ -49,6 +50,7 @@ export default function ReactSlidySlider({
 
   useEffect(
     function() {
+      let handleKeyboard
       const slidyInstance = slidy(sliderContainerDOMEl.current, {
         ease,
         doAfterSlide,
@@ -71,7 +73,20 @@ export default function ReactSlidySlider({
       setSlidyInstance(slidyInstance)
       doAfterInit()
 
-      return () => destroySlider(slidyInstance, doAfterDestroy)
+      if (keyboardNavigation) {
+        handleKeyboard = e => {
+          if (e.keyCode === 39) slidyInstance.next(e)
+          else if (e.keyCode === 37) slidyInstance.prev(e)
+        }
+        document.addEventListener('keydown', handleKeyboard)
+      }
+
+      return () => {
+        destroySlider(slidyInstance, doAfterDestroy)
+        if (keyboardNavigation) {
+          document.removeEventListener('keydown', handleKeyboard)
+        }
+      }
     },
     [] // eslint-disable-line
   )
