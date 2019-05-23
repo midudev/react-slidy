@@ -42,14 +42,14 @@
     "@s-ui/lint": "2",
     "acorn": "6.1.1",
     "babel-preset-sui": "3",
-    "copyfiles": "1.0.0",
-    "docz": "1.0.4",
+    "copyfiles": "2.1.0",
+    "docz": "1.2.0",
     "docz-plugin-css": "0.11.0",
     "docz-theme-default": "1.0.4",
     "prop-types": "15",
     "react": ">= 16.8.0 < 17",
     "react-dom": ">= 16.8.0 < 17",
-    "rimraf": "2.5.4"
+    "rimraf": "2.6.3"
   },
   "dependencies": {
     "intersection-observer": "0.5.1"
@@ -64,8 +64,5 @@
       "./node_modules/@s-ui/lint/eslintrc.js"
     ]
   },
-  "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml",
-  "resolutions": {
-    "webpack/acorn": "6.1.1"
-  }
+  "sasslintConfig": "./node_modules/@s-ui/lint/sass-lint.yml"
 }
