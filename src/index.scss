@@ -1,7 +1,7 @@
-$c-background: #dcdcdc;
-$c-nav-background: rgba(255, 255, 255, .8);
-$c-nav-color: #aaaaaa;
-$c-transparent: rgba(0, 0, 0, 0);
+$react-slidy-c-background: #dcdcdc !default;
+$react-slidy-c-nav-background: rgba(255, 255, 255, .8) !default;
+$react-slidy-c-nav-color: #aaaaaa !default;
+$react-slidy-c-transparent: rgba(0, 0, 0, 0) !default;
 
 @mixin arrow($direction) {
   @if $direction == 'right' {
@@ -12,8 +12,8 @@ $c-transparent: rgba(0, 0, 0, 0);
     transform: rotate(-135deg);
   }
 
-  border-right: 3px solid $c-nav-color;
-  border-top: 3px solid $c-nav-color;
+  border-right: 3px solid $react-slidy-c-nav-color;
+  border-top: 3px solid $react-slidy-c-nav-color;
   content: '';
   display: inline-block;
   height: 24px;
@@ -21,9 +21,9 @@ $c-transparent: rgba(0, 0, 0, 0);
 }
 
 .react-Slidy {
-  -webkit-tap-highlight-color: $c-transparent;
+  -webkit-tap-highlight-color: $react-slidy-c-transparent;
   backface-visibility: hidden;
-  background: $c-background;
+  background: $react-slidy-c-background;
   min-height: 50px;
   position: relative;
   user-select: none;
@@ -31,7 +31,7 @@ $c-transparent: rgba(0, 0, 0, 0);
   &-prev,
   &-next {
     align-items: center;
-    background: $c-nav-background;
+    background: $react-slidy-c-nav-background;
     bottom: 0;
     cursor: pointer;
     display: flex;

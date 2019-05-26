@@ -17,9 +17,10 @@
     "docz:dev": "docz dev",
     "docz:build": "NODE_ENV=production docz build",
     "clean:lib": "rimraf ./lib/*",
-    "lib": "npm run lib:scripts && npm run lib:styles",
+    "lib": "npm run lib:scripts && npm run lib:styles && npm run lib:css",
     "lib:scripts": "babel src --out-dir lib --presets=babel-preset-sui",
     "lib:styles": "copyfiles -u 1 './src/**/*.scss' lib",
+    "lib:css": "sass ./src/index.scss ./lib/styles.css",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "sui-lint js",
     "lint:sass": "sui-lint sass",
@@ -49,7 +50,8 @@
     "prop-types": "15",
     "react": ">= 16.8.0 < 17",
     "react-dom": ">= 16.8.0 < 17",
-    "rimraf": "2.6.3"
+    "rimraf": "2.6.3",
+    "sass": "1.20.1"
   },
   "dependencies": {
     "intersection-observer": "0.5.1"
