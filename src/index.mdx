@@ -39,7 +39,7 @@ import ReactSlidy from 'react-slidy'
 
 3️⃣ Import the styles:
 
-If you're using sass
+If you're using sass, you could modify the next variables:
 ```
 /* variables available */
 $react-slidy-c-background: #dcdcdc !default;
@@ -47,14 +47,27 @@ $react-slidy-c-nav-background: rgba(255, 255, 255, .8) !default;
 $react-slidy-c-nav-color: #aaaaaa !default;
 $react-slidy-c-transparent: rgba(0, 0, 0, 0) !default;
 
-/* from a sass file */
+/* then import from a sass file */
 @import '~react-slidy/lib/index';
 
-/* directly in your javascript file if you use a bundler */
+/* or directly in your javascript file if you use a bundler */
 import 'react-slidy/lib/index.scss'
 ```
 
+If you're using just css, you could import the CSS directly or use a CDN.
+
+```
+/* directly in your javascript file if you use a bundler */
+import 'react-slidy/lib/styles.css'
+
+<!-- from the index.html -->
+<link rel='stylesheet' href='https://unpkg.com/react-slidy@4.0.10/lib/styles.css'> 
+```
+
+### Basic examples with images
+
 Do you want to use images 🖼️? Just put them inside!
+
 <Playground>
   <ReactSlidy itemsToPreload={3}>
     <img src="https://loremflickr.com/640/360" />
