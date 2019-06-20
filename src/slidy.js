@@ -45,7 +45,6 @@ export default function slidy(containerDOMEl, options) {
     doAfterSlide,
     doBeforeSlide,
     ease,
-    infinite,
     initialSlide,
     numOfSlides,
     onNext,
@@ -69,9 +68,6 @@ export default function slidy(containerDOMEl, options) {
   let touchOffsetX = 0
   let touchOffsetY = 0
 
-  // internal state
-  let isWaitingInfinite = false
-
   /**
    * translates to a given position in a given time in milliseconds
    *
@@ -81,12 +77,10 @@ export default function slidy(containerDOMEl, options) {
    */
   function _translate(duration, ease = '', x = false) {
     const percentatge = 100 / numOfSlides
-    const indexToMove = index + numOfSlides
-
     slidesDOMEl.style.cssText = getTranslationCSS(
       duration,
       ease,
-      indexToMove,
+      index,
       x,
       percentatge
     )
@@ -106,29 +100,20 @@ export default function slidy(containerDOMEl, options) {
 
     // calculate the nextIndex according to the movement
     let nextIndex = index + 1 * movement
-    if (!infinite) {
-      // nextIndex should be between 0 and items minus 1
-      nextIndex = clampNumber(nextIndex, 0, items - 1)
-    }
+
+    // nextIndex should be between 0 and items minus 1
+    nextIndex = clampNumber(nextIndex, 0, items - 1)
+
     // if the nextIndex and the current is the same, we don't need to do the slide
     if (nextIndex === index) return
 
     // if the nextIndex is possible according to number of items, then use it
-    if (nextIndex <= items || infinite) {
+    if (nextIndex <= items) {
       // execute the callback from the options before sliding
       doBeforeSlide({currentSlide: index, nextSlide: nextIndex})
       // execute the internal callback
       direction ? onNext(nextIndex) : onPrev(nextIndex)
       index = nextIndex
-
-      console.log({nextIndex, items, numOfSlides})
-      if (
-        infinite &&
-        (nextIndex === items - 1 + numOfSlides ||
-          (nextIndex < 0 && abs(nextIndex) === numOfSlides))
-      ) {
-        isWaitingInfinite = infinite
-      }
     }
 
     // translate to the next index by a defined duration and ease function
@@ -136,12 +121,6 @@ export default function slidy(containerDOMEl, options) {
 
     // execute the callback from the options after sliding
     slidesDOMEl.addEventListener(TRANSITION_END, function cb(e) {
-      if (infinite && nextIndex === items - 1 + numOfSlides) {
-        index = 0
-        _translate(0)
-        isWaitingInfinite = false
-      }
-
       doAfterSlide({currentSlide: index})
       e.currentTarget.removeEventListener(e.type, cb)
     })
@@ -239,7 +218,7 @@ export default function slidy(containerDOMEl, options) {
     containerDOMEl.addEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
     containerDOMEl.addEventListener('touchend', onTouchend, EVENT_OPTIONS)
 
-    if (index !== 0 || infinite) {
+    if (index !== 0) {
       _translate(0)
     }
   }
@@ -269,7 +248,6 @@ export default function slidy(containerDOMEl, options) {
   function next(e) {
     e.preventDefault()
     e.stopPropagation()
-    if (isWaitingInfinite) return
     slide(true)
   }
 

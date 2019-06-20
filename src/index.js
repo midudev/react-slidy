@@ -42,7 +42,10 @@ const ReactSlidy = props => {
   }
 
   const {children, numOfSlides} = props
-  const numOfSlidesSanitzed = Math.min(numOfSlides, children.length)
+  const numOfSlidesSanitzed = Math.min(
+    numOfSlides,
+    React.Children.count(children)
+  )
 
   return (
     <div className={props.classNameBase} ref={nodeEl}>
@@ -74,12 +77,10 @@ ReactSlidy.propTypes = {
   doBeforeSlide: PropTypes.func,
   /** Ease mode to use on translations */
   ease: PropTypes.string,
-  /** Determine if we want the slider to be infinitee */
-  infinite: PropTypes.bool,
-  /** Determine the first slide to start with */
-  initialSlide: PropTypes.number,
   /** Determine the number of items that will be preloaded */
   itemsToPreload: PropTypes.number,
+  /** Determine the first slide to start with */
+  initialSlide: PropTypes.number,
   /** Activate navigation by keyboard */
   keyboardNavigation: PropTypes.bool,
   /** Determine if the slider will be lazy loaded using Intersection Observer */
@@ -107,10 +108,9 @@ ReactSlidy.defaultProps = {
   doAfterInit: noop,
   doAfterSlide: noop,
   doBeforeSlide: noop,
-  ease: 'ease',
-  infinite: false,
-  initialSlide: 0,
   itemsToPreload: 1,
+  initialSlide: 0,
+  ease: 'ease',
   lazyLoadSlider: true,
   lazyLoadConfig: {
     offset: 150

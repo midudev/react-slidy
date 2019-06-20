@@ -7,40 +7,20 @@ function convertToArrayFrom(children) {
   return Array.isArray(children) ? children : [children]
 }
 
-function checkIsPrevDisabled({index, infinite}) {
-  return index === 0 && !infinite
-}
-
-function checkIsNextDisabled({index, items, infinite}) {
-  return index === items.length - 1 && !infinite
-}
-
 function getItemsToRender({
   index,
-  infinite,
+  maxIndex,
   items,
   itemsToPreload,
-  maxIndex,
   numOfSlides
 }) {
-  if (infinite) {
-    if (index >= items.length - 1) {
-      // is last item or after
-      const preload = Math.max(itemsToPreload, numOfSlides)
-      return [
-        ...items.slice(-preload),
-        ...items.slice(0, maxIndex + preload),
-        ...items.slice(0, numOfSlides)
-      ]
-    } else if (index <= 0) {
-      const preload = Math.max(itemsToPreload, numOfSlides, Math.abs(index))
-      return [...items.slice(-preload), items.slice(0, maxIndex + preload)]
-    } else {
-      const preload = Math.max(itemsToPreload, numOfSlides)
-      return [...items.slice(-preload), items.slice(0, maxIndex + preload)]
-    }
+  const preload = Math.max(itemsToPreload, numOfSlides)
+  if (index >= items.length - numOfSlides) {
+    return [
+      ...items.slice(0, maxIndex + preload),
+      ...items.slice(0, numOfSlides)
+    ]
   } else {
-    const preload = Math.max(itemsToPreload, numOfSlides)
     return items.slice(0, maxIndex + preload)
   }
 }
@@ -67,7 +47,6 @@ export default function ReactSlidySlider({
   doAfterInit,
   doAfterSlide,
   doBeforeSlide,
-  infinite,
   initialSlide,
   itemsToPreload,
   keyboardNavigation,
@@ -95,7 +74,6 @@ export default function ReactSlidySlider({
         ease,
         doAfterSlide,
         doBeforeSlide,
-        infinite,
         numOfSlides,
         slideSpeed,
         slidesDOMEl: slidesDOMEl.current,
@@ -138,7 +116,6 @@ export default function ReactSlidySlider({
   })
 
   const itemsToRender = getItemsToRender({
-    infinite,
     index,
     maxIndex,
     items,
@@ -152,16 +129,12 @@ export default function ReactSlidySlider({
         <Fragment>
           <span
             className={`${classNameBase}-prev`}
-            disabled={checkIsPrevDisabled({index, infinite})}
+            disabled={index === 0}
             onClick={slidyInstance.prev}
           />
           <span
             className={`${classNameBase}-next`}
-            disabled={checkIsNextDisabled({
-              index,
-              items,
-              infinite
-            })}
+            disabled={index === items.length - 1}
             onClick={slidyInstance.next}
           />
         </Fragment>
