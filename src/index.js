@@ -41,10 +41,20 @@ const ReactSlidy = props => {
     }
   }
 
+  const {children, numOfSlides} = props
+  const numOfSlidesSanitzed = Math.min(
+    numOfSlides,
+    React.Children.count(children)
+  )
+
   return (
     <div className={props.classNameBase} ref={nodeEl}>
       {showSlider && (
-        <ReactSlidySlider parentRef={nodeEl} {...props}>
+        <ReactSlidySlider
+          parentRef={nodeEl}
+          {...props}
+          numOfSlides={numOfSlidesSanitzed}
+        >
           {props.children}
         </ReactSlidySlider>
       )}
@@ -80,6 +90,10 @@ ReactSlidy.propTypes = {
     /** Distance which the slider will be loaded */
     offset: PropTypes.number
   }),
+  /** Activate navigation by keyboard */
+  navigateByKeyboard: PropTypes.bool,
+  /** Number of slides to show at once */
+  numOfSlides: PropTypes.number,
   /** Determine if arrows should be shown */
   showArrows: PropTypes.bool,
   /** Determine the speed of the sliding animation */
@@ -102,6 +116,7 @@ ReactSlidy.defaultProps = {
     offset: 150
   },
   navigateByKeyboard: false,
+  numOfSlides: 1,
   slideSpeed: 500,
   showArrows: true,
   tailArrowClass: 'react-Slidy-arrow--disabled'

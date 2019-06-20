@@ -7,9 +7,22 @@ function convertToArrayFrom(children) {
   return Array.isArray(children) ? children : [children]
 }
 
-function getItemsToRender(index, maxIndex, items, itemsToPreload) {
-  const preload = index > 0 ? itemsToPreload + 1 : itemsToPreload
-  return items.slice(0, maxIndex + preload)
+function getItemsToRender({
+  index,
+  maxIndex,
+  items,
+  itemsToPreload,
+  numOfSlides
+}) {
+  const preload = Math.max(itemsToPreload, numOfSlides)
+  if (index >= items.length - numOfSlides) {
+    return [
+      ...items.slice(0, maxIndex + preload),
+      ...items.slice(0, numOfSlides)
+    ]
+  } else {
+    return items.slice(0, maxIndex + preload)
+  }
 }
 
 function destroySlider(slidyInstance, doAfterDestroy) {
@@ -17,8 +30,13 @@ function destroySlider(slidyInstance, doAfterDestroy) {
   doAfterDestroy()
 }
 
-function renderItem(item, index) {
-  return <li key={index}>{item}</li>
+const renderItem = numOfSlides => (item, index) => {
+  const inlineStyle = numOfSlides !== 1 ? {width: `${100 / numOfSlides}%`} : {}
+  return (
+    <li key={index} style={inlineStyle}>
+      {item}
+    </li>
+  )
 }
 
 export default function ReactSlidySlider({
@@ -32,6 +50,7 @@ export default function ReactSlidySlider({
   initialSlide,
   itemsToPreload,
   keyboardNavigation,
+  numOfSlides,
   slideSpeed,
   showArrows,
   tailArrowClass
@@ -55,6 +74,7 @@ export default function ReactSlidySlider({
         ease,
         doAfterSlide,
         doBeforeSlide,
+        numOfSlides,
         slideSpeed,
         slidesDOMEl: slidesDOMEl.current,
         initialSlide: index,
@@ -95,7 +115,13 @@ export default function ReactSlidySlider({
     slidyInstance && slidyInstance.updateItems(items.length)
   })
 
-  const itemsToRender = getItemsToRender(index, maxIndex, items, itemsToPreload)
+  const itemsToRender = getItemsToRender({
+    index,
+    maxIndex,
+    items,
+    itemsToPreload,
+    numOfSlides
+  })
 
   return (
     <Fragment>
@@ -114,7 +140,7 @@ export default function ReactSlidySlider({
         </Fragment>
       )}
       <div ref={sliderContainerDOMEl}>
-        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem)}</ul>
+        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem(numOfSlides))}</ul>
       </div>
     </Fragment>
   )
