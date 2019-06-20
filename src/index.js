@@ -41,10 +41,17 @@ const ReactSlidy = props => {
     }
   }
 
+  const {children, numOfSlides} = props
+  const numOfSlidesSanitzed = Math.min(numOfSlides, children.length)
+
   return (
     <div className={props.classNameBase} ref={nodeEl}>
       {showSlider && (
-        <ReactSlidySlider parentRef={nodeEl} {...props}>
+        <ReactSlidySlider
+          parentRef={nodeEl}
+          {...props}
+          numOfSlides={numOfSlidesSanitzed}
+        >
           {props.children}
         </ReactSlidySlider>
       )}
@@ -67,10 +74,12 @@ ReactSlidy.propTypes = {
   doBeforeSlide: PropTypes.func,
   /** Ease mode to use on translations */
   ease: PropTypes.string,
-  /** Determine the number of items that will be preloaded */
-  itemsToPreload: PropTypes.number,
+  /** Determine if we want the slider to be infinitee */
+  infinite: PropTypes.bool,
   /** Determine the first slide to start with */
   initialSlide: PropTypes.number,
+  /** Determine the number of items that will be preloaded */
+  itemsToPreload: PropTypes.number,
   /** Activate navigation by keyboard */
   keyboardNavigation: PropTypes.bool,
   /** Determine if the slider will be lazy loaded using Intersection Observer */
@@ -80,6 +89,10 @@ ReactSlidy.propTypes = {
     /** Distance which the slider will be loaded */
     offset: PropTypes.number
   }),
+  /** Activate navigation by keyboard */
+  navigateByKeyboard: PropTypes.bool,
+  /** Number of slides to show at once */
+  numOfSlides: PropTypes.number,
   /** Determine if arrows should be shown */
   showArrows: PropTypes.bool,
   /** Determine the speed of the sliding animation */
@@ -94,14 +107,16 @@ ReactSlidy.defaultProps = {
   doAfterInit: noop,
   doAfterSlide: noop,
   doBeforeSlide: noop,
-  itemsToPreload: 1,
-  initialSlide: 0,
   ease: 'ease',
+  infinite: false,
+  initialSlide: 0,
+  itemsToPreload: 1,
   lazyLoadSlider: true,
   lazyLoadConfig: {
     offset: 150
   },
   navigateByKeyboard: false,
+  numOfSlides: 1,
   slideSpeed: 500,
   showArrows: true,
   tailArrowClass: 'react-Slidy-arrow--disabled'

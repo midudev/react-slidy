@@ -7,9 +7,42 @@ function convertToArrayFrom(children) {
   return Array.isArray(children) ? children : [children]
 }
 
-function getItemsToRender(index, maxIndex, items, itemsToPreload) {
-  const preload = index > 0 ? itemsToPreload + 1 : itemsToPreload
-  return items.slice(0, maxIndex + preload)
+function checkIsPrevDisabled({index, infinite}) {
+  return index === 0 && !infinite
+}
+
+function checkIsNextDisabled({index, items, infinite}) {
+  return index === items.length - 1 && !infinite
+}
+
+function getItemsToRender({
+  index,
+  infinite,
+  items,
+  itemsToPreload,
+  maxIndex,
+  numOfSlides
+}) {
+  if (infinite) {
+    if (index >= items.length - 1) {
+      // is last item or after
+      const preload = Math.max(itemsToPreload, numOfSlides)
+      return [
+        ...items.slice(-preload),
+        ...items.slice(0, maxIndex + preload),
+        ...items.slice(0, numOfSlides)
+      ]
+    } else if (index <= 0) {
+      const preload = Math.max(itemsToPreload, numOfSlides, Math.abs(index))
+      return [...items.slice(-preload), items.slice(0, maxIndex + preload)]
+    } else {
+      const preload = Math.max(itemsToPreload, numOfSlides)
+      return [...items.slice(-preload), items.slice(0, maxIndex + preload)]
+    }
+  } else {
+    const preload = Math.max(itemsToPreload, numOfSlides)
+    return items.slice(0, maxIndex + preload)
+  }
 }
 
 function destroySlider(slidyInstance, doAfterDestroy) {
@@ -17,8 +50,13 @@ function destroySlider(slidyInstance, doAfterDestroy) {
   doAfterDestroy()
 }
 
-function renderItem(item, index) {
-  return <li key={index}>{item}</li>
+const renderItem = numOfSlides => (item, index) => {
+  const inlineStyle = numOfSlides !== 1 ? {width: `${100 / numOfSlides}%`} : {}
+  return (
+    <li key={index} style={inlineStyle}>
+      {item}
+    </li>
+  )
 }
 
 export default function ReactSlidySlider({
@@ -29,9 +67,11 @@ export default function ReactSlidySlider({
   doAfterInit,
   doAfterSlide,
   doBeforeSlide,
+  infinite,
   initialSlide,
   itemsToPreload,
   keyboardNavigation,
+  numOfSlides,
   slideSpeed,
   showArrows,
   tailArrowClass
@@ -55,6 +95,8 @@ export default function ReactSlidySlider({
         ease,
         doAfterSlide,
         doBeforeSlide,
+        infinite,
+        numOfSlides,
         slideSpeed,
         slidesDOMEl: slidesDOMEl.current,
         initialSlide: index,
@@ -95,7 +137,14 @@ export default function ReactSlidySlider({
     slidyInstance && slidyInstance.updateItems(items.length)
   })
 
-  const itemsToRender = getItemsToRender(index, maxIndex, items, itemsToPreload)
+  const itemsToRender = getItemsToRender({
+    infinite,
+    index,
+    maxIndex,
+    items,
+    itemsToPreload,
+    numOfSlides
+  })
 
   return (
     <Fragment>
@@ -103,18 +152,22 @@ export default function ReactSlidySlider({
         <Fragment>
           <span
             className={`${classNameBase}-prev`}
-            disabled={index === 0}
+            disabled={checkIsPrevDisabled({index, infinite})}
             onClick={slidyInstance.prev}
           />
           <span
             className={`${classNameBase}-next`}
-            disabled={index === items.length - 1}
+            disabled={checkIsNextDisabled({
+              index,
+              items,
+              infinite
+            })}
             onClick={slidyInstance.next}
           />
         </Fragment>
       )}
       <div ref={sliderContainerDOMEl}>
-        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem)}</ul>
+        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem(numOfSlides))}</ul>
       </div>
     </Fragment>
   )
