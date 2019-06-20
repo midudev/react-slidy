@@ -127,7 +127,6 @@ export default function slidy(containerDOMEl, options) {
         (nextIndex === items - 1 + numOfSlides ||
           (nextIndex < 0 && abs(nextIndex) === numOfSlides))
       ) {
-        console.log('yei')
         isWaitingInfinite = infinite
       }
     }
