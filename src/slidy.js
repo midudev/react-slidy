@@ -4,10 +4,11 @@ const TRANSITION_END = 'transitionend'
 const {abs} = Math
 const EVENT_OPTIONS = {passive: false}
 
-function translate(to, moveX) {
+function translate(to, moveX, percentatge = 100) {
+  const translation = to * percentatge * -1
   return moveX
-    ? `translate3d(calc(-${to * 100}% - ${moveX}px), 0, 0)`
-    : `translate3d(-${to * 100}%, 0, 0)`
+    ? `translate3d(calc(${translation}% - ${moveX}px), 0, 0)`
+    : `translate3d(${translation}%, 0, 0)`
 }
 
 function clampNumber(x, minValue, maxValue) {
@@ -19,10 +20,14 @@ function getTouchCoordinatesFromEvent(e) {
   return {pageX, pageY}
 }
 
-function getTranslationCSS(duration, ease, index, x) {
+function getTranslationCSS(duration, ease, index, x, percentatge) {
   const easeCssText = ease !== '' ? `transition-timing-function: ${ease};` : ''
   const durationCssText = duration ? `transition-duration: ${duration}ms;` : ''
-  return `${easeCssText}${durationCssText}transform: ${translate(index, x)};`
+  return `${easeCssText}${durationCssText}transform: ${translate(
+    index,
+    x,
+    percentatge
+  )};`
 }
 
 function cleanContainer(container) {
@@ -41,6 +46,7 @@ export default function slidy(containerDOMEl, options) {
     doBeforeSlide,
     ease,
     initialSlide,
+    numOfSlides,
     onNext,
     onPrev,
     slidesDOMEl,
@@ -70,7 +76,14 @@ export default function slidy(containerDOMEl, options) {
    * @x         {number} Number of pixels to fine tuning translation
    */
   function _translate(duration, ease = '', x = false) {
-    slidesDOMEl.style.cssText = getTranslationCSS(duration, ease, index, x)
+    const percentatge = 100 / numOfSlides
+    slidesDOMEl.style.cssText = getTranslationCSS(
+      duration,
+      ease,
+      index,
+      x,
+      percentatge
+    )
   }
 
   /**

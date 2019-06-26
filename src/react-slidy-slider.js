@@ -7,9 +7,22 @@ function convertToArrayFrom(children) {
   return Array.isArray(children) ? children : [children]
 }
 
-function getItemsToRender(index, maxIndex, items, itemsToPreload) {
-  const preload = index > 0 ? itemsToPreload + 1 : itemsToPreload
-  return items.slice(0, maxIndex + preload)
+function getItemsToRender({
+  index,
+  maxIndex,
+  items,
+  itemsToPreload,
+  numOfSlides
+}) {
+  const preload = Math.max(itemsToPreload, numOfSlides)
+  if (index >= items.length - numOfSlides) {
+    return [
+      ...items.slice(0, maxIndex + preload),
+      ...items.slice(0, numOfSlides)
+    ]
+  } else {
+    return items.slice(0, maxIndex + preload)
+  }
 }
 
 function destroySlider(slidyInstance, doAfterDestroy) {
@@ -17,8 +30,13 @@ function destroySlider(slidyInstance, doAfterDestroy) {
   doAfterDestroy()
 }
 
-function renderItem(item, index) {
-  return <li key={index}>{item}</li>
+const renderItem = numOfSlides => (item, index) => {
+  const inlineStyle = numOfSlides !== 1 ? {width: `${100 / numOfSlides}%`} : {}
+  return (
+    <li key={index} style={inlineStyle}>
+      {item}
+    </li>
+  )
 }
 
 export default function ReactSlidySlider({
@@ -31,6 +49,8 @@ export default function ReactSlidySlider({
   doBeforeSlide,
   initialSlide,
   itemsToPreload,
+  keyboardNavigation,
+  numOfSlides,
   slideSpeed,
   showArrows,
   tailArrowClass
@@ -49,10 +69,12 @@ export default function ReactSlidySlider({
 
   useEffect(
     function() {
+      let handleKeyboard
       const slidyInstance = slidy(sliderContainerDOMEl.current, {
         ease,
         doAfterSlide,
         doBeforeSlide,
+        numOfSlides,
         slideSpeed,
         slidesDOMEl: slidesDOMEl.current,
         initialSlide: index,
@@ -71,7 +93,20 @@ export default function ReactSlidySlider({
       setSlidyInstance(slidyInstance)
       doAfterInit()
 
-      return () => destroySlider(slidyInstance, doAfterDestroy)
+      if (keyboardNavigation) {
+        handleKeyboard = e => {
+          if (e.keyCode === 39) slidyInstance.next(e)
+          else if (e.keyCode === 37) slidyInstance.prev(e)
+        }
+        document.addEventListener('keydown', handleKeyboard)
+      }
+
+      return () => {
+        destroySlider(slidyInstance, doAfterDestroy)
+        if (keyboardNavigation) {
+          document.removeEventListener('keydown', handleKeyboard)
+        }
+      }
     },
     [] // eslint-disable-line
   )
@@ -80,7 +115,13 @@ export default function ReactSlidySlider({
     slidyInstance && slidyInstance.updateItems(items.length)
   })
 
-  const itemsToRender = getItemsToRender(index, maxIndex, items, itemsToPreload)
+  const itemsToRender = getItemsToRender({
+    index,
+    maxIndex,
+    items,
+    itemsToPreload,
+    numOfSlides
+  })
 
   return (
     <Fragment>
@@ -99,7 +140,7 @@ export default function ReactSlidySlider({
         </Fragment>
       )}
       <div ref={sliderContainerDOMEl}>
-        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem)}</ul>
+        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem(numOfSlides))}</ul>
       </div>
     </Fragment>
   )

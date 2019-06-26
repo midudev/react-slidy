@@ -1,0 +1,24 @@
+---
+name: with Keyboard Navigation
+---
+
+# Activating keyboard navigation
+
+import {Fragment, useState} from 'react'
+import { Playground, Props } from 'docz'
+import ReactSlidy from '../index.js'
+import Number from '../examples/Number'
+import '../index.scss'
+
+Sometimes, specially for slides on fullscreen, you might want to activate the keyboard navigation in order to offer a best experience to the user.
+
+<Playground>
+    <ReactSlidy keyboardNavigation>
+      <Number num={1} />
+      <Number num={2} />
+      <Number num={3} />
+      <Number num={4} />
+    </ReactSlidy>
+</Playground>
+
+Created and mantained by [midudev](https://midu.dev)
