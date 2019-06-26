@@ -18,7 +18,7 @@ function getItemsToRender({
   if (index >= items.length - numOfSlides) {
     return [
       ...items.slice(0, maxIndex + preload),
-      ...items.slice(0, numOfSlides)
+      ...items.slice(0, numOfSlides - 1)
     ]
   } else {
     return items.slice(0, maxIndex + preload)
