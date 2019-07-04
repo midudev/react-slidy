@@ -41,7 +41,7 @@ const ReactSlidy = props => {
     }
   }
 
-  const {children, numOfSlides} = props
+  const {children, numOfSlides, sanitize} = props
   const numOfSlidesSanitzed = Math.min(
     numOfSlides,
     React.Children.count(children)
@@ -53,7 +53,7 @@ const ReactSlidy = props => {
         <ReactSlidySlider
           parentRef={nodeEl}
           {...props}
-          numOfSlides={numOfSlidesSanitzed}
+          numOfSlides={sanitize ? numOfSlidesSanitzed : numOfSlides}
         >
           {props.children}
         </ReactSlidySlider>
@@ -94,6 +94,8 @@ ReactSlidy.propTypes = {
   navigateByKeyboard: PropTypes.bool,
   /** Number of slides to show at once */
   numOfSlides: PropTypes.number,
+  /** Determine if we want to sanitize the slides or take numberOfSlider directly */
+  sanitize: PropTypes.bool,
   /** Determine if arrows should be shown */
   showArrows: PropTypes.bool,
   /** Determine the speed of the sliding animation */
@@ -117,6 +119,7 @@ ReactSlidy.defaultProps = {
   },
   navigateByKeyboard: false,
   numOfSlides: 1,
+  sanitize: true,
   slideSpeed: 500,
   showArrows: true,
   tailArrowClass: 'react-Slidy-arrow--disabled'

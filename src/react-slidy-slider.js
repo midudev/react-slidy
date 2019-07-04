@@ -16,10 +16,9 @@ function getItemsToRender({
 }) {
   const preload = Math.max(itemsToPreload, numOfSlides)
   if (index >= items.length - numOfSlides) {
-    return [
-      ...items.slice(0, maxIndex + preload),
-      ...items.slice(0, numOfSlides - 1)
-    ]
+    const addNewItems =
+      items.length > numOfSlides ? items.slice(0, numOfSlides - 1) : []
+    return [...items.slice(0, maxIndex + preload), ...addNewItems]
   } else {
     return items.slice(0, maxIndex + preload)
   }
@@ -134,8 +133,8 @@ export default function ReactSlidySlider({
           />
           <span
             className={`${classNameBase}-next`}
-            disabled={index === items.length - 1}
-            onClick={slidyInstance.next}
+            disabled={items.length <= numOfSlides || index === items.length - 1}
+            onClick={items.length > numOfSlides && slidyInstance.next}
           />
         </Fragment>
       )}
