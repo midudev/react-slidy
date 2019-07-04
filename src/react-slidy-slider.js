@@ -133,8 +133,8 @@ export default function ReactSlidySlider({
           />
           <span
             className={`${classNameBase}-next`}
-            disabled={items.length <= 3 || index === items.length - 1}
-            onClick={items.length > 3 && slidyInstance.next}
+            disabled={items.length <= numOfSlides || index === items.length - 1}
+            onClick={items.length > numOfSlides && slidyInstance.next}
           />
         </Fragment>
       )}
