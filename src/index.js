@@ -94,7 +94,7 @@ ReactSlidy.propTypes = {
   navigateByKeyboard: PropTypes.bool,
   /** Number of slides to show at once */
   numOfSlides: PropTypes.number,
-  /** Determine if we want to take sanitize the slides or take numberOfSlider directly */
+  /** Determine if we want to sanitize the slides or take numberOfSlider directly */
   sanitize: PropTypes.bool,
   /** Determine if arrows should be shown */
   showArrows: PropTypes.bool,
