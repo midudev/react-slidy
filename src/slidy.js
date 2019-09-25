@@ -102,7 +102,7 @@ export default function slidy(containerDOMEl, options) {
     let nextIndex = index + 1 * movement
 
     // nextIndex should be between 0 and items minus 1
-    nextIndex = clampNumber(nextIndex, 0, items - 1)
+    nextIndex = clampNumber(nextIndex, 0, items - numOfSlides)
 
     // if the nextIndex and the current is the same, we don't need to do the slide
     if (nextIndex === index) return
