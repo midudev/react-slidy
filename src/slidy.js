@@ -96,7 +96,7 @@ export default function slidy(containerDOMEl, options) {
    */
   function slide(direction) {
     const movement = direction === true ? 1 : -1
-    let duration = slideSpeed
+    const duration = slideSpeed
 
     // calculate the nextIndex according to the movement
     let nextIndex = index + 1 * movement
