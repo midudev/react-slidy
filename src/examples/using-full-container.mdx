@@ -1,0 +1,68 @@
+---
+name: with Full Container usage
+---
+
+# Examples with full container height
+
+import {Fragment, useState} from 'react'
+import { Playground, Props } from 'docz'
+import ReactSlidy from '../index.js'
+import Number from '../examples/Number'
+import '../index.scss'
+
+<Playground>
+  <h3>WITHOUT useFullHeight prop</h3>
+  <div style={{display: 'flex', justifyAlign: 'space-between'}}>
+    <div>
+      <ReactSlidy>
+        <img src="https://loremflickr.com/640/360" />
+        <img src="https://loremflickr.com/641/361" />
+        <img src="https://loremflickr.com/642/362" />
+      </ReactSlidy>
+    </div>
+    <p>
+      El panda, oso panda o panda gigante (Ailuropoda melanoleuca) es una especie de mamífero del orden de los carnívoros y aunque hay una gran controversia al respecto, los últimos estudios de su ADN lo engloban entre los miembros de la familia de los osos (Ursidae), siendo el oso de anteojos su pariente más cercano, si bien este pertenece a la subfamilia de los tremarctinos. Por otro lado, el panda rojo pertenece a una familia propia e independiente; Ailuridae.
+    </p>
+  </div>
+  <h3>WITH useFullHeight prop</h3>
+  <div style={{display: 'flex', justifyAlign: 'space-between'}}>
+    <div>
+      <ReactSlidy useFullHeight>
+        <img src="https://loremflickr.com/640/360" />
+        <img src="https://loremflickr.com/641/361" />
+        <img src="https://loremflickr.com/642/362" />
+      </ReactSlidy>
+    </div>
+    <p>
+      El panda, oso panda o panda gigante (Ailuropoda melanoleuca) es una especie de mamífero del orden de los carnívoros y aunque hay una gran controversia al respecto, los últimos estudios de su ADN lo engloban entre los miembros de la familia de los osos (Ursidae), siendo el oso de anteojos su pariente más cercano, si bien este pertenece a la subfamilia de los tremarctinos. Por otro lado, el panda rojo pertenece a una familia propia e independiente; Ailuridae.
+    </p>
+  </div>
+  <h3>WITH useFullHeight AND imageObjectFit to 'cover' prop</h3>
+    <div style={{display: 'flex', justifyAlign: 'space-between'}}>
+    <div>
+      <ReactSlidy useFullHeight imageObjectFit='cover'>
+        <img src="https://loremflickr.com/640/360" />
+        <img src="https://loremflickr.com/641/361" />
+        <img src="https://loremflickr.com/642/362" />
+      </ReactSlidy>
+    </div>
+    <p>
+      El panda, oso panda o panda gigante (Ailuropoda melanoleuca) es una especie de mamífero del orden de los carnívoros y aunque hay una gran controversia al respecto, los últimos estudios de su ADN lo engloban entre los miembros de la familia de los osos (Ursidae), siendo el oso de anteojos su pariente más cercano, si bien este pertenece a la subfamilia de los tremarctinos. Por otro lado, el panda rojo pertenece a una familia propia e independiente; Ailuridae.
+    </p>
+  </div>
+    <h3>WITH useFullHeight AND imageObjectFit to 'contain' prop</h3>
+    <div style={{display: 'flex', justifyAlign: 'space-between'}}>
+    <div>
+      <ReactSlidy useFullHeight imageObjectFit='contain'>
+        <img src="https://loremflickr.com/640/360" />
+        <img src="https://loremflickr.com/641/361" />
+        <img src="https://loremflickr.com/642/362" />
+      </ReactSlidy>
+    </div>
+    <p>
+      El panda, oso panda o panda gigante (Ailuropoda melanoleuca) es una especie de mamífero del orden de los carnívoros y aunque hay una gran controversia al respecto, los últimos estudios de su ADN lo engloban entre los miembros de la familia de los osos (Ursidae), siendo el oso de anteojos su pariente más cercano, si bien este pertenece a la subfamilia de los tremarctinos. Por otro lado, el panda rojo pertenece a una familia propia e independiente; Ailuridae.
+    </p>
+  </div>
+</Playground>
+
+Created and mantained by [midudev](https://midu.dev)
