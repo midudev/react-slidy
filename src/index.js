@@ -4,6 +4,12 @@ import ReactSlidySlider from './react-slidy-slider'
 
 function noop() {}
 
+const CLASSNAMES = {
+  contain: 'react-Slidy--contain',
+  cover: 'react-Slidy--cover',
+  fullHeight: 'react-Slidy--fullHeight'
+}
+
 const ReactSlidy = props => {
   const [showSlider, setShowSlider] = useState(!props.lazyLoadSlider)
   const nodeEl = useRef(null)
@@ -41,18 +47,35 @@ const ReactSlidy = props => {
     }
   }
 
-  const {children, numOfSlides, sanitize} = props
+  const {
+    children,
+    classNameBase,
+    imageObjectFit,
+    numOfSlides,
+    useFullHeight,
+    sanitize
+  } = props
   const numOfSlidesSanitzed = Math.min(
     numOfSlides,
     React.Children.count(children)
   )
 
+  const classNameToAttach = useFullHeight ? CLASSNAMES.fullHeight : undefined
+  const rootClassName = [
+    classNameBase,
+    classNameToAttach,
+    imageObjectFit && CLASSNAMES[imageObjectFit]
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className={props.classNameBase} ref={nodeEl}>
+    <div className={rootClassName} ref={nodeEl}>
       {showSlider && (
         <ReactSlidySlider
           parentRef={nodeEl}
           {...props}
+          classNameToAttach={classNameToAttach}
           numOfSlides={sanitize ? numOfSlidesSanitzed : numOfSlides}
         >
           {props.children}
@@ -77,6 +100,8 @@ ReactSlidy.propTypes = {
   doBeforeSlide: PropTypes.func,
   /** Ease mode to use on translations */
   ease: PropTypes.string,
+  /** Determine the object-fit property for the images */
+  imageObjectFit: PropTypes.oneOf(['cover', 'contains']),
   /** Determine the number of items that will be preloaded */
   itemsToPreload: PropTypes.number,
   /** Determine the first slide to start with */
@@ -101,7 +126,9 @@ ReactSlidy.propTypes = {
   /** Determine the speed of the sliding animation */
   slideSpeed: PropTypes.number,
   /** Configure arrow class for determin that arrow is the last one */
-  tailArrowClass: PropTypes.string
+  tailArrowClass: PropTypes.string,
+  /** Use the full height of the container adding some styles to the elements */
+  useFullHeight: PropTypes.bool
 }
 
 ReactSlidy.defaultProps = {
@@ -122,7 +149,8 @@ ReactSlidy.defaultProps = {
   sanitize: true,
   slideSpeed: 500,
   showArrows: true,
-  tailArrowClass: 'react-Slidy-arrow--disabled'
+  tailArrowClass: 'react-Slidy-arrow--disabled',
+  useFullHeight: false
 }
 
 export default ReactSlidy

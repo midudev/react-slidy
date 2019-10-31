@@ -2,8 +2,8 @@ $react-slidy-c-background: #dcdcdc !default;
 $react-slidy-c-nav-background: rgba(255, 255, 255, .8) !default;
 $react-slidy-c-nav-color: #aaaaaa !default;
 $react-slidy-c-transparent: rgba(0, 0, 0, 0) !default;
-$react-slidy-mh: 50px !default;
 $react-slidy-h-image: auto !default;
+$react-slidy-mh: 50px !default;
 
 @mixin arrow($direction) {
   @if $direction == 'right' {
@@ -69,6 +69,23 @@ $react-slidy-h-image: auto !default;
     &::after {
       @include arrow('left');
     }
+  }
+
+  &.react-Slidy--fullHeight,
+  &--fullHeight {
+    height: 100%;
+  }
+
+  &.react-Slidy--fullHeight > div li img {
+    height: 100%;
+  }
+
+  &--contain li img {
+    object-fit: contain;
+  }
+
+  &--cover li img {
+    object-fit: cover;
   }
 
   &:hover > span {

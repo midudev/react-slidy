@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
-import React, {Fragment, useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import slidy from './slidy'
+
 function noop() {}
 
 function convertToArrayFrom(children) {
@@ -29,29 +30,30 @@ function destroySlider(slidyInstance, doAfterDestroy) {
   doAfterDestroy()
 }
 
-const renderItem = numOfSlides => (item, index) => {
+const renderItem = (numOfSlides, classNameToAttach) => (item, index) => {
   const inlineStyle = numOfSlides !== 1 ? {width: `${100 / numOfSlides}%`} : {}
   return (
-    <li key={index} style={inlineStyle}>
+    <li className={classNameToAttach} key={index} style={inlineStyle}>
       {item}
     </li>
   )
 }
 
 export default function ReactSlidySlider({
-  classNameBase,
   children,
-  ease,
+  classNameToAttach,
+  classNameBase,
   doAfterDestroy,
   doAfterInit,
   doAfterSlide,
   doBeforeSlide,
+  ease,
   initialSlide,
   itemsToPreload,
   keyboardNavigation,
   numOfSlides,
-  slideSpeed,
   showArrows,
+  slideSpeed,
   tailArrowClass
 }) {
   const [slidyInstance, setSlidyInstance] = useState({
@@ -123,9 +125,9 @@ export default function ReactSlidySlider({
   })
 
   return (
-    <Fragment>
+    <>
       {showArrows && (
-        <Fragment>
+        <>
           <span
             className={`${classNameBase}-prev`}
             disabled={index === 0}
@@ -136,11 +138,13 @@ export default function ReactSlidySlider({
             disabled={items.length <= numOfSlides || index === items.length - 1}
             onClick={items.length > numOfSlides && slidyInstance.next}
           />
-        </Fragment>
+        </>
       )}
-      <div ref={sliderContainerDOMEl}>
-        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem(numOfSlides))}</ul>
+      <div className={classNameToAttach} ref={sliderContainerDOMEl}>
+        <ul className={classNameToAttach} ref={slidesDOMEl}>
+          {itemsToRender.map(renderItem(numOfSlides, classNameToAttach))}
+        </ul>
       </div>
-    </Fragment>
+    </>
   )
 }
