@@ -72,8 +72,11 @@ $react-slidy-mh: 50px !default;
   }
 
   &.react-Slidy--fullHeight,
-  &--fullHeight,
-  &--fullHeight img {
+  &--fullHeight {
+    height: 100%;
+  }
+
+  &.react-Slidy--fullHeight > div img {
     height: 100%;
   }
 
