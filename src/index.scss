@@ -76,15 +76,15 @@ $react-slidy-mh: 50px !default;
     height: 100%;
   }
 
-  &.react-Slidy--fullHeight > div img {
+  &.react-Slidy--fullHeight > div li img {
     height: 100%;
   }
 
-  &--contain img {
+  &--contain li img {
     object-fit: contain;
   }
 
-  &--cover img {
+  &--cover li img {
     object-fit: cover;
   }
 
