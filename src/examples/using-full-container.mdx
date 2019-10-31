@@ -13,7 +13,7 @@ import '../index.scss'
 <Playground>
   <h3>WITHOUT useFullHeight prop</h3>
   <div style={{display: 'flex', justifyAlign: 'space-between'}}>
-    <div>
+    <div style={{ flex: '0 0 250px', marginRight: '16px' }}>
       <ReactSlidy>
         <img src="https://loremflickr.com/640/360" />
         <img src="https://loremflickr.com/641/361" />
@@ -26,7 +26,7 @@ import '../index.scss'
   </div>
   <h3>WITH useFullHeight prop</h3>
   <div style={{display: 'flex', justifyAlign: 'space-between'}}>
-    <div style={{ width: '250px' }}>
+    <div style={{ flex: '0 0 250px', marginRight: '16px' }}>
       <ReactSlidy useFullHeight>
         <img src="https://loremflickr.com/640/360" />
         <img src="https://loremflickr.com/641/361" />
@@ -39,7 +39,7 @@ import '../index.scss'
   </div>
   <h3>WITH useFullHeight AND imageObjectFit to 'cover' prop</h3>
     <div style={{display: 'flex', justifyAlign: 'space-between'}}>
-    <div style={{ width: '250px' }}>
+    <div style={{ flex: '0 0 250px', marginRight: '16px' }}>
       <ReactSlidy useFullHeight imageObjectFit='cover'>
         <img src="https://loremflickr.com/640/360" />
         <img src="https://loremflickr.com/641/361" />
