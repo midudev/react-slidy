@@ -6,9 +6,8 @@ const EVENT_OPTIONS = {passive: false}
 
 function translate(to, moveX, percentatge = 100) {
   const translation = to * percentatge * -1
-  return moveX
-    ? `translate3d(calc(${translation}% - ${moveX}px), 0, 0)`
-    : `translate3d(${translation}%, 0, 0)`
+  const x = moveX ? `calc(${translation}% - ${moveX}px)` : `${translation}%`
+  return `translate3d(${x}, 0, 0)`
 }
 
 function clampNumber(x, minValue, maxValue) {
@@ -16,8 +15,7 @@ function clampNumber(x, minValue, maxValue) {
 }
 
 function getTouchCoordinatesFromEvent(e) {
-  const {pageX, pageY} = e.targetTouches ? e.targetTouches[0] : e.touches[0]
-  return {pageX, pageY}
+  return e.targetTouches ? e.targetTouches[0] : e.touches[0]
 }
 
 function getTranslationCSS(duration, ease, index, x, percentatge) {
@@ -126,21 +124,6 @@ export default function slidy(containerDOMEl, options) {
     })
   }
 
-  function _removeTouchEventsListeners(all = false) {
-    containerDOMEl.removeEventListener(
-      'touchstart',
-      onTouchstart,
-      EVENT_OPTIONS
-    )
-    containerDOMEl.removeEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
-    containerDOMEl.removeEventListener('touchend', onTouchend, EVENT_OPTIONS)
-  }
-
-  function _removeAllEventsListeners() {
-    _removeTouchEventsListeners(true)
-    slidesDOMEl.removeEventListener(TRANSITION_END, onTransitionEnd)
-  }
-
   function onTransitionEnd() {
     if (transitionEndCallbackActivated === true) {
       _translate(0)
@@ -175,8 +158,10 @@ export default function slidy(containerDOMEl, options) {
     }
   }
 
-  function onTouchend(event) {
+  function onTouchend() {
+    // hack the document to block scroll
     document.ontouchmove = () => true
+
     if (!isScrolling) {
       /**
        * is valid if:
@@ -197,11 +182,14 @@ export default function slidy(containerDOMEl, options) {
         (direction === false && index === 0) ||
         (direction === true && index === items - 1)
 
-      if (isValid === true && isOutOfBounds === false) {
-        slide(direction)
-      } else {
-        _translate(slideSpeed, LINEAR_ANIMATION)
-      }
+      /**
+       * If the swipe is valid and we're not out of bounds
+       * -> Slide to the direction
+       * otherwise: go back to the previous slide with a linear animation
+       */
+      isValid === true && isOutOfBounds === false
+        ? slide(direction)
+        : _translate(slideSpeed, LINEAR_ANIMATION)
     }
 
     // reset variables with the initial values
@@ -264,7 +252,16 @@ export default function slidy(containerDOMEl, options) {
    * destroy function: called to gracefully destroy the slidy instance
    */
   function destroy() {
-    _removeAllEventsListeners()
+    // remove all touch listeners
+    containerDOMEl.removeEventListener(
+      'touchstart',
+      onTouchstart,
+      EVENT_OPTIONS
+    )
+    containerDOMEl.removeEventListener('touchmove', onTouchmove, EVENT_OPTIONS)
+    containerDOMEl.removeEventListener('touchend', onTouchend, EVENT_OPTIONS)
+    // remove transition listeners
+    slidesDOMEl.removeEventListener(TRANSITION_END, onTransitionEnd)
   }
 
   // trigger initial setup
