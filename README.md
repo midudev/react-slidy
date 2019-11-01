@@ -31,6 +31,6 @@ Supported browsers are:
 
 **If some of them doesn't work, please fill an issue.**
 
-## Missing features that I'm willing to add
+## The feature *x* is missing...
 
 React Slidy intention is to offer a simple API and functionality. If it doesn't fit all your needs, you might consider to use an alternative or do a fork.
