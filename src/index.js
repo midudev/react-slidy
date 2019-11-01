@@ -125,8 +125,6 @@ ReactSlidy.propTypes = {
   showArrows: PropTypes.bool,
   /** Determine the speed of the sliding animation */
   slideSpeed: PropTypes.number,
-  /** Configure arrow class for determin that arrow is the last one */
-  tailArrowClass: PropTypes.string,
   /** Use the full height of the container adding some styles to the elements */
   useFullHeight: PropTypes.bool
 }
@@ -149,7 +147,6 @@ ReactSlidy.defaultProps = {
   sanitize: true,
   slideSpeed: 500,
   showArrows: true,
-  tailArrowClass: 'react-Slidy-arrow--disabled',
   useFullHeight: false
 }
 
