@@ -53,8 +53,7 @@ export default function ReactSlidySlider({
   keyboardNavigation,
   numOfSlides,
   showArrows,
-  slideSpeed,
-  tailArrowClass
+  slideSpeed
 }) {
   const [slidyInstance, setSlidyInstance] = useState({
     next: noop,
