@@ -7,13 +7,13 @@
 [![npm](https://img.shields.io/npm/dm/react-slidy.svg?maxAge=2592000)](https://www.npmjs.com/package/react-slidy)
 
 ## Features
-🖼️ 1:1 slider for any content
-📱 Optimized for mobile usage (block scroll on slide)
-⚡ Optimized for performance
-⌨️ Supports keyboard navigation
-😪 Lazy load support
-☝️ No dependencies, just one possible polyfill: intersection-observer polyfill
-🗜️ 1KB gzipped (*plus* 1KB if you need intersection-observer)
+- 🖼️ 1:1 slider for any content
+- 📱 Optimized for mobile usage (block scroll on slide)
+- ⚡ Optimized for performance
+- ⌨️ Supports keyboard navigation
+- 😪 Lazy load support
+- ☝️ No dependencies, just one possible polyfill: intersection-observer polyfill
+- 🗜️ 1KB gzipped (*plus* 1KB if you need intersection-observer)
 
 ## Overview
 
