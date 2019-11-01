@@ -50,7 +50,7 @@
     "react": ">= 16.8.0 < 17",
     "react-dom": ">= 16.8.0 < 17",
     "rimraf": "3.0.0",
-    "sass": "1.23.1"
+    "sass": "1.23.3"
   },
   "dependencies": {
     "intersection-observer": "0.7.0"
