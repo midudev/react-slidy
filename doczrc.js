@@ -1,5 +1,3 @@
-import {css} from 'docz-plugin-css'
-
 export default {
   title: 'React Slidy 🍃 - a simple and minimal slider component for React',
   description:
@@ -10,6 +8,5 @@ export default {
     colors: {
       primary: 'green'
     }
-  },
-  plugins: [css({preprocessor: 'sass'})]
+  }
 }

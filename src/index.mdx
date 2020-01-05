@@ -18,10 +18,10 @@ import './index.scss'
 
 <Playground>
   <ReactSlidy>
-    <Number num={1} />
-    <Number num={2} />
-    <Number num={3} />
-    <Number num={4} />
+    <img src="/public/1.jpg" />
+    <img src="/public/2.jpg" />
+    <img src="/public/3.jpg" />
+    <img src="/public/4.jpg" />
   </ReactSlidy>
 </Playground>
 
@@ -40,7 +40,8 @@ import ReactSlidy from 'react-slidy'
 3️⃣ Import the styles:
 
 If you're using sass, you could modify the next variables:
-```
+
+```sass
 /* variables available */
 $react-slidy-c-background: #dcdcdc !default;
 $react-slidy-c-nav-background: rgba(255, 255, 255, .8) !default;
@@ -56,26 +57,33 @@ $react-slidy-h-image: auto !default;
 import 'react-slidy/lib/index.scss'
 ```
 
-If you're using just css, you could import the CSS directly or use a CDN.
-
-```
+If you're using just css, you could import the CSS directly in your Javascript if you're using a bundler like Webpack:
+```js
 /* directly in your javascript file if you use a bundler */
 import 'react-slidy/lib/styles.css'
-
-<!-- from the index.html -->
-<link rel='stylesheet' href='https://unpkg.com/react-slidy@4.0.10/lib/styles.css'> 
 ```
 
-### Basic examples with images
+Or you could load the CSS directly from HTML:
+```html
+<!-- from the index.html -->
+<link rel='stylesheet' href='https://unpkg.com/react-slidy@4.0.10/lib/styles.css'>
+```
 
-Do you want to use images 🖼️? Just put them inside!
+### Use components as slides
+
+You could use the slider with React components. Just put them inside. Every child will be rendered as slide. For example:
 
 <Playground>
-  <ReactSlidy itemsToPreload={3}>
-    <img src="https://loremflickr.com/640/360" />
-    <img src="https://loremflickr.com/641/361" />
-    <img src="https://loremflickr.com/642/362" />
+  <ReactSlidy>
+    <Number num={1} />
+    <Number num={2} />
+    <Number num={3} />
+    <Number num={4} />
   </ReactSlidy>
 </Playground>
+
+## Component API
+
+<Props of={ReactSlidy} />
 
 Created and mantained by [midudev](https://midu.dev)
