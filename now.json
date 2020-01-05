@@ -2,15 +2,5 @@
   "alias": ["react-slidy.midu.dev"],
   "name": "react-slidy",
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@now/static-build",
-      "config": {"distDir": ".docz/dist"}
-    }
-  ],
-  "routes": [
-    {"src": "/static/(.*)", "dest": "/static/$1"},
-    {"src": "/(.*)", "dest": "/index.html"}
-  ]
+  "rewrites": [{ "source": "/.*", "destination": "/index.html" }]
 }

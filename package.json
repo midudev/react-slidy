@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "npm run docz:dev",
     "docz:dev": "docz dev",
-    "docz:build": "NODE_ENV=production docz build",
+    "build": "NODE_ENV=production docz build && mv ./.docz/dist/* ./public",
     "clean:lib": "rimraf ./lib/*",
     "lib": "npm run lib:scripts && npm run lib:styles && npm run lib:css",
     "lib:scripts": "babel src --out-dir lib --presets=babel-preset-sui",
@@ -24,7 +24,6 @@
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "sui-lint js",
     "lint:sass": "sui-lint sass",
-    "now-build": "npm run docz:build",
     "prelib": "npm run clean:lib -s",
     "prepublish": "npm run lib"
   },
