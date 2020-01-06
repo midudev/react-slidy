@@ -121,6 +121,8 @@ ReactSlidy.propTypes = {
   numOfSlides: PropTypes.number,
   /** Determine if we want to sanitize the slides or take numberOfSlider directly */
   sanitize: PropTypes.bool,
+  /** Change dynamically the slide number, perfect to use with dots */
+  slide: PropTypes.number,
   /** Determine if arrows should be shown */
   showArrows: PropTypes.bool,
   /** Determine the speed of the sliding animation */
@@ -145,6 +147,7 @@ ReactSlidy.defaultProps = {
   navigateByKeyboard: false,
   numOfSlides: 1,
   sanitize: true,
+  slide: 0,
   slideSpeed: 500,
   showArrows: true,
   useFullHeight: false

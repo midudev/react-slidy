@@ -18,6 +18,14 @@ function getTouchCoordinatesFromEvent(e) {
   return e.targetTouches ? e.targetTouches[0] : e.touches[0]
 }
 
+/**
+ *
+ * @param {number} duration
+ * @param {string} ease
+ * @param {number} index
+ * @param {number} x
+ * @param {number} percentatge
+ */
 function getTranslationCSS(duration, ease, index, x, percentatge) {
   const easeCssText = ease !== '' ? `transition-timing-function: ${ease};` : ''
   const durationCssText = duration ? `transition-duration: ${duration}ms;` : ''
@@ -69,11 +77,11 @@ export default function slidy(containerDOMEl, options) {
   /**
    * translates to a given position in a given time in milliseconds
    *
-   * @duration  {number} time in milliseconds for the transistion
-   * @ease      {string} easing css property
-   * @x         {number} Number of pixels to fine tuning translation
+   * @param  {number} duration time in milliseconds for the transistion
+   * @param  {string} ease easing css property
+   * @param  {number} x Number of pixels to fine tuning translation
    */
-  function _translate(duration, ease = '', x = false) {
+  function _translate(duration, ease = '', x = 0) {
     const percentatge = 100 / numOfSlides
     slidesDOMEl.style.cssText = getTranslationCSS(
       duration,
@@ -90,11 +98,10 @@ export default function slidy(containerDOMEl, options) {
    * determine nextIndex and slide to next postion
    * under restrictions of the defined options
    *
-   * @direction  {boolean} 'true' for right, 'false' for left
+   * @param {boolean} direction 'true' for right, 'false' for left
    */
   function slide(direction) {
     const movement = direction === true ? 1 : -1
-    const duration = slideSpeed
 
     // calculate the nextIndex according to the movement
     let nextIndex = index + 1 * movement
@@ -102,26 +109,7 @@ export default function slidy(containerDOMEl, options) {
     // nextIndex should be between 0 and items minus 1
     nextIndex = clampNumber(nextIndex, 0, items - 1)
 
-    // if the nextIndex and the current is the same, we don't need to do the slide
-    if (nextIndex === index) return
-
-    // if the nextIndex is possible according to number of items, then use it
-    if (nextIndex <= items) {
-      // execute the callback from the options before sliding
-      doBeforeSlide({currentSlide: index, nextSlide: nextIndex})
-      // execute the internal callback
-      direction ? onNext(nextIndex) : onPrev(nextIndex)
-      index = nextIndex
-    }
-
-    // translate to the next index by a defined duration and ease function
-    _translate(duration, ease)
-
-    // execute the callback from the options after sliding
-    slidesDOMEl.addEventListener(TRANSITION_END, function cb(e) {
-      doAfterSlide({currentSlide: index})
-      e.currentTarget.removeEventListener(e.type, cb)
-    })
+    goTo(nextIndex)
   }
 
   function onTransitionEnd() {
@@ -221,6 +209,32 @@ export default function slidy(containerDOMEl, options) {
 
   /**
    * public
+   * @param {number} nextIndex Index number to go to
+   */
+  function goTo(nextIndex) {
+    // if the nextIndex and the current is the same, we don't need to do the slide
+    if (nextIndex === index) return
+
+    // if the nextIndex is possible according to number of items, then use it
+    if (nextIndex <= items) {
+      // execute the callback from the options before sliding
+      doBeforeSlide({currentSlide: index, nextSlide: nextIndex})
+      // execute the internal callback
+      nextIndex > index ? onNext(nextIndex) : onPrev(nextIndex)
+      index = nextIndex
+    }
+    // translate to the next index by a defined duration and ease function
+    _translate(slideSpeed, ease)
+
+    // execute the callback from the options after sliding
+    slidesDOMEl.addEventListener(TRANSITION_END, function cb(e) {
+      doAfterSlide({currentSlide: index})
+      e.currentTarget.removeEventListener(e.type, cb)
+    })
+  }
+
+  /**
+   * public
    * prev function: called on clickhandler
    */
   function prev(e) {
@@ -271,6 +285,7 @@ export default function slidy(containerDOMEl, options) {
   return {
     clean,
     destroy,
+    goTo,
     next,
     prev,
     slide,

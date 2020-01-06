@@ -2,7 +2,7 @@
 import React, {useEffect, useRef, useState} from 'react'
 import slidy from './slidy'
 
-function noop() {}
+function noop(_) {}
 
 function convertToArrayFrom(children) {
   return Array.isArray(children) ? children : [children]
@@ -52,10 +52,12 @@ export default function ReactSlidySlider({
   itemsToPreload,
   keyboardNavigation,
   numOfSlides,
+  slide,
   showArrows,
   slideSpeed
 }) {
   const [slidyInstance, setSlidyInstance] = useState({
+    goTo: noop,
     next: noop,
     prev: noop,
     updateItems: noop
@@ -66,6 +68,13 @@ export default function ReactSlidySlider({
   const slidesDOMEl = useRef(null)
 
   const items = convertToArrayFrom(children)
+
+  useEffect(
+    function() {
+      slide && slide !== index && slidyInstance.goTo(slide)
+    },
+    [slide] // eslint-disable-line
+  )
 
   useEffect(
     function() {
