@@ -13,9 +13,9 @@
     "react slider"
   ],
   "scripts": {
-    "dev": "npm run docz:dev",
-    "docz:dev": "docz dev",
-    "build": "NODE_ENV=production docz build && mv ./.docz/dist/* ./public",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
     "clean:lib": "rimraf ./lib/*",
     "lib": "npm run lib:scripts && npm run lib:styles && npm run lib:css",
     "lib:scripts": "babel src --out-dir lib --presets=babel-preset-sui",
@@ -39,24 +39,27 @@
   },
   "devDependencies": {
     "@babel/cli": "7",
+    "@mdx-js/loader": "1.5.3",
+    "@next/mdx": "9.1.7",
     "@s-ui/lint": "3",
+    "@zeit/next-sass": "^1.0.1",
     "babel-preset-sui": "3",
     "copyfiles": "2.1.1",
-    "docz": "2.2.0",
-    "gatsby-plugin-sass": "2.1.26",
-    "node-sass": "4.13.0",
+    "next": "9.1.7",
+    "node-sass": "^4.13.0",
+    "prism-react-renderer": "^1.0.2",
     "prop-types": "15",
     "react": ">= 16.8.0 < 17",
     "react-dom": ">= 16.8.0 < 17",
-    "rimraf": "3.0.0"
+    "rimraf": "3.0.0",
+    "sass-loader": "8.0.0",
+    "webpack": "4.41.5"
   },
   "dependencies": {
     "intersection-observer": "0.7.0"
   },
   "pre-commit": [
-    "lint",
-    "test",
-    "dist"
+    "lint"
   ],
   "eslintConfig": {
     "extends": [
