@@ -77,8 +77,8 @@ const theme = {
   ]
 }
 
-export default function CodeBlock({button, children, className = ''}) {
-  const [show, setShow] = useState(!button)
+export default function CodeBlock({showButton, children, className = ''}) {
+  const [show, setShow] = useState(!showButton)
   const language = className.replace(/language-/, '')
 
   if (!show)
@@ -128,5 +128,6 @@ export default function CodeBlock({button, children, className = ''}) {
 
 CodeBlock.propTypes = {
   className: PropTypes.string,
-  children: PropTypes.string
+  children: PropTypes.string,
+  showButton: PropTypes.bool
 }

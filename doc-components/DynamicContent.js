@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import ReactSlidy from '../../src/index'
+import ReactSlidy from '../src/index'
 import Number from './Number'
 
 export default () => {

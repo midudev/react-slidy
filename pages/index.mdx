@@ -1,11 +1,11 @@
 # React Slidy 🍃
 #### a <i>minimal</i> and optimal slider for React ⚛️ in ~1KB <small style={{color: "#555", fontSize: "8px"}}>+1KB if intersection-observer polyfill if needed</small>
 
-import ReactSlidy from '../src/index.js'
-import Api from './_examples/API'
-import DynamicContent from './_examples/DynamicContent'
-import Dots from './_examples/Dots'
-import Number from './_examples/Number'
+import ReactSlidy from '../src/index'
+import Api from '../doc-components/Api'
+import DynamicContent from '../doc-components/DynamicContent'
+import Dots from '../doc-components/Dots'
+import Number from '../doc-components/Number'
 import '../src/index.scss'
 
 <ReactSlidy>
@@ -15,7 +15,7 @@ import '../src/index.scss'
   <img src="/4.jpg" />
 </ReactSlidy>
 
-```js button
+```js showButton
 <ReactSlidy>
   <img src="/1.jpg" />
   <img src="/2.jpg" />
@@ -76,7 +76,7 @@ You could use the slider with React components. Just put them inside. Every chil
   <Number num={4} />
 </ReactSlidy>
 
-```js button
+```js showButton
 <ReactSlidy>
   <Number num={1} />
   <Number num={2} />
@@ -95,7 +95,7 @@ You could use the `keyboardNavigation` prop in order to activate keyboard naviga
   <Number num={4} />
 </ReactSlidy>
 
-```js button
+```js showButton
 <ReactSlidy keyboardNavigation>
   <Number num={1} />
   <Number num={2} />
@@ -116,7 +116,7 @@ While not recommendable, you could wrap the Slider with a clickable element like
   </ReactSlidy>
 </a>
 
-```js button
+```js showButton
 <a href='#'>
   <ReactSlidy>
     <Number num={1} />
@@ -133,7 +133,7 @@ You could easily add more content to the slider and it will adapt automatically 
 
 <DynamicContent />
 
-```js button
+```js showButton
 const [slides, setSlides] = useState([0])
 const slidesToRender = slides.map((_, index) => (
   <Number key={index} num={index} />
@@ -164,7 +164,7 @@ Use `numOfSlides` prop to determine the number of slides that will be shown at o
   <Number num={8} />
 </ReactSlidy>
 
-```js button
+```js showButton
 <ReactSlidy numOfSlides={3}>
   <Number num={1} />
   <Number num={2} />
@@ -185,7 +185,7 @@ Using `numOfSlides` with sanitize the number of shown items if there's not enoug
   <Number num={2} />
 </ReactSlidy>
 
-```js button
+```js showButton
 <ReactSlidy numOfSlides={5}>
   <Number num={1} />
   <Number num={2} />
@@ -201,7 +201,7 @@ You could, however, disable the previous behaviour by using the prop `sanitize` 
   <Number num={2} />
 </ReactSlidy>
 
-```js button
+```js showButton
 <ReactSlidy numOfSlides={3} sanitize={false}>
   <Number num={1} />
   <Number num={2} />
@@ -218,7 +218,7 @@ While React Slidy doesn't offer a built-in progress indicator, you could build o
 
 <Dots />
 
-```js button
+```js showButton
 import React, {useState} from 'react'
 import ReactSlidy from '../../src/index'
 

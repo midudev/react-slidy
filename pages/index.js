@@ -1,7 +1,9 @@
 import React from 'react'
-import IndexMDX from './index.mdx'
-import CodeBlock from './_examples/CodeBlock'
+import Head from 'next/head'
 import {MDXProvider} from '@mdx-js/react'
+
+import IndexMDX from './index.mdx'
+import CodeBlock from '../doc-components/CodeBlock'
 
 const components = {
   pre: props => <div {...props} />,
@@ -10,6 +12,15 @@ const components = {
 
 export default () => (
   <MDXProvider components={components}>
+    <Head>
+      <title>
+        React Slidy 🍃 - a simple and minimal slider component for React
+      </title>
+      <meta
+        name="description"
+        content="A carousel component for React with the basics. It just works. For minimal setup and needs. Focused on performance ⚡"
+      />
+    </Head>
     <IndexMDX />
     <style jsx global>
       {`
