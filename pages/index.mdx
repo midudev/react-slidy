@@ -1,0 +1,261 @@
+# React Slidy 🍃
+#### a <i>minimal</i> and optimal slider for React ⚛️ in ~1KB <small style={{color: "#555", fontSize: "8px"}}>+1KB if intersection-observer polyfill if needed</small>
+
+import ReactSlidy from '../src/index.js'
+import DynamicContent from './examples/DynamicContent'
+import Dots from './examples/Dots'
+import Number from './examples/Number'
+import '../src/index.scss'
+
+<ReactSlidy>
+  <img src="/1.jpg" />
+  <img src="/2.jpg" />
+  <img src="/3.jpg" />
+  <img src="/4.jpg" />
+</ReactSlidy>
+
+```js button
+<ReactSlidy>
+  <img src="/1.jpg" />
+  <img src="/2.jpg" />
+  <img src="/3.jpg" />
+  <img src="/4.jpg" />
+</ReactSlidy>
+```
+
+## How to install ℹ️
+
+Install the latest version of the package:
+```
+npm install react-slidy --save
+```
+
+Import the component:
+```js
+import ReactSlidy from 'react-slidy'
+```
+
+Import the styles:
+```sass
+@import '~react-slidy/lib/index';
+```
+or directly in your javascript file if you're using a bundler:
+```js
+import 'react-slidy/lib/index.scss'
+// or using the css provided
+import 'react-slidy/lib/styles.css'
+```
+you could also load the CSS directly from HTML:
+```html
+<!-- from the index.html -->
+<link rel='stylesheet' href='https://unpkg.com/react-slidy/lib/styles.css'>
+```
+
+## Customization 👩‍🎨
+If you're using SASS, you could modify the next variables:
+
+```sass
+$react-slidy-c-background: #dcdcdc !default;
+$react-slidy-c-nav-background: rgba(255, 255, 255, .8) !default;
+$react-slidy-c-nav-color: #aaaaaa !default;
+$react-slidy-c-transparent: rgba(0, 0, 0, 0) !default;
+$react-slidy-mh: 50px !default;
+$react-slidy-h-image: auto !default;
+```
+
+## Examples 📖
+
+### Using with React components ⚛️
+You could use the slider with React components. Just put them inside. Every child will be rendered as slide. For example:
+
+<ReactSlidy>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+</ReactSlidy>
+
+```js button
+<ReactSlidy>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+</ReactSlidy>
+```
+
+### Using Keyboard Navigation ⌨️
+
+You could use the `keyboardNavigation` prop in order to activate keyboard navigation. Try to use the left and right arrow in order to navigate the next slider.
+<ReactSlidy keyboardNavigation>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+</ReactSlidy>
+
+```js button
+<ReactSlidy keyboardNavigation>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+</ReactSlidy>
+```
+
+### Using an anchor as wrapper 🔗
+While not recommendable, you could wrap the Slider with a clickable element like an anchor, and the next and previous buttons will work as expected while the rest of the slider is clickable.
+
+<a href='#'>
+  <ReactSlidy>
+    <Number num={1} />
+    <Number num={2} />
+    <Number num={3} />
+    <Number num={4} />
+  </ReactSlidy>
+</a>
+
+```js button
+<a href='#'>
+  <ReactSlidy>
+    <Number num={1} />
+    <Number num={2} />
+    <Number num={3} />
+    <Number num={4} />
+  </ReactSlidy>
+</a>
+```
+
+### Using Dynamic Content ⚡
+
+You could easily add more content to the slider and it will adapt automatically for you. Try to click the button in order to add more content and check that how the new slides are being added.
+
+<DynamicContent />
+
+```js button
+const [slides, setSlides] = useState([0])
+const slidesToRender = slides.map((_, index) => (
+  <Number key={index} num={index} />
+))
+
+return (
+  <>
+    <button onClick={() => setSlides([...slides, 0])}>Add one slide!</button>
+    <ReactSlidy>{slidesToRender}</ReactSlidy>
+  </>
+)
+```
+
+### Show multiple slides at once 🤹‍♂️
+
+Use `numOfSlides` prop to determine the number of slides that will be shown at once.
+
+#### Simple example with 3 slides
+
+<ReactSlidy numOfSlides={3}>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+  <Number num={5} />
+  <Number num={6} />
+  <Number num={7} />
+  <Number num={8} />
+</ReactSlidy>
+
+```js button
+<ReactSlidy numOfSlides={3}>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+  <Number num={5} />
+  <Number num={6} />
+  <Number num={7} />
+  <Number num={8} />
+</ReactSlidy>
+```
+
+#### Example with less slides than numOfSlides
+Using `numOfSlides` with sanitize the number of shown items if there's not enough children available to be used. For example, if `numOfSlides` is 5, but you have only two slides, it will show only two using the full width.
+
+<ReactSlidy numOfSlides={5}>
+  <Number num={1} />
+  <Number num={2} />
+</ReactSlidy>
+
+```js button
+<ReactSlidy numOfSlides={5}>
+  <Number num={1} />
+  <Number num={2} />
+</ReactSlidy>
+```
+
+#### Example with less slides than numOfSlides but with sanitize as false
+
+You could, however, disable the previous behaviour by using the prop `sanitize` in order to avoid changing the `numOfSlides` prop on the fly. This mean the space will be divided by the numOfSlides even if there's no slides enough to show.
+
+<ReactSlidy numOfSlides={3} sanitize={false}>
+  <Number num={1} />
+  <Number num={2} />
+</ReactSlidy>
+
+```js button
+<ReactSlidy numOfSlides={3} sanitize={false}>
+  <Number num={1} />
+  <Number num={2} />
+</ReactSlidy>
+```
+
+#### Creating dots ···
+
+While React Slidy doesn't offer a built-in progress indicator, you could build one easily with a few lines of code thanks to its API.
+
+<Dots />
+
+```js button
+import React, {useState} from 'react'
+import ReactSlidy from '../../src/index'
+
+const SLIDES = ['/1.jpg', '/2.jpg', '/3.jpg', '/4.jpg']
+
+const createStyles = isActive => ({
+  background: 'transparent',
+  border: 0,
+  color: isActive ? '#333' : '#ccc',
+  cursor: 'pointer',
+  fontSize: '32px'
+})
+
+export default () => {
+  const [actualSlide, setActualSlide] = useState(0)
+
+  const updateSlide = ({currentSlide}) => {
+    setActualSlide(currentSlide)
+  }
+
+  return (
+    <>
+      <ReactSlidy doAfterSlide={updateSlide} slide={actualSlide}>
+        {SLIDES.map(src => (
+          <img alt="" key={src} src={src} />
+        ))}
+      </ReactSlidy>
+      <div className="Dots">
+        {SLIDES.map((_, index) => {
+          return (
+            <button
+              key={index}
+              style={createStyles(index === actualSlide)}
+              onClick={() => updateSlide({ currentSlide: index })}>
+              &bull;
+            </button>
+          )
+        })}
+      </div>
+    </>
+  )
+}
+```
+
+Created and mantained by [midudev](https://midu.dev)
