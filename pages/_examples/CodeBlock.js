@@ -84,7 +84,7 @@ export default function CodeBlock({button, children, className = ''}) {
   if (!show)
     return (
       <>
-        <button onClick={() => setShow(true)}>Show code</button>
+        <button onClick={() => setShow(true)}>Show example code</button>
         <style jsx>
           {`
             button {

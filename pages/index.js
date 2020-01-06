@@ -1,6 +1,6 @@
 import React from 'react'
 import IndexMDX from './index.mdx'
-import CodeBlock from './_code-block'
+import CodeBlock from './_examples/CodeBlock'
 import {MDXProvider} from '@mdx-js/react'
 
 const components = {
