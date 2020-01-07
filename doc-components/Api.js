@@ -174,6 +174,10 @@ export default () => {
         )
       })}
       <style jsx>{`
+        div {
+          padding-bottom: 8px;
+        }
+
         strong {
           font-weight: 600;
           font-size: 14px;
