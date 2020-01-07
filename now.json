@@ -1,6 +1,6 @@
 {
+  "version": 2,
   "alias": ["react-slidy.midu.dev"],
   "name": "react-slidy",
-  "version": 2,
   "rewrites": [{ "source": "/.*", "destination": "/index.html" }]
 }
