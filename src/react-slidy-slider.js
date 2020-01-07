@@ -71,7 +71,7 @@ export default function ReactSlidySlider({
 
   useEffect(
     function() {
-      slide && slide !== index && slidyInstance.goTo(slide)
+      slide !== index && slidyInstance.goTo(slide)
     },
     [slide] // eslint-disable-line
   )
