@@ -66,6 +66,27 @@ $react-slidy-h-image: auto !default;
 
 ## Examples 📖
 
+### Preload all the images 🖼
+
+The slider is optimized in order to be lazy loaded and, then, load the images only when needed so you could notice an empty image while sliding.
+You could preload as much as images as you want by using the `itemsToPreload` in order to avoid that effect if you wish.
+
+<ReactSlidy itemsToPreload={4}>
+  <img src="/1.jpg" />
+  <img src="/2.jpg" />
+  <img src="/3.jpg" />
+  <img src="/4.jpg" />
+</ReactSlidy>
+
+```js showButton
+<ReactSlidy itemsToPreload={4}>
+  <img src="/1.jpg" />
+  <img src="/2.jpg" />
+  <img src="/3.jpg" />
+  <img src="/4.jpg" />
+</ReactSlidy>
+```
+
 ### Using with React components ⚛️
 You could use the slider with React components. Just put them inside. Every child will be rendered as slide. For example:
 
