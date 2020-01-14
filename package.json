@@ -25,6 +25,7 @@
     "lint:js": "sui-lint js",
     "lint:sass": "sui-lint sass",
     "prelib": "npm run clean:lib -s",
+    "publish": "np",
     "prepublish": "npm run lib"
   },
   "license": "MIT",
@@ -47,6 +48,7 @@
     "copyfiles": "2.1.1",
     "next": "9.1.7",
     "node-sass": "4.13.0",
+    "np": "5.2.1",
     "prism-react-renderer": "1.0.2",
     "prop-types": "15",
     "react": ">= 16.8.0 < 17",
