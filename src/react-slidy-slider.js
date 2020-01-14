@@ -30,10 +30,10 @@ function destroySlider(slidyInstance, doAfterDestroy) {
   doAfterDestroy()
 }
 
-const renderItem = (numOfSlides, classNameToAttach) => (item, index) => {
+const renderItem = numOfSlides => (item, index) => {
   const inlineStyle = numOfSlides !== 1 ? {width: `${100 / numOfSlides}%`} : {}
   return (
-    <li className={classNameToAttach} key={index} style={inlineStyle}>
+    <li key={index} style={inlineStyle}>
       {item}
     </li>
   )
@@ -41,7 +41,6 @@ const renderItem = (numOfSlides, classNameToAttach) => (item, index) => {
 
 export default function ReactSlidySlider({
   children,
-  classNameToAttach,
   classNameBase,
   doAfterDestroy,
   doAfterInit,
@@ -148,10 +147,8 @@ export default function ReactSlidySlider({
           />
         </>
       )}
-      <div className={classNameToAttach} ref={sliderContainerDOMEl}>
-        <ul className={classNameToAttach} ref={slidesDOMEl}>
-          {itemsToRender.map(renderItem(numOfSlides, classNameToAttach))}
-        </ul>
+      <div ref={sliderContainerDOMEl}>
+        <ul ref={slidesDOMEl}>{itemsToRender.map(renderItem(numOfSlides))}</ul>
       </div>
     </>
   )
