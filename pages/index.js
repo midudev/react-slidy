@@ -4,6 +4,7 @@ import {MDXProvider} from '@mdx-js/react'
 
 import IndexMDX from './index.mdx'
 import CodeBlock from '../doc-components/CodeBlock'
+import GitHubBagdge from '../doc-components/GitHub'
 
 const components = {
   pre: props => <div {...props} />,
@@ -22,6 +23,7 @@ export default () => (
       />
       <link rel="canonical" href="https://react-slidy.midu.dev/" />
     </Head>
+    <GitHubBagdge />
     <IndexMDX />
     <style jsx global>
       {`

@@ -7,7 +7,8 @@ function noop() {}
 const CLASSNAMES = {
   contain: 'react-Slidy--contain',
   cover: 'react-Slidy--cover',
-  fullHeight: 'react-Slidy--fullHeight'
+  fullHeight: 'react-Slidy--fullHeight',
+  fullWidth: 'react-Slidy--fullWidth'
 }
 
 const ReactSlidy = props => {
@@ -52,18 +53,20 @@ const ReactSlidy = props => {
     classNameBase,
     imageObjectFit,
     numOfSlides,
+    sanitize,
     useFullHeight,
-    sanitize
+    useFullWidth
   } = props
+
   const numOfSlidesSanitzed = Math.min(
     numOfSlides,
     React.Children.count(children)
   )
 
-  const classNameToAttach = useFullHeight ? CLASSNAMES.fullHeight : undefined
   const rootClassName = [
     classNameBase,
-    classNameToAttach,
+    useFullHeight && CLASSNAMES.fullHeight,
+    useFullWidth && CLASSNAMES.fullWidth,
     imageObjectFit && CLASSNAMES[imageObjectFit]
   ]
     .filter(Boolean)
@@ -75,7 +78,6 @@ const ReactSlidy = props => {
         <ReactSlidySlider
           parentRef={nodeEl}
           {...props}
-          classNameToAttach={classNameToAttach}
           numOfSlides={sanitize ? numOfSlidesSanitzed : numOfSlides}
         >
           {props.children}
@@ -127,6 +129,8 @@ ReactSlidy.propTypes = {
   showArrows: PropTypes.bool,
   /** Determine the speed of the sliding animation */
   slideSpeed: PropTypes.number,
+  /** Use the full width of the container for the image */
+  useFullWidth: PropTypes.bool,
   /** Use the full height of the container adding some styles to the elements */
   useFullHeight: PropTypes.bool
 }
@@ -150,7 +154,8 @@ ReactSlidy.defaultProps = {
   slide: 0,
   slideSpeed: 500,
   showArrows: true,
-  useFullHeight: false
+  useFullHeight: false,
+  useFullWidth: true
 }
 
 export default ReactSlidy
