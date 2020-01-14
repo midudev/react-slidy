@@ -20,3 +20,6 @@ webpack.doc.config.js
 pages
 doc-components
 public
+next.config.js
+README.md
+LICENSE
