@@ -131,6 +131,9 @@ export default function ReactSlidySlider({
     numOfSlides
   })
 
+  const handlePrev = e => slidyInstance.prev(e)
+  const handleNext = e => items.length > numOfSlides && slidyInstance.next(e)
+
   return (
     <>
       {showArrows && (
@@ -138,12 +141,12 @@ export default function ReactSlidySlider({
           <span
             className={`${classNameBase}-prev`}
             disabled={index === 0}
-            onClick={slidyInstance.prev}
+            onClick={handlePrev}
           />
           <span
             className={`${classNameBase}-next`}
             disabled={items.length <= numOfSlides || index === items.length - 1}
-            onClick={items.length > numOfSlides && slidyInstance.next}
+            onClick={handleNext}
           />
         </>
       )}
