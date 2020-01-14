@@ -17,3 +17,6 @@ webpack.doc.config.js
 .cache
 .docz
 .next
+pages
+doc-components
+public
