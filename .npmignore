@@ -16,3 +16,4 @@ webpack.config.js
 webpack.doc.config.js
 .cache
 .docz
+.next
