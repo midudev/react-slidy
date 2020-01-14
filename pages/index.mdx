@@ -282,7 +282,9 @@ export default () => {
 }
 ```
 
-### Using full height images
+### Avoid slides to use the full width
+
+By default, slides uses the full width of the container. So, if you're using an image, it uses all the width available. You could avoid this by using the prop `useFullWidth`.
 
 <ReactSlidy fullHeight imageObjectFit="contains" useFullWidth={false}>
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
@@ -290,7 +292,7 @@ export default () => {
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
 </ReactSlidy>
 
-```js
+```js showButton
 <ReactSlidy fullHeight imageObjectFit="contains" useFullWidth={false}>
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />

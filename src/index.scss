@@ -130,6 +130,7 @@ $react-slidy-mh: 50px !default;
       display: block;
       height: $react-slidy-h-image;
       margin: 0 auto;
+      max-width: 100%;
       pointer-events: none;
       touch-action: none;
       user-select: none;
