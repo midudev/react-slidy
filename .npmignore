@@ -16,3 +16,10 @@ webpack.config.js
 webpack.doc.config.js
 .cache
 .docz
+.next
+pages
+doc-components
+public
+next.config.js
+README.md
+LICENSE

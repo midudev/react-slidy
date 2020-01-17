@@ -56,7 +56,7 @@ you could also load the CSS directly from HTML:
 If you're using SASS, you could modify the next variables:
 
 ```sass
-$react-slidy-c-background: #dcdcdc !default;
+$react-slidy-c-background: transparent !default;
 $react-slidy-c-nav-background: rgba(255, 255, 255, .8) !default;
 $react-slidy-c-nav-color: #aaaaaa !default;
 $react-slidy-c-transparent: rgba(0, 0, 0, 0) !default;
@@ -280,6 +280,24 @@ export default () => {
     </>
   )
 }
+```
+
+### Avoid slides to use the full width
+
+By default, slides uses the full width of the container. So, if you're using an image, it uses all the width available. You could avoid this by using the prop `useFullWidth`.
+
+<ReactSlidy fullHeight imageObjectFit="contains" useFullWidth={false}>
+  <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
+  <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
+  <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
+</ReactSlidy>
+
+```js showButton
+<ReactSlidy fullHeight imageObjectFit="contains" useFullWidth={false}>
+  <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
+  <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
+  <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
+</ReactSlidy>
 ```
 
 ## API 📖

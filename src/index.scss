@@ -1,5 +1,5 @@
-$react-slidy-c-background: #dcdcdc !default;
-$react-slidy-c-nav-background: rgba(255, 255, 255, .8) !default;
+$react-slidy-c-background: transparent !default;
+$react-slidy-c-nav-background: rgba(255, 255, 255, 0.8) !default;
 $react-slidy-c-nav-color: #aaaaaa !default;
 $react-slidy-c-transparent: rgba(0, 0, 0, 0) !default;
 $react-slidy-h-image: auto !default;
@@ -44,7 +44,7 @@ $react-slidy-mh: 50px !default;
     opacity: 0;
     position: absolute;
     top: 0;
-    transition: opacity .3s ease;
+    transition: opacity 0.3s ease;
     width: 40px;
     z-index: 1;
 
@@ -71,13 +71,15 @@ $react-slidy-mh: 50px !default;
     }
   }
 
-  &.react-Slidy--fullHeight,
   &--fullHeight {
     height: 100%;
+    & > div li img {
+      height: 100%;
+    }
   }
 
-  &.react-Slidy--fullHeight > div li img {
-    height: 100%;
+  &--fullWidth > div li img {
+    width: 100%;
   }
 
   &--contain li img {
@@ -93,7 +95,7 @@ $react-slidy-mh: 50px !default;
   }
 
   &:hover > span[disabled] {
-    opacity: .2;
+    opacity: 0.2;
   }
 
   > div {
@@ -124,13 +126,14 @@ $react-slidy-mh: 50px !default;
     img {
       -webkit-backface-visibility: hidden;
       -webkit-perspective: 1000;
-  
+
       display: block;
       height: $react-slidy-h-image;
+      margin: 0 auto;
+      max-width: 100%;
       pointer-events: none;
       touch-action: none;
       user-select: none;
-      width: 100%;
     }
   }
 }
