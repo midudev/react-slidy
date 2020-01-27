@@ -293,11 +293,35 @@ By default, slides uses the full width of the container. So, if you're using an 
 </ReactSlidy>
 
 ```js showButton
-<ReactSlidy fullHeight imageObjectFit="contains" useFullWidth={false}>
+<ReactSlidy fullHeight imageObjectFit="contain" useFullWidth={false}>
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
 </ReactSlidy>
+```
+
+#### Adapt slides to use the height available
+
+If you have slides with different heights you need to specify the maxHeight to be  used for each slide, in order to avoid inner images or content to make the slider jump as they will automatically adapt to the available width and automatically detect the height.
+
+<div>
+  <ReactSlidy imageObjectFit="contain">
+    <img src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg" />
+    <img src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg" />
+    <img src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg" />
+    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1982123.jpg" />
+  </ReactSlidy>
+</div>
+
+```js showButton
+<div>
+  <ReactSlidy imageObjectFit="contain">
+    <img src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg" />
+    <img src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg" />
+    <img src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg" />
+    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1982123.jpg" />
+  </ReactSlidy>
+</div>
 ```
 
 ## API 📖
