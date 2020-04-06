@@ -11,18 +11,41 @@ const CLASSNAMES = {
   fullWidth: 'react-Slidy--fullWidth'
 }
 
-const ReactSlidy = props => {
-  const [showSlider, setShowSlider] = useState(!props.lazyLoadSlider)
+const ReactSlidy = ({
+  children,
+  classNameBase = 'react-Slidy',
+  doAfterDestroy = noop,
+  doAfterInit = noop,
+  doAfterSlide = noop,
+  doBeforeSlide = noop,
+  imageObjectFit,
+  itemsToPreload = 1,
+  initialSlide = 0,
+  ease = 'ease',
+  lazyLoadSlider = true,
+  lazyLoadConfig = {
+    offset: 150
+  },
+  keyboardNavigation = false,
+  numOfSlides = 1,
+  sanitize = true,
+  slide = 0,
+  slideSpeed = 500,
+  showArrows = true,
+  useFullHeight = false,
+  useFullWidth = true
+}) => {
+  const [showSlider, setShowSlider] = useState(!lazyLoadSlider)
   const nodeEl = useRef(null)
 
   useEffect(
     function() {
       let observer
 
-      if (props.lazyLoadSlider) {
+      if (lazyLoadSlider) {
         const initLazyLoadSlider = () => {
           // if we support IntersectionObserver, let's use it
-          const {offset = 0} = props.lazyLoadConfig
+          const {offset = 0} = lazyLoadConfig
           observer = new window.IntersectionObserver(handleIntersection, {
             rootMargin: `${offset}px 0px 0px`
           })
@@ -48,16 +71,6 @@ const ReactSlidy = props => {
     }
   }
 
-  const {
-    children,
-    classNameBase,
-    imageObjectFit,
-    numOfSlides,
-    sanitize,
-    useFullHeight,
-    useFullWidth
-  } = props
-
   const numOfSlidesSanitzed = Math.min(
     numOfSlides,
     React.Children.count(children)
@@ -72,15 +85,31 @@ const ReactSlidy = props => {
     .filter(Boolean)
     .join(' ')
 
+  const reactSlidySliderProps = {
+    children,
+    classNameBase,
+    doAfterDestroy,
+    doAfterInit,
+    doAfterSlide,
+    doBeforeSlide,
+    ease,
+    initialSlide,
+    itemsToPreload,
+    keyboardNavigation,
+    numOfSlides,
+    slide,
+    showArrows,
+    slideSpeed
+  }
+
   return (
     <div className={rootClassName} ref={nodeEl}>
       {showSlider && (
         <ReactSlidySlider
-          parentRef={nodeEl}
-          {...props}
+          {...reactSlidySliderProps}
           numOfSlides={sanitize ? numOfSlidesSanitzed : numOfSlides}
         >
-          {props.children}
+          {children}
         </ReactSlidySlider>
       )}
     </div>
@@ -117,8 +146,6 @@ ReactSlidy.propTypes = {
     /** Distance which the slider will be loaded */
     offset: PropTypes.number
   }),
-  /** Activate navigation by keyboard */
-  navigateByKeyboard: PropTypes.bool,
   /** Number of slides to show at once */
   numOfSlides: PropTypes.number,
   /** Determine if we want to sanitize the slides or take numberOfSlider directly */
@@ -133,29 +160,6 @@ ReactSlidy.propTypes = {
   useFullWidth: PropTypes.bool,
   /** Use the full height of the container adding some styles to the elements */
   useFullHeight: PropTypes.bool
-}
-
-ReactSlidy.defaultProps = {
-  classNameBase: 'react-Slidy',
-  doAfterDestroy: noop,
-  doAfterInit: noop,
-  doAfterSlide: noop,
-  doBeforeSlide: noop,
-  itemsToPreload: 1,
-  initialSlide: 0,
-  ease: 'ease',
-  lazyLoadSlider: true,
-  lazyLoadConfig: {
-    offset: 150
-  },
-  navigateByKeyboard: false,
-  numOfSlides: 1,
-  sanitize: true,
-  slide: 0,
-  slideSpeed: 500,
-  showArrows: true,
-  useFullHeight: false,
-  useFullWidth: true
 }
 
 export default ReactSlidy

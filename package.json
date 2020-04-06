@@ -26,7 +26,8 @@
     "lint:sass": "sui-lint sass",
     "prelib": "npm run clean:lib -s",
     "release": "np",
-    "prepublish": "npm run lib"
+    "prepublish": "npm run lib",
+    "test": "size-limit"
   },
   "license": "MIT",
   "repository": {
@@ -40,22 +41,21 @@
   },
   "devDependencies": {
     "@babel/cli": "7",
-    "@mdx-js/loader": "1.5.3",
-    "@next/mdx": "9.1.7",
+    "@next/mdx": "9.3.4",
     "@s-ui/lint": "3",
+    "@size-limit/preset-small-lib": "4.4.5",
     "@zeit/next-sass": "1.0.1",
     "babel-preset-sui": "3",
     "copyfiles": "2.1.1",
-    "next": "9.1.7",
-    "node-sass": "4.13.0",
+    "next": "9.3.4",
+    "node-sass": "4.13.1",
     "np": "5.2.1",
     "prism-react-renderer": "1.0.2",
     "prop-types": "15",
     "react": ">= 16.8.0 < 17",
     "react-dom": ">= 16.8.0 < 17",
     "rimraf": "3.0.0",
-    "sass-loader": "8.0.2",
-    "webpack": "4.41.5"
+    "size-limit": "4.4.5"
   },
   "dependencies": {
     "intersection-observer": "0.7.0"
@@ -71,5 +71,11 @@
   "prettier": "./node_modules/@s-ui/lint/.prettierrc.js",
   "stylelint": {
     "extends": "./node_modules/@s-ui/lint/stylelint.config.js"
-  }
+  },
+  "size-limit": [
+    {
+      "limit": "2.65 KB",
+      "path": "lib/*.js"
+    }
+  ]
 }
