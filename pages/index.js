@@ -21,7 +21,7 @@ export default () => (
         name="description"
         content="A carousel component for React with the basics. It just works. For minimal setup and needs. Focused on performance ⚡"
       />
-      <link rel="canonical" href="https://react-slidy.midu.dev/" />
+      <link rel="canonical" href="https://react-slidy.now.sh/" />
     </Head>
     <GitHubBagdge />
     <IndexMDX />
