@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@babel/cli": "7",
+    "@mdx-js/loader": "1.5.8",
     "@next/mdx": "9.3.4",
     "@s-ui/lint": "3",
     "@size-limit/preset-small-lib": "4.4.5",
