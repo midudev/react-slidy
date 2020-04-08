@@ -139,13 +139,17 @@ export default function ReactSlidySlider({
       {showArrows && (
         <>
           <span
+            arial-label="Previous"
             className={`${classNameBase}-prev`}
+            role="button"
             disabled={index === 0}
             onClick={handlePrev}
           />
           <span
+            arial-label="Next"
             className={`${classNameBase}-next`}
             disabled={items.length <= numOfSlides || index === items.length - 1}
+            role="button"
             onClick={handleNext}
           />
         </>
