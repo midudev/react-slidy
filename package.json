@@ -59,7 +59,7 @@
     "size-limit": "4.4.5"
   },
   "dependencies": {
-    "intersection-observer": "0.7.0"
+    "intersection-observer": "0.10.0"
   },
   "pre-commit": [
     "lint"
