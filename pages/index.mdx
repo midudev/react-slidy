@@ -6,6 +6,7 @@ import Api from '../doc-components/Api'
 import DynamicContent from '../doc-components/DynamicContent'
 import Dots from '../doc-components/Dots'
 import Number from '../doc-components/Number'
+import CustomArrowLeft from '../doc-components/CustomArrowLeft'
 import '../src/index.scss'
 
 <ReactSlidy>
@@ -53,7 +54,7 @@ you could also load the CSS directly from HTML:
 ```
 
 ## Customization 👩‍🎨
-If you're using SASS, you could modify the next variables:
+If you're using SASS, you could modify the following variables:
 
 ```sass
 $react-slidy-c-background: transparent !default;
@@ -323,6 +324,15 @@ If you have slides with different heights you need to specify the maxHeight to b
   </ReactSlidy>
 </div>
 ```
+
+#### Using custom arrows
+
+<ReactSlidy ArrowLeft={CustomArrowLeft}>
+  <img src="/1.jpg" />
+  <img src="/2.jpg" />
+  <img src="/3.jpg" />
+  <img src="/4.jpg" />
+</ReactSlidy>
 
 ## API 📖
 

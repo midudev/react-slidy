@@ -40,6 +40,8 @@ const renderItem = numOfSlides => (item, index) => {
 }
 
 export default function ReactSlidySlider({
+  ArrowLeft,
+  ArrowRight,
   children,
   classNameBase,
   doAfterDestroy,
@@ -134,24 +136,39 @@ export default function ReactSlidySlider({
   const handlePrev = e => slidyInstance.prev(e)
   const handleNext = e => items.length > numOfSlides && slidyInstance.next(e)
 
+  const renderLeftArrow = () => {
+    const disabled = index === 0
+    const props = {disabled, onClick: handlePrev}
+    if (ArrowLeft) return <ArrowLeft {...props} />
+    return (
+      <span
+        arial-label="Previous"
+        className={`${classNameBase}-prev`}
+        role="button"
+        {...props}
+      />
+    )
+  }
+  const renderRightArrow = () => {
+    const disabled = items.length <= numOfSlides || index === items.length - 1
+    const props = {disabled, onClick: handleNext}
+    if (ArrowRight) return <ArrowRight {...props} />
+    return (
+      <span
+        arial-label="Next"
+        className={`${classNameBase}-next`}
+        role="button"
+        {...props}
+      />
+    )
+  }
+
   return (
     <>
       {showArrows && (
         <>
-          <span
-            arial-label="Previous"
-            className={`${classNameBase}-prev`}
-            role="button"
-            disabled={index === 0}
-            onClick={handlePrev}
-          />
-          <span
-            arial-label="Next"
-            className={`${classNameBase}-next`}
-            disabled={items.length <= numOfSlides || index === items.length - 1}
-            role="button"
-            onClick={handleNext}
-          />
+          {renderLeftArrow()}
+          {renderRightArrow()}
         </>
       )}
       <div ref={sliderContainerDOMEl}>
