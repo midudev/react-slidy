@@ -25,7 +25,7 @@
     "lint:js": "sui-lint js",
     "lint:sass": "sui-lint sass",
     "prelib": "npm run clean:lib -s",
-    "release": "np",
+    "release": "np --no-cleanup",
     "prepublish": "npm run lib",
     "test": "size-limit"
   },
@@ -75,7 +75,7 @@
   },
   "size-limit": [
     {
-      "limit": "2.85 KB",
+      "limit": "3 KB",
       "path": "lib/*.js"
     }
   ]
