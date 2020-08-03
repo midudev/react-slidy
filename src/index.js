@@ -12,6 +12,8 @@ const CLASSNAMES = {
 }
 
 const ReactSlidy = ({
+  ArrowLeft,
+  ArrowRight,
   children,
   classNameBase = 'react-Slidy',
   doAfterDestroy = noop,
@@ -86,6 +88,8 @@ const ReactSlidy = ({
     .join(' ')
 
   const reactSlidySliderProps = {
+    ArrowLeft,
+    ArrowRight,
     children,
     classNameBase,
     doAfterDestroy,
@@ -117,6 +121,10 @@ const ReactSlidy = ({
 }
 
 ReactSlidy.propTypes = {
+  /** Component to be used as the left arrow for the slider */
+  ArrowLeft: PropTypes.elementType,
+  /** Component to be used as the right arrow for the slider */
+  ArrowRight: PropTypes.elementType,
   /** Children to be used as slides for the slider */
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   /** Class base to create all clases for elements. Styles might break if you modify it. */

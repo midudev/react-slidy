@@ -40,6 +40,8 @@ const renderItem = numOfSlides => (item, index) => {
 }
 
 export default function ReactSlidySlider({
+  ArrowLeft,
+  ArrowRight,
   children,
   classNameBase,
   doAfterDestroy,
@@ -134,24 +136,44 @@ export default function ReactSlidySlider({
   const handlePrev = e => slidyInstance.prev(e)
   const handleNext = e => items.length > numOfSlides && slidyInstance.next(e)
 
+  const renderLeftArrow = () => {
+    const disabled = index === 0
+    const props = {disabled, onClick: handlePrev}
+    const leftArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowLeft`
+    if (ArrowLeft) return <ArrowLeft {...props} className={leftArrowClasses} />
+
+    return (
+      <span
+        arial-label="Previous"
+        className={`${leftArrowClasses} ${classNameBase}-prev`}
+        role="button"
+        {...props}
+      />
+    )
+  }
+  const renderRightArrow = () => {
+    const disabled = items.length <= numOfSlides || index === items.length - 1
+    const props = {disabled, onClick: handleNext}
+    const rightArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowRight`
+    if (ArrowRight)
+      return <ArrowRight {...props} className={rightArrowClasses} />
+
+    return (
+      <span
+        arial-label="Next"
+        className={`${rightArrowClasses} ${classNameBase}-next`}
+        role="button"
+        {...props}
+      />
+    )
+  }
+
   return (
     <>
       {showArrows && (
         <>
-          <span
-            arial-label="Previous"
-            className={`${classNameBase}-prev`}
-            role="button"
-            disabled={index === 0}
-            onClick={handlePrev}
-          />
-          <span
-            arial-label="Next"
-            className={`${classNameBase}-next`}
-            disabled={items.length <= numOfSlides || index === items.length - 1}
-            role="button"
-            onClick={handleNext}
-          />
+          {renderLeftArrow()}
+          {renderRightArrow()}
         </>
       )}
       <div ref={sliderContainerDOMEl}>
