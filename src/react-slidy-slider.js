@@ -139,11 +139,13 @@ export default function ReactSlidySlider({
   const renderLeftArrow = () => {
     const disabled = index === 0
     const props = {disabled, onClick: handlePrev}
-    if (ArrowLeft) return <ArrowLeft {...props} />
+    const leftArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowLeft`
+    if (ArrowLeft) return <ArrowLeft {...props} className={leftArrowClasses} />
+
     return (
       <span
         arial-label="Previous"
-        className={`${classNameBase}-prev`}
+        className={`${leftArrowClasses} ${classNameBase}-prev`}
         role="button"
         {...props}
       />
@@ -152,11 +154,14 @@ export default function ReactSlidySlider({
   const renderRightArrow = () => {
     const disabled = items.length <= numOfSlides || index === items.length - 1
     const props = {disabled, onClick: handleNext}
-    if (ArrowRight) return <ArrowRight {...props} />
+    const rightArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowRight`
+    if (ArrowRight)
+      return <ArrowRight {...props} className={rightArrowClasses} />
+
     return (
       <span
         arial-label="Next"
-        className={`${classNameBase}-next`}
+        className={`${rightArrowClasses} ${classNameBase}-next`}
         role="button"
         {...props}
       />

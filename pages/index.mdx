@@ -6,7 +6,7 @@ import Api from '../doc-components/Api'
 import DynamicContent from '../doc-components/DynamicContent'
 import Dots from '../doc-components/Dots'
 import Number from '../doc-components/Number'
-import CustomArrowLeft from '../doc-components/CustomArrowLeft'
+import {CustomArrowLeft, CustomArrowRight} from '../doc-components/CustomArrows'
 import '../src/index.scss'
 
 <ReactSlidy>
@@ -307,8 +307,8 @@ If you have slides with different heights you need to specify the maxHeight to b
 
 <div>
   <ReactSlidy imageObjectFit="contain">
-    <img style={{maxHeight: '300px'}}src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg" />
-    <img style={{maxHeight: '300px'}}src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg" />
+    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg" />
+    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg" />
     <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg" />
     <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1982123.jpg" />
   </ReactSlidy>
@@ -317,9 +317,9 @@ If you have slides with different heights you need to specify the maxHeight to b
 ```js showButton
 <div>
   <ReactSlidy imageObjectFit="contain">
-    <img style={{maxHeight: '300px'}}src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg" />
-    <img style={{maxHeight: '300px'}}src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg" />
-    <img style={{maxHeight: '300px'}}src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg" />
+    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg" />
+    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg" />
+    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg" />
     <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1982123.jpg" />
   </ReactSlidy>
 </div>
@@ -327,12 +327,49 @@ If you have slides with different heights you need to specify the maxHeight to b
 
 #### Using custom arrows
 
-<ReactSlidy ArrowLeft={CustomArrowLeft}>
+<ReactSlidy ArrowLeft={CustomArrowLeft} ArrowRight={CustomArrowRight}>
   <img src="/1.jpg" />
   <img src="/2.jpg" />
   <img src="/3.jpg" />
   <img src="/4.jpg" />
 </ReactSlidy>
+
+```js showButton
+const buttonStyle = {
+  background: 'transparent',
+  border: 0,
+  cursor: 'pointer',
+  fontSize: 72,
+  height: '30%',
+  margin: 'auto 10px',
+  padding: 15
+}
+
+function CustomArrow({emoji, ...props}) {
+  return (
+    <button {...props} style={buttonStyle}>
+      <span role="img" aria-label="Arrow">
+        {emoji}
+      </span>
+    </button>
+  )
+}
+
+function CustomArrowLeft(props) {
+  return <CustomArrow {...props} emoji="👈" />
+}
+
+function CustomArrowRight(props) {
+  return <CustomArrow {...props} emoji="👉" />
+}
+
+<ReactSlidy ArrowLeft={CustomArrowLeft} ArrowRight={CustomArrowRight}>
+  <img src="/1.jpg" />
+  <img src="/2.jpg" />
+  <img src="/3.jpg" />
+  <img src="/4.jpg" />
+</ReactSlidy>
+```
 
 ## API 📖
 
