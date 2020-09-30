@@ -1,4 +1,5 @@
 # React Slidy 🍃
+
 #### a <i>minimal</i> and optimal slider for React ⚛️ in ~1KB <small style={{color: "#555", fontSize: "8px"}}>+1KB if intersection-observer polyfill if needed</small>
 
 import ReactSlidy from '../src/index'
@@ -28,32 +29,40 @@ import '../src/index.scss'
 ## How to install ℹ️
 
 Install the latest version of the package:
+
 ```
 npm install react-slidy --save
 ```
 
 Import the component:
+
 ```js
 import ReactSlidy from 'react-slidy'
 ```
 
 Import the styles:
+
 ```sass
 @import '~react-slidy/lib/index';
 ```
+
 or directly in your javascript file if you're using a bundler:
+
 ```js
 import 'react-slidy/lib/index.scss'
 // or using the css provided
 import 'react-slidy/lib/styles.css'
 ```
+
 you could also load the CSS directly from HTML:
+
 ```html
 <!-- from the index.html -->
-<link rel='stylesheet' href='https://unpkg.com/react-slidy/lib/styles.css'>
+<link rel="stylesheet" href="https://unpkg.com/react-slidy/lib/styles.css" />
 ```
 
 ## Customization 👩‍🎨
+
 If you're using SASS, you could modify the following variables:
 
 ```sass
@@ -89,6 +98,7 @@ You could preload as much as images as you want by using the `itemsToPreload` in
 ```
 
 ### Using with React components ⚛️
+
 You could use the slider with React components. Just put them inside. Every child will be rendered as slide. For example:
 
 <ReactSlidy>
@@ -110,6 +120,7 @@ You could use the slider with React components. Just put them inside. Every chil
 ### Using Keyboard Navigation ⌨️
 
 You could use the `keyboardNavigation` prop in order to activate keyboard navigation. Try to use the left and right arrow in order to navigate the next slider.
+
 <ReactSlidy keyboardNavigation>
   <Number num={1} />
   <Number num={2} />
@@ -127,9 +138,10 @@ You could use the `keyboardNavigation` prop in order to activate keyboard naviga
 ```
 
 ### Using an anchor as wrapper 🔗
+
 While not recommendable, you could wrap the Slider with a clickable element like an anchor, and the next and previous buttons will work as expected while the rest of the slider is clickable.
 
-<a href='#'>
+<a href="#">
   <ReactSlidy>
     <Number num={1} />
     <Number num={2} />
@@ -139,7 +151,7 @@ While not recommendable, you could wrap the Slider with a clickable element like
 </a>
 
 ```js showButton
-<a href='#'>
+<a href="#">
   <ReactSlidy>
     <Number num={1} />
     <Number num={2} />
@@ -200,6 +212,7 @@ Use `numOfSlides` prop to determine the number of slides that will be shown at o
 ```
 
 #### Example with less slides than numOfSlides
+
 Using `numOfSlides` with sanitize the number of shown items if there's not enough children available to be used. For example, if `numOfSlides` is 5, but you have only two slides, it will show only two using the full width.
 
 <ReactSlidy numOfSlides={5}>
@@ -272,7 +285,8 @@ export default () => {
             <button
               key={index}
               style={createStyles(index === actualSlide)}
-              onClick={() => updateSlide({ currentSlide: index })}>
+              onClick={() => updateSlide({currentSlide: index})}
+            >
               &bull;
             </button>
           )
@@ -287,7 +301,7 @@ export default () => {
 
 By default, slides uses the full width of the container. So, if you're using an image, it uses all the width available. You could avoid this by using the prop `useFullWidth`.
 
-<ReactSlidy fullHeight imageObjectFit="contains" useFullWidth={false}>
+<ReactSlidy fullHeight imageObjectFit="contain" useFullWidth={false}>
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
   <img src="https://a.ccdn.es/nuevos/400/bmw/series3/2020/4sa_225.jpg" />
@@ -303,24 +317,48 @@ By default, slides uses the full width of the container. So, if you're using an 
 
 #### Adapt slides to use the height available
 
-If you have slides with different heights you need to specify the maxHeight to be  used for each slide, in order to avoid inner images or content to make the slider jump as they will automatically adapt to the available width and automatically detect the height.
+If you have slides with different heights you need to specify the maxHeight to be used for each slide, in order to avoid inner images or content to make the slider jump as they will automatically adapt to the available width and automatically detect the height.
 
 <div>
   <ReactSlidy imageObjectFit="contain">
-    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg" />
-    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg" />
-    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg" />
-    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1982123.jpg" />
+    <img
+      style={{maxHeight: '300px'}}
+      src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg"
+    />
+    <img
+      style={{maxHeight: '300px'}}
+      src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg"
+    />
+    <img
+      style={{maxHeight: '300px'}}
+      src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg"
+    />
+    <img
+      style={{maxHeight: '300px'}}
+      src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1982123.jpg"
+    />
   </ReactSlidy>
 </div>
 
 ```js showButton
 <div>
   <ReactSlidy imageObjectFit="contain">
-    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg" />
-    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg" />
-    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg" />
-    <img style={{maxHeight: '300px'}} src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1982123.jpg" />
+    <img
+      style={{maxHeight: '300px'}}
+      src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1873819.jpg"
+    />
+    <img
+      style={{maxHeight: '300px'}}
+      src="https://d.fotocasa.es/promotion/2018/02/12/19402331/2108283.jpg"
+    />
+    <img
+      style={{maxHeight: '300px'}}
+      src="https://d.fotocasa.es/promotion/2018/03/26/19414824/2152752.jpg"
+    />
+    <img
+      style={{maxHeight: '300px'}}
+      src="https://d.fotocasa.es/promotion/2017/03/23/19298958/1982123.jpg"
+    />
   </ReactSlidy>
 </div>
 ```
@@ -363,7 +401,7 @@ function CustomArrowRight(props) {
   return <CustomArrow {...props} emoji="👉" />
 }
 
-<ReactSlidy ArrowLeft={CustomArrowLeft} ArrowRight={CustomArrowRight}>
+;<ReactSlidy ArrowLeft={CustomArrowLeft} ArrowRight={CustomArrowRight}>
   <img src="/1.jpg" />
   <img src="/2.jpg" />
   <img src="/3.jpg" />
