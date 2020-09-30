@@ -52,11 +52,12 @@ const props = {
       name: 'enum',
       value: [
         {value: "'cover'", computed: false},
-        {value: "'contains'", computed: false}
+        {value: "'contain'", computed: false}
       ]
     },
     required: false,
-    description: 'Determine the object-fit property for the images'
+    description:
+      'Determine the object-fit property for the images ("cover" or "contain")'
   },
   itemsToPreload: {
     type: {name: 'number'},
@@ -155,7 +156,8 @@ export default () => {
           props[propName] || {}
         const {value = undefined} = defaultValue
         if (typeof type === 'undefined') {
-      console.warn( // eslint-disable-line
+          console.warn(
+            // eslint-disable-line
             'It seem that you might have a prop with a defaultValue but it does not exist as propType'
           )
           return

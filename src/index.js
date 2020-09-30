@@ -41,7 +41,7 @@ const ReactSlidy = ({
   const nodeEl = useRef(null)
 
   useEffect(
-    function() {
+    function () {
       let observer
 
       if (lazyLoadSlider) {
@@ -140,7 +140,7 @@ ReactSlidy.propTypes = {
   /** Ease mode to use on translations */
   ease: PropTypes.string,
   /** Determine the object-fit property for the images */
-  imageObjectFit: PropTypes.oneOf(['cover', 'contains']),
+  imageObjectFit: PropTypes.oneOf(['cover', 'contain']),
   /** Determine the number of items that will be preloaded */
   itemsToPreload: PropTypes.number,
   /** Determine the first slide to start with */
