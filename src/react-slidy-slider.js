@@ -144,7 +144,7 @@ export default function ReactSlidySlider({
 
     return (
       <span
-        arial-label="Previous"
+        aria-label="Previous"
         className={`${leftArrowClasses} ${classNameBase}-prev`}
         role="button"
         {...props}
@@ -160,7 +160,7 @@ export default function ReactSlidySlider({
 
     return (
       <span
-        arial-label="Next"
+        aria-label="Next"
         className={`${rightArrowClasses} ${classNameBase}-next`}
         role="button"
         {...props}
