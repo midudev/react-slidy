@@ -11,7 +11,7 @@ const components = {
   code: CodeBlock
 }
 
-export default () => (
+const Home = () => (
   <MDXProvider components={components}>
     <Head>
       <title>
@@ -45,3 +45,5 @@ export default () => (
     </style>
   </MDXProvider>
 )
+
+export default Home

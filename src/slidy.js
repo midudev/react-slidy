@@ -4,13 +4,13 @@ const TRANSITION_END = 'transitionend'
 const {abs} = Math
 const EVENT_OPTIONS = {passive: false}
 
-function translate(to, moveX, percentatge = 100) {
+export function translate(to, moveX, percentatge = 100) {
   const translation = to * percentatge * -1
   const x = moveX ? `calc(${translation}% - ${moveX}px)` : `${translation}%`
   return `translate3d(${x}, 0, 0)`
 }
 
-function clampNumber(x, minValue, maxValue) {
+export function clampNumber(x, minValue, maxValue) {
   return Math.min(Math.max(x, minValue), maxValue)
 }
 

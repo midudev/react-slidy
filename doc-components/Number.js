@@ -13,6 +13,7 @@ const style = {
   width: '100%'
 }
 
-export default ({num}) => { // eslint-disable-line
+export default function Number({num}) {
+  // eslint-disable-line
   return <span style={style}>{num}</span>
 }

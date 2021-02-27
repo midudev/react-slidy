@@ -41,7 +41,7 @@ const ReactSlidy = ({
   const nodeEl = useRef(null)
 
   useEffect(
-    function () {
+    function() {
       let observer
 
       if (lazyLoadSlider) {

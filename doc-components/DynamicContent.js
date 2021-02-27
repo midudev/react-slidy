@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import ReactSlidy from '../src/index'
 import Number from './Number'
 
-export default () => {
+const DynamicContent = () => {
   const [slides, setSlides] = useState([0])
   const slidesToRender = slides.map((_, index) => (
     <Number key={index} num={index} />
@@ -15,3 +15,5 @@ export default () => {
     </>
   )
 }
+
+export default DynamicContent

@@ -11,7 +11,7 @@ const createStyles = isActive => ({
   fontSize: '48px'
 })
 
-export default () => {
+const Dots = () => {
   const [actualSlide, setActualSlide] = useState(0)
 
   const updateSlide = ({currentSlide}) => {
@@ -41,3 +41,5 @@ export default () => {
     </>
   )
 }
+
+export default Dots

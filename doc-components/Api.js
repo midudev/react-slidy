@@ -146,7 +146,7 @@ const props = {
   }
 }
 
-export default () => {
+export default function Api() {
   const propsKeys = Object.keys(props)
 
   return (
