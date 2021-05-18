@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "4.1.0",
+  "version": "4.3.0",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -26,7 +26,7 @@
     "lint:sass": "sui-lint sass",
     "prelib": "npm run clean:lib -s",
     "release": "np --no-cleanup",
-    "prepublish": "npm run lib",
+    "prepare": "npm run lib",
     "test": "jest",
     "test:watch": "jest --watch"
   },
