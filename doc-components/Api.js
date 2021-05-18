@@ -59,6 +59,13 @@ const props = {
     description:
       'Determine the object-fit property for the images ("cover" or "contain")'
   },
+  infiniteLoop: {
+    type: {name: 'bool'},
+    required: false,
+    description:
+      'Determine if the slider will be infinite, that means, when it arrives to the last slide and the user click on next, it will go to the first one. And if the current slide is the first, and the user clicks on previous, it will go to the last one.',
+    defaultValue: {value: 'true', computed: false}
+  },
   itemsToPreload: {
     type: {name: 'number'},
     required: false,
