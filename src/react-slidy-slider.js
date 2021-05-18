@@ -49,12 +49,13 @@ export default function ReactSlidySlider({
   doAfterSlide,
   doBeforeSlide,
   ease,
+  infiniteLoop,
   initialSlide,
   itemsToPreload,
   keyboardNavigation,
   numOfSlides,
-  slide,
   showArrows,
+  slide,
   slideSpeed
 }) {
   const [slidyInstance, setSlidyInstance] = useState({
@@ -86,6 +87,7 @@ export default function ReactSlidySlider({
         doBeforeSlide,
         numOfSlides,
         slideSpeed,
+        infiniteLoop,
         slidesDOMEl: slidesDOMEl.current,
         initialSlide: index,
         items: items.length,
@@ -137,7 +139,7 @@ export default function ReactSlidySlider({
   const handleNext = e => items.length > numOfSlides && slidyInstance.next(e)
 
   const renderLeftArrow = () => {
-    const disabled = index === 0
+    const disabled = index === 0 && !infiniteLoop
     const props = {disabled, onClick: handlePrev}
     const leftArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowLeft`
     if (ArrowLeft) return <ArrowLeft {...props} className={leftArrowClasses} />
@@ -152,7 +154,9 @@ export default function ReactSlidySlider({
     )
   }
   const renderRightArrow = () => {
-    const disabled = items.length <= numOfSlides || index === items.length - 1
+    const disabled =
+      (items.length <= numOfSlides || index === items.length - 1) &&
+      !infiniteLoop
     const props = {disabled, onClick: handleNext}
     const rightArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowRight`
     if (ArrowRight)
