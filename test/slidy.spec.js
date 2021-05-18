@@ -1,4 +1,4 @@
-const {clampNumber, translate} = require('../src/slidy')
+const {clampNumber, infiniteIndex, translate} = require('../src/slidy')
 
 describe('clampNumber', () => {
   test('when a number that is less than min value is provided then the min value is returned', () => {
@@ -18,6 +18,35 @@ describe('clampNumber', () => {
 
   test('when a number that is greater than max value is provided then the max value is returned', () => {
     expect(clampNumber(7, 4, 8)).toBe(7)
+  })
+})
+
+describe('infiniteIndex', () => {
+  test('when a number that is less than 0 is provided then the end value - 1 is returned', () => {
+    const when = [
+      {value: -1, endValue: 4, expected: 3},
+      {value: -3, endValue: 9, expected: 8}
+    ]
+
+    when.forEach(({value, endValue, expected}) => {
+      expect(infiniteIndex(value, endValue)).toBe(expected)
+    })
+  })
+
+  test('when a number that is greater than end value is provided then 0 is returned', () => {
+    expect(infiniteIndex(12, 8)).toBe(0)
+  })
+
+  test('when a number that is between 0 and the end value is provided then the same value is returned', () => {
+    const when = [
+      {value: 0, endValue: 4, expected: 0},
+      {value: 1, endValue: 9, expected: 1},
+      {value: 5, endValue: 9, expected: 5}
+    ]
+
+    when.forEach(({value, endValue, expected}) => {
+      expect(infiniteIndex(value, endValue)).toBe(expected)
+    })
   })
 })
 

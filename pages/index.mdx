@@ -180,6 +180,30 @@ return (
 )
 ```
 
+### Using Infinite Loop
+
+You could make your slider infinite. That meand when it arrive to the last slide, and the user clicks on next it starts again. And when the slider is on the first slide, and the user clicks on previous, it goes to the last slide.
+
+#### Simple example with 5 slides in total
+
+<ReactSlidy infiniteLoop>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+  <Number num={5} />
+</ReactSlidy>
+
+```js showButton
+<ReactSlidy infiniteLoop>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+  <Number num={5} />
+</ReactSlidy>
+```
+
 ### Show multiple slides at once 🤹‍♂️
 
 Use `numOfSlides` prop to determine the number of slides that will be shown at once.

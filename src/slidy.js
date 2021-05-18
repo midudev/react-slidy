@@ -10,6 +10,12 @@ export function translate(to, moveX, percentatge = 100) {
   return `translate3d(${x}, 0, 0)`
 }
 
+export function infiniteIndex(index, end) {
+  if (index < 0) return end - 1
+  else if (index >= end) return 0
+  else return index
+}
+
 export function clampNumber(x, minValue, maxValue) {
   return Math.min(Math.max(x, minValue), maxValue)
 }
@@ -51,6 +57,7 @@ export default function slidy(containerDOMEl, options) {
     doAfterSlide,
     doBeforeSlide,
     ease,
+    infiniteLoop,
     initialSlide,
     numOfSlides,
     onNext,
@@ -105,6 +112,13 @@ export default function slidy(containerDOMEl, options) {
 
     // calculate the nextIndex according to the movement
     let nextIndex = index + 1 * movement
+
+    /**
+     * If the slider has the infiniteLoop option
+     * nextIndex will start from the start when arrives to the end
+     * and vice versa
+     */
+    if (infiniteLoop) nextIndex = infiniteIndex(nextIndex, items)
 
     // nextIndex should be between 0 and items minus 1
     nextIndex = clampNumber(nextIndex, 0, items - 1)
