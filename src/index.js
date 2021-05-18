@@ -21,6 +21,7 @@ const ReactSlidy = ({
   doAfterSlide = noop,
   doBeforeSlide = noop,
   imageObjectFit,
+  infiniteLoop = false,
   itemsToPreload = 1,
   initialSlide = 0,
   ease = 'ease',
@@ -97,12 +98,13 @@ const ReactSlidy = ({
     doAfterSlide,
     doBeforeSlide,
     ease,
+    infiniteLoop,
     initialSlide,
     itemsToPreload,
     keyboardNavigation,
     numOfSlides,
-    slide,
     showArrows,
+    slide,
     slideSpeed
   }
 
@@ -141,6 +143,8 @@ ReactSlidy.propTypes = {
   ease: PropTypes.string,
   /** Determine the object-fit property for the images */
   imageObjectFit: PropTypes.oneOf(['cover', 'contain']),
+  /** Indicates if the slider will start with the first slide once it ends */
+  infiniteLoop: PropTypes.bool,
   /** Determine the number of items that will be preloaded */
   itemsToPreload: PropTypes.number,
   /** Determine the first slide to start with */
