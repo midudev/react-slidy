@@ -23,3 +23,6 @@ public
 next.config.js
 README.md
 LICENSE
+now.json
+jest.config.js
+babel.config.js
