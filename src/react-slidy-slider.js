@@ -11,11 +11,20 @@ function convertToArrayFrom(children) {
 function getItemsToRender({
   index,
   maxIndex,
-  items,
+  items: originalItems,
   itemsToPreload,
-  numOfSlides
+  numOfSlides,
+  infiniteLoop
 }) {
   const preload = Math.max(itemsToPreload, numOfSlides)
+  // If the slider is infinite, is needed clone the first and the last element
+  const items = infiniteLoop
+    ? [
+        originalItems[originalItems.length - 1],
+        ...originalItems,
+        originalItems[0]
+      ]
+    : originalItems
   if (index >= items.length - numOfSlides) {
     const addNewItems =
       items.length > numOfSlides ? items.slice(0, numOfSlides - 1) : []
@@ -54,6 +63,7 @@ export default function ReactSlidySlider({
   itemsToPreload,
   keyboardNavigation,
   numOfSlides,
+  rewindLoop,
   showArrows,
   slide,
   slideSpeed
@@ -70,6 +80,7 @@ export default function ReactSlidySlider({
   const slidesDOMEl = useRef(null)
 
   const items = convertToArrayFrom(children)
+  const isArrowsForced = infiniteLoop || rewindLoop
 
   useEffect(
     function() {
@@ -87,6 +98,7 @@ export default function ReactSlidySlider({
         doBeforeSlide,
         numOfSlides,
         slideSpeed,
+        rewindLoop,
         infiniteLoop,
         slidesDOMEl: slidesDOMEl.current,
         initialSlide: index,
@@ -132,14 +144,15 @@ export default function ReactSlidySlider({
     maxIndex,
     items,
     itemsToPreload,
-    numOfSlides
+    numOfSlides,
+    infiniteLoop
   })
 
   const handlePrev = e => slidyInstance.prev(e)
   const handleNext = e => items.length > numOfSlides && slidyInstance.next(e)
 
   const renderLeftArrow = () => {
-    const disabled = index === 0 && !infiniteLoop
+    const disabled = index === 0 && !isArrowsForced
     const props = {disabled, onClick: handlePrev}
     const leftArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowLeft`
     if (ArrowLeft) return <ArrowLeft {...props} className={leftArrowClasses} />
@@ -156,7 +169,7 @@ export default function ReactSlidySlider({
   const renderRightArrow = () => {
     const disabled =
       (items.length <= numOfSlides || index === items.length - 1) &&
-      !infiniteLoop
+      !isArrowsForced
     const props = {disabled, onClick: handleNext}
     const rightArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowRight`
     if (ArrowRight)

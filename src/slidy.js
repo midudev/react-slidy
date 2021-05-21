@@ -10,9 +10,15 @@ export function translate(to, moveX, percentatge = 100) {
   return `translate3d(${x}, 0, 0)`
 }
 
-export function infiniteIndex(index, end) {
-  if (index < 0) return end - 1
-  else if (index >= end) return 0
+export function rewindIndex(index, len) {
+  if (index < 0) return len - 1
+  else if (index >= len) return 0
+  else return index
+}
+
+export function infiniteIndex(index, len) {
+  if (index === 0) return len
+  else if (index > len) return 1
   else return index
 }
 
@@ -57,6 +63,7 @@ export default function slidy(containerDOMEl, options) {
     doAfterSlide,
     doBeforeSlide,
     ease,
+    rewindLoop,
     infiniteLoop,
     initialSlide,
     numOfSlides,
@@ -114,14 +121,14 @@ export default function slidy(containerDOMEl, options) {
     let nextIndex = index + 1 * movement
 
     /**
-     * If the slider has the infiniteLoop option
+     * If the slider has the rewindLoop option
      * nextIndex will start from the start when arrives to the end
      * and vice versa
      */
-    if (infiniteLoop) nextIndex = infiniteIndex(nextIndex, items)
+    if (rewindLoop) nextIndex = rewindIndex(nextIndex, items)
 
-    // nextIndex should be between 0 and items minus 1
-    nextIndex = clampNumber(nextIndex, 0, items - 1)
+    // nextIndex should be between 0 and items minus 1, if infinite loop option is set to false
+    nextIndex = infiniteLoop ? nextIndex : clampNumber(nextIndex, 0, items - 1)
 
     goTo(nextIndex)
   }
@@ -228,17 +235,24 @@ export default function slidy(containerDOMEl, options) {
   function goTo(nextIndex) {
     // if the nextIndex and the current is the same, we don't need to do the slide
     if (nextIndex === index) return
-
-    // if the nextIndex is possible according to number of items, then use it
-    if (nextIndex <= items) {
-      // execute the callback from the options before sliding
-      doBeforeSlide({currentSlide: index, nextSlide: nextIndex})
-      // execute the internal callback
-      nextIndex > index ? onNext(nextIndex) : onPrev(nextIndex)
-      index = nextIndex
-    }
+    // execute the callback from the options before sliding
+    doBeforeSlide({currentSlide: index, nextSlide: nextIndex})
+    // execute the internal callback
+    nextIndex > index ? onNext(nextIndex) : onPrev(nextIndex)
+    index = nextIndex
     // translate to the next index by a defined duration and ease function
     _translate(slideSpeed, ease)
+    // if the slide is in infinite loop mode and the index it's at the end of the cycle, then it's a cycle
+    if ((nextIndex === 0 || nextIndex > items) && infiniteLoop) {
+      // Translate to the original element (not the cloned one) without animation, once the transition ends
+      setTimeout(() => {
+        // execute the internal callback
+        nextIndex = infiniteIndex(nextIndex, items)
+        index = nextIndex
+        // translate to the index without animations
+        _translate(0)
+      }, slideSpeed)
+    }
 
     // execute the callback from the options after sliding
     slidesDOMEl.addEventListener(TRANSITION_END, function cb(e) {

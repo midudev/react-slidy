@@ -31,6 +31,7 @@ const ReactSlidy = ({
   },
   keyboardNavigation = false,
   numOfSlides = 1,
+  rewindLoop = false,
   sanitize = true,
   slide = 0,
   slideSpeed = 500,
@@ -99,10 +100,11 @@ const ReactSlidy = ({
     doBeforeSlide,
     ease,
     infiniteLoop,
-    initialSlide,
+    initialSlide: infiniteLoop ? initialSlide + 1 : initialSlide,
     itemsToPreload,
     keyboardNavigation,
     numOfSlides,
+    rewindLoop,
     showArrows,
     slide,
     slideSpeed
@@ -160,6 +162,8 @@ ReactSlidy.propTypes = {
   }),
   /** Number of slides to show at once */
   numOfSlides: PropTypes.number,
+  /** Indicates if the slider will start with the first slide once it ends, doing it rewind */
+  rewindLoop: PropTypes.bool,
   /** Determine if we want to sanitize the slides or take numberOfSlider directly */
   sanitize: PropTypes.bool,
   /** Change dynamically the slide number, perfect to use with dots */
