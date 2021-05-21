@@ -1,6 +1,6 @@
 {
   "name": "react-slidy",
-  "version": "4.1.0",
+  "version": "4.3.2",
   "main": "lib/",
   "keywords": [
     "slider",
@@ -26,7 +26,7 @@
     "lint:sass": "sui-lint sass",
     "prelib": "npm run clean:lib -s",
     "release": "np --no-cleanup",
-    "prepublish": "npm run lib",
+    "prepare": "npm run lib",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -37,31 +37,31 @@
   },
   "peerDependencies": {
     "prop-types": "15",
-    "react": ">= 16.8.0 < 17",
-    "react-dom": ">= 16.8.0 < 17"
+    "react": ">= 16.8.0",
+    "react-dom": ">= 16.8.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.13.0",
-    "@babel/core": "^7.13.8",
-    "@babel/preset-env": "^7.13.9",
+    "@babel/cli": "7.14.3",
+    "@babel/core": "7.14.3",
+    "@babel/preset-env": "^7.14.2",
     "@mdx-js/loader": "1.6.22",
-    "@next/mdx": "10.0.7",
+    "@next/mdx": "10.2.0",
     "@s-ui/lint": "3",
-    "@size-limit/preset-small-lib": "4.10.0",
-    "@testing-library/react": "^11.2.5",
+    "@size-limit/preset-small-lib": "4.10.2",
+    "@testing-library/react": "11.2.7",
     "babel-jest": "26.6.3",
     "babel-preset-sui": "3",
     "copyfiles": "2.4.1",
-    "jest": "^26.6.3",
-    "next": "10.0.7",
-    "np": "5.2.1",
+    "jest": "26.6.3",
+    "next": "10.2.0",
+    "np": "7.5.0",
     "prism-react-renderer": "1.2.0",
     "prop-types": "15",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "rimraf": "3.0.2",
-    "sass": "1.32.8",
-    "size-limit": "4.10.0"
+    "sass": "1.32.13",
+    "size-limit": "4.10.2"
   },
   "dependencies": {
     "intersection-observer": "0.10.0"
