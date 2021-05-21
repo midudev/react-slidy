@@ -118,6 +118,13 @@ const props = {
     description: 'Number of slides to show at once',
     defaultValue: {value: '1', computed: false}
   },
+  infiniteLoop: {
+    type: {name: 'bool'},
+    required: false,
+    description:
+      'Determine if the slider will be infinite, by rewind. That means, that means when it arrives to the last slide, and the user clicks on next it does a rewind to the first slide. And when the slider is on the first slide, and the user clicks on previous, it does a forward to the last slide.',
+    defaultValue: {value: 'true', computed: false}
+  },
   sanitize: {
     type: {name: 'bool'},
     required: false,

@@ -9,7 +9,7 @@ import Dots from '../doc-components/Dots'
 import Number from '../doc-components/Number'
 import {CustomArrowLeft, CustomArrowRight} from '../doc-components/CustomArrows'
 
-<ReactSlidy itemsToPreload={4} numOfSlides={3}>
+<ReactSlidy>
   <img src="/1.jpg" />
   <img src="/2.jpg" />
   <img src="/3.jpg" />
@@ -182,7 +182,7 @@ return (
 
 ### Using Infinite Loop
 
-You could make your slider infinite. That meand when it arrive to the last slide, and the user clicks on next it starts again. And when the slider is on the first slide, and the user clicks on previous, it goes to the last slide.
+You could make your slider infinite. That means when it arrives to the last slide, and the user clicks on next it starts again. And when the slider is on the first slide, and the user clicks on previous, it goes to the last slide.
 
 #### Simple example with 5 slides in total
 
@@ -196,6 +196,30 @@ You could make your slider infinite. That meand when it arrive to the last slide
 
 ```js showButton
 <ReactSlidy infiniteLoop>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+  <Number num={5} />
+</ReactSlidy>
+```
+
+### Using Rewind Loop
+
+You could make your slider infinite, by rewind. That means when it arrives to the last slide, and the user clicks on next it does a rewind to the first slide. And when the slider is on the first slide, and the user clicks on previous, it does a forward to the last slide.
+
+#### Simple example with 5 slides in total
+
+<ReactSlidy rewindLoop>
+  <Number num={1} />
+  <Number num={2} />
+  <Number num={3} />
+  <Number num={4} />
+  <Number num={5} />
+</ReactSlidy>
+
+```js showButton
+<ReactSlidy rewindLoop>
   <Number num={1} />
   <Number num={2} />
   <Number num={3} />
