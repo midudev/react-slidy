@@ -118,7 +118,7 @@ const props = {
     description: 'Number of slides to show at once',
     defaultValue: {value: '1', computed: false}
   },
-  infiniteLoop: {
+  rewindLoop: {
     type: {name: 'bool'},
     required: false,
     description:
