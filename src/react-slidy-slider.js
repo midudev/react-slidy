@@ -105,11 +105,14 @@ export default function ReactSlidySlider({
         items: items.length,
         onNext: nextIndex => {
           setIndex(nextIndex)
-          nextIndex > maxIndex && setMaxIndex(nextIndex)
+          setMaxIndex(currentIndex =>
+            nextIndex > currentIndex ? nextIndex : currentIndex
+          )
           return nextIndex
         },
         onPrev: nextIndex => {
           setIndex(nextIndex)
+          if (infiniteLoop && nextIndex === 0) setMaxIndex(items.length + 1)
           return nextIndex
         }
       })
