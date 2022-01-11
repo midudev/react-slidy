@@ -41,9 +41,9 @@
     "react-dom": ">= 16.8.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.14.3",
-    "@babel/core": "7.14.3",
-    "@babel/preset-env": "^7.14.2",
+    "@babel/cli": "7.16.8",
+    "@babel/core": "7.16.7",
+    "@babel/preset-env": "^7.16.8",
     "@mdx-js/loader": "1.6.22",
     "@next/mdx": "10.2.0",
     "@s-ui/lint": "3",
@@ -53,14 +53,14 @@
     "babel-preset-sui": "3",
     "copyfiles": "2.4.1",
     "jest": "26.6.3",
-    "next": "10.2.0",
+    "next": "12.0.7",
     "np": "7.5.0",
-    "prism-react-renderer": "1.2.0",
+    "prism-react-renderer": "1.2.1",
     "prop-types": "15",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "rimraf": "3.0.2",
-    "sass": "1.32.13",
+    "sass": "1.47.0",
     "size-limit": "4.10.2"
   },
   "dependencies": {
