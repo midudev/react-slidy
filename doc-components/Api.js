@@ -2,8 +2,21 @@ import React from 'react'
 
 // generated with react-docgen
 const props = {
+  ArrowLeft: {
+    type: {name: 'elementType'},
+    required: false,
+    description: 'Component to be used as the left arrow for the slider'
+  },
+  ArrowRight: {
+    type: {name: 'elementType'},
+    required: false,
+    description: 'Component to be used as the right arrow for the slider'
+  },
   children: {
-    type: {name: 'union', value: [{name: 'array'}, {name: 'object'}]},
+    type: {
+      name: 'union',
+      value: [{name: 'array'}, {name: 'object'}]
+    },
     required: true,
     description: 'Children to be used as slides for the slider'
   },
@@ -56,15 +69,14 @@ const props = {
       ]
     },
     required: false,
-    description:
-      'Determine the object-fit property for the images ("cover" or "contain")'
+    description: 'Determine the object-fit property for the images'
   },
   infiniteLoop: {
     type: {name: 'bool'},
     required: false,
     description:
-      'Determine if the slider will be infinite, that means, when it arrives to the last slide and the user click on next, it will go to the first one. And if the current slide is the first, and the user clicks on previous, it will go to the last one.',
-    defaultValue: {value: 'true', computed: false}
+      'Indicates if the slider will start with the first slide once it ends',
+    defaultValue: {value: 'false', computed: false}
   },
   itemsToPreload: {
     type: {name: 'number'},
@@ -81,7 +93,8 @@ const props = {
   keyboardNavigation: {
     type: {name: 'bool'},
     required: false,
-    description: 'Activate navigation by keyboard'
+    description: 'Activate navigation by keyboard',
+    defaultValue: {value: 'false', computed: false}
   },
   lazyLoadSlider: {
     type: {name: 'bool'},
@@ -104,13 +117,7 @@ const props = {
     required: false,
     description:
       'Configuration for lazy loading. Only needed if lazyLoadSlider is true',
-    defaultValue: {value: '{\n  offset: 150\n}', computed: false}
-  },
-  navigateByKeyboard: {
-    type: {name: 'bool'},
-    required: false,
-    description: 'Activate navigation by keyboard',
-    defaultValue: {value: 'false', computed: false}
+    defaultValue: {value: '{\r\n  offset: 150\r\n}', computed: false}
   },
   numOfSlides: {
     type: {name: 'number'},
@@ -143,6 +150,12 @@ const props = {
     required: false,
     description: 'Determine the speed of the sliding animation',
     defaultValue: {value: '500', computed: false}
+  },
+  useFullWidth: {
+    type: {name: 'bool'},
+    required: false,
+    description: 'Use the full width of the container for the image',
+    defaultValue: {value: 'true', computed: false}
   },
   useFullHeight: {
     type: {name: 'bool'},
