@@ -43,7 +43,11 @@
   "devDependencies": {
     "@babel/cli": "7.16.8",
     "@babel/core": "7.16.7",
-    "@babel/preset-env": "^7.16.8",
+    "@babel/eslint-parser": "7.17.0",
+    "@babel/eslint-plugin": "7.16.5",
+    "@babel/plugin-proposal-class-properties": "7.16.7",
+    "@babel/preset-env": "7.16.8",
+    "@babel/preset-react": "7.16.7",
     "@mdx-js/loader": "1.6.22",
     "@next/mdx": "10.2.0",
     "@s-ui/lint": "3",

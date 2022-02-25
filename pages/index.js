@@ -3,8 +3,8 @@ import Head from 'next/head'
 import {MDXProvider} from '@mdx-js/react'
 
 import IndexMDX from './index.mdx'
-import CodeBlock from '../doc-components/CodeBlock'
-import GitHubBagdge from '../doc-components/GitHub'
+import CodeBlock from '../doc-components/CodeBlock.js'
+import GitHubBagdge from '../doc-components/GitHub.js'
 
 const components = {
   pre: props => <div {...props} />,

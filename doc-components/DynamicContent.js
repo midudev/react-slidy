@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import ReactSlidy from '../src/index'
-import Number from './Number'
+import ReactSlidy from '../src/index.js'
+import Number from './Number.js'
 
 const DynamicContent = () => {
   const [slides, setSlides] = useState([0])

@@ -1,5 +1,5 @@
 const React = require('react')
-const {default: ReactSlidy} = require('../src/index')
+const {default: ReactSlidy} = require('../src/index.js')
 const {render, screen} = require('@testing-library/react')
 
 describe('ReactSlidy', () => {
