@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, {useEffect, useRef, useState} from 'react'
-import slidy from './slidy'
+import slidy from './slidy.js'
 
 function noop(_) {}
 
@@ -69,7 +69,7 @@ export default function ReactSlidySlider({
   const sliderContainerDOMEl = useRef(null)
   const slidesDOMEl = useRef(null)
 
-  const items = convertToArrayFrom(children).filter(child => child !== null);
+  const items = convertToArrayFrom(children).filter(child => child !== null)
 
   useEffect(
     function() {

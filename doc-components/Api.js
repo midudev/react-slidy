@@ -176,8 +176,8 @@ export default function Api() {
           props[propName] || {}
         const {value = undefined} = defaultValue
         if (typeof type === 'undefined') {
+          /* eslint-disable no-console */
           console.warn(
-            // eslint-disable-line
             'It seem that you might have a prop with a defaultValue but it does not exist as propType'
           )
           return

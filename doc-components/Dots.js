@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import ReactSlidy from '../src/index'
+import ReactSlidy from '../src/index.js'
 
 const SLIDES = ['/1.jpg', '/2.jpg', '/3.jpg', '/4.jpg']
 

@@ -13,7 +13,7 @@ const style = {
   width: '100%'
 }
 
+/* eslint-disable react/prop-types */
 export default function Number({num}) {
-  // eslint-disable-line
   return <span style={style}>{num}</span>
 }

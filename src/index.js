@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
-import ReactSlidySlider from './react-slidy-slider'
+import ReactSlidySlider from './react-slidy-slider.js'
 
 function noop() {}
 

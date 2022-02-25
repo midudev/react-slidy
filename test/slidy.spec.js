@@ -1,4 +1,4 @@
-const {clampNumber, infiniteIndex, translate} = require('../src/slidy')
+const {clampNumber, infiniteIndex, translate} = require('../src/slidy.js')
 
 describe('clampNumber', () => {
   test('when a number that is less than min value is provided then the min value is returned', () => {
