@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, {useEffect, useRef, useState} from 'react'
+import React, {Children, useEffect, useRef, useState} from 'react'
 import slidy from './slidy'
 
 function noop(_) {}
@@ -16,13 +16,7 @@ function getItemsToRender({
   numOfSlides
 }) {
   const preload = Math.max(itemsToPreload, numOfSlides)
-  if (index >= items.length - numOfSlides) {
-    const addNewItems =
-      items.length > numOfSlides ? items.slice(0, numOfSlides - 1) : []
-    return [...items.slice(0, maxIndex + preload), ...addNewItems]
-  } else {
     return items.slice(0, maxIndex + preload)
-  }
 }
 
 function destroySlider(slidyInstance, doAfterDestroy) {
@@ -69,7 +63,7 @@ export default function ReactSlidySlider({
   const sliderContainerDOMEl = useRef(null)
   const slidesDOMEl = useRef(null)
 
-  const items = convertToArrayFrom(children).filter(child => child !== null);
+  const items = Children.toArray(children).filter(child => child !== null);
 
   useEffect(
     function() {
@@ -155,9 +149,9 @@ export default function ReactSlidySlider({
   }
   const renderRightArrow = () => {
     const disabled =
-      (items.length <= numOfSlides || index === items.length - 1) &&
+      (items.length <= numOfSlides || index === items.length - numOfSlides) &&
       !infiniteLoop
-    const props = {disabled, onClick: handleNext}
+    const props = {disabled, onClick: !disabled ? handleNext : undefined}
     const rightArrowClasses = `${classNameBase}-arrow ${classNameBase}-arrowRight`
     if (ArrowRight)
       return <ArrowRight {...props} className={rightArrowClasses} />
