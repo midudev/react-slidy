@@ -141,7 +141,9 @@ export default function slidy(containerDOMEl, options) {
     }
 
     if (!isScrolling) {
-      e.preventDefault()
+      if (e.cancelable) {
+        e.preventDefault();
+      }
       _translate(0, LINEAR_ANIMATION, deltaX * -1)
     }
   }
